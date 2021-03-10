@@ -1,8 +1,8 @@
-BehaviorTree/Library/*
-BehaviorTree/obj/*
-BehaviorTree/Temp/*
+AStarUnity/Library/*
+AStarUnity/obj/*
+AStarUnity/Temp/*
 
-BehaviorTree/.vs/*
+AStarUnity/.vs/*
 
 *.csproj
 
