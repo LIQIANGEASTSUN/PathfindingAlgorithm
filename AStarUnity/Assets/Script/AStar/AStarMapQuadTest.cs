@@ -14,10 +14,7 @@ public class AStarMapQuadTest : MonoBehaviour
         Test();
     }
 
-    private void Update()
-    {
-        //DrawMapQuad(_mapQuad);
-    }
+    private int[] terrainData = new int[] { };
 
     public void Test()
     {

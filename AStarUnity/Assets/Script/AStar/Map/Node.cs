@@ -32,6 +32,11 @@ namespace AStar
     public enum NodeType
     {
         /// <summary>
+        /// 空地
+        /// </summary>
+        Null = -1,
+
+        /// <summary>
         /// 平坦的路
         /// </summary>
         Smooth = 0,
