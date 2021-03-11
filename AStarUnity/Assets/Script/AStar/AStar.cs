@@ -56,7 +56,10 @@ namespace AStar
                     return node;
                 }
 
-                Neighbor(node, desitinationNode);
+                //if (node.NodeType != NodeType.Null)
+                {
+                    Neighbor(node, desitinationNode);
+                }
             }
 
             return null;
@@ -75,7 +78,7 @@ namespace AStar
 
         private void InsertToOpenHeap(Node neighborNode, Node currentNode, Node desitinationNode, float distance)
         {
-            if (null == neighborNode || neighborNode.NodeType == NodeType.Obstacle)
+            if (null == neighborNode || neighborNode.NodeType == NodeType.Obstacle || neighborNode.NodeType == NodeType.Null)
             {
                 return;
             }
