@@ -8,6 +8,7 @@ namespace AStar
 {
     public class MapQuad : IMap
     {
+        private MapTerrainData _mapTerrainData;
         private MapSize _mapSize;
         private Node[] _grid = null;
         private float _width;
@@ -23,17 +24,19 @@ namespace AStar
             {-1, -1}, { 0, -1}, { 1, -1}
         };
 
-        public MapQuad(float minX, float minY, float maxX, float maxY, float width, float length)
+        public MapQuad(string mapFile, float minX, float minY, float maxX, float maxY)
         {
+            _mapTerrainData = new MapTerrainData(mapFile);
             _mapSize = new MapSize(minX, minY, maxX, maxY);
-            _width = width;
-            _length = length;
         }
 
         public void CreateGrid()
         {
-            _row = (int)Math.Ceiling((_mapSize._maxX - _mapSize._minX) / _width);
-            _col = (int)Math.Ceiling((_mapSize._maxY - _mapSize._minY) / _length);
+            _row = _mapTerrainData.Row;
+            _col = _mapTerrainData.Col;
+
+            _width = (_mapSize._maxX - _mapSize._minX) / _col;
+            _length = (_mapSize._maxY - _mapSize._minY) / _row;
 
             _grid = new Node[_row * _col];
 
@@ -41,8 +44,15 @@ namespace AStar
             {
                 for (int j = 0; j < _col; ++j)
                 {
+                    float cost = 0;
+                    int nodeType = _mapTerrainData.GetNodeData(i, j, ref cost);
+
                     int index = RCToIndex(i, j);
-                    _grid[index] = new Node(i, j, _adjoinCount);
+                    Node node = new Node(i, j, _adjoinCount);
+                    node.NodeType = (NodeType)nodeType;
+                    node.SetCost(cost);
+                    _grid[index] = node;
+                   
                 }
             }
         }
@@ -76,8 +86,10 @@ namespace AStar
             {
                 return null;
             }
-            int row = (int)Math.Ceiling((x - _mapSize._minX) / _width);
-            int col = (int)Math.Ceiling((y - _mapSize._minY) / _width);
+            int row = (int)((y - _mapSize._minY) / _length);//(int)Math.Ceiling((x - _mapSize._minX) / _width);
+            int col = (int)((x - _mapSize._minX) / _width);//(int)Math.Ceiling((y - _mapSize._minY) / _width);
+
+            UnityEngine.Debug.LogError(x + "   " + y + "   " + row + "  " + col);
 
             int index = RCToIndex(row, col);
             return _grid[index];
@@ -88,8 +100,8 @@ namespace AStar
         /// </summary>
         public Position NodeToPosition(Node node)
         {
-            float x = _mapSize._minX + (node.Row + 0.5f) * _width;
-            float y = _mapSize._minY + (node.Col + 0.5f) * _width;
+            float x = _mapSize._minX + (node.Col + 0.5f) * _width;
+            float y = _mapSize._maxY - (node.Row + 0.5f) * _length;
             return new Position(x, y);
         }
 

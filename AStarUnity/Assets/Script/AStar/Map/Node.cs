@@ -70,6 +70,7 @@ namespace AStar
         private Node _parent;
         private float _h;
         private float _g;
+        private float _cost;
         private NodeType _nodeType;
 
         public Node(int row, int col, int adjoinCount)
@@ -89,9 +90,14 @@ namespace AStar
             _g = g;
         }
 
+        public void SetCost(float c)
+        {
+            _cost = c;
+        }
+
         public float F
         {
-            get { return _h + _g; }
+            get { return _h + _g + _cost; }
         }
 
         public int Row
