@@ -24,6 +24,11 @@ namespace DataStruct.Heap
             _isBigHeap = isBigHeap;
         }
 
+        public List<T> DataList
+        {
+            get { return _list; }
+        }
+
         public void MakeEmpty()
         {
             _list.Clear();

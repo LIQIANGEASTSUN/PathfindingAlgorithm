@@ -21,14 +21,14 @@ public class AStarMapQuadTest : MonoBehaviour
 
     public void Test()
     {
-        _mapQuad = new MapQuad(-10, -10, 10, 10, 1, 1);
+        _mapQuad = new MapQuad(-5, -5, 5, 5, 1, 1);
         _mapQuad.CreateGrid();
 
         aStar = new AStar.AStar();
         aStar.SetMap(_mapQuad);
 
-        Position from = new Position(-5, -5);
-        Position to = new Position(5, 5);
+        Position from = new Position(-4, -4);
+        Position to = new Position(4, 4);
 
         GameObject fromGo = GameObject.CreatePrimitive(PrimitiveType.Cube);
         fromGo.transform.position = new Vector3(from.X, 0, from.Y);

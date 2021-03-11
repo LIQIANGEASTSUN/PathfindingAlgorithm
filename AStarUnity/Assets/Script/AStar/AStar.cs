@@ -13,14 +13,12 @@ namespace AStar
 
         // 小根堆保存开放节点
         private Heap<Node> openHeap;
-        private List<Node> openList;
         private List<Node> closedList;
 
         public AStar()
         {
             openHeap = new Heap<Node>();
             openHeap.SetHeapType(false);
-            openList = new List<Node>();
             closedList = new List<Node>();
         }
 
@@ -32,19 +30,16 @@ namespace AStar
         public Node SearchPath(Position from, Position desitination)
         {
             openHeap.MakeEmpty();
-            openList.Clear();
             closedList.Clear();
 
             Node fromNode = _map.PositionToNode(from.X, from.Y);
             Node desitinationNode = _map.PositionToNode(desitination.X, desitination.Y);
 
             openHeap.Insert(fromNode);
-            openList.Add(fromNode);
 
             while (openHeap.Count() > 0)
             {
                 Node node = openHeap.DelRoot();
-                openList.Remove(node);
                 closedList.Add(node);
 
                 if (node.Row == desitinationNode.Row && node.Col == desitinationNode.Col)
@@ -55,12 +50,10 @@ namespace AStar
                 for (int i = 0; i < node.AdjoinCount; ++i)
                 {
                     Node adjoinNode = _map.NodeAdjoin(node, i);
-                    if (closedList.Contains(adjoinNode) || openList.Contains(adjoinNode))
-                    {
-                        continue;
-                    }
-
-                    if (adjoinNode.NodeType == NodeType.Obstacle)
+                    if (   null == adjoinNode
+                        || closedList.Contains(adjoinNode)
+                        || openHeap.DataList.Contains(adjoinNode)
+                        || adjoinNode.NodeType == NodeType.Obstacle)
                     {
                         continue;
                     }
@@ -74,7 +67,6 @@ namespace AStar
                     adjoinNode.SetH(h);
 
                     openHeap.Insert(adjoinNode);
-                    openList.Add(adjoinNode);
                 }
             }
 
