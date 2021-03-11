@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AStar
 {
+    /// <summary>
+    /// 地图数据，保存在 csv 中的数据
+    /// </summary>
     public class MapTerrainData
     {
         private string _fileName;
@@ -26,7 +29,11 @@ namespace AStar
             });
 
             _row = list.Count;
-            _col = 20;
+
+            if (list.Count > 0)
+            {
+                _col = int.Parse(TableRead.Instance.GetData(_fileName, list[0], "ColCount")); 
+            }
         }
 
         public int Row
@@ -39,6 +46,14 @@ namespace AStar
             get { return _col; }
         }
 
+        /// <summary>
+        /// 获取节点类型和不同地形的消耗
+        /// csv 中每一项格式  1_5: 1 表示平坦路，5表示走平坦路消耗
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <param name="g"></param>
+        /// <returns></returns>
         public int GetNodeData(int row, int col, ref float g)
         {
             string colName = string.Format("col{0}", col);

@@ -13,7 +13,7 @@ namespace DataStruct.Heap
         // 如果使用数组首先开辟多大空间不确定假设开辟 N 个空间，则还需要
         // 记录当前已经使用到哪个下标索引了记为 size。且当 size >= N 时
         // 还需要手动再次开辟空间
-        public List<T> _list = new List<T>();
+        private List<T> _list = new List<T>();
 
         /// 是否大根堆
         private bool _isBigHeap = true;

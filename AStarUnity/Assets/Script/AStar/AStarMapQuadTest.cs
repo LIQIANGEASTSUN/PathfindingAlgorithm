@@ -73,12 +73,12 @@ public class AStarMapQuadTest : MonoBehaviour
     {
         personGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         personGo.name = "Person";
-        personGo.transform.position = new Vector3(2.5f, 0.3f, 5.5f);
+        personGo.transform.position = new Vector3(19.5f, 0.3f, 6.5f);
         personGo.GetComponent<Renderer>().material.color = Color.green;
 
         destination = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         destination.name = "Destination";
-        destination.transform.position = new Vector3(6.5f, 0.3f, 2.5f);
+        destination.transform.position = new Vector3(2.5f, 0.3f, 2.5f);
         destination.GetComponent<Renderer>().material.color = Color.black;
     }
 }

@@ -73,6 +73,7 @@ namespace AStar
         private float _cost;
         private NodeType _nodeType;
 
+
         public Node(int row, int col, int neighborCount)
         {
             _row = row;

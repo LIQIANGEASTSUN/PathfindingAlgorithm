@@ -18,6 +18,7 @@ namespace AStar
         private int _col;
 
         private const int _neighborCount = 8;
+        // 每个节点 8 个邻居的相对二维坐标
         private int[,] neighborArr = new int[,] {
             {-1,  1}, { 0,  1}, { 1,  1},
             {-1,  0},           { 1,  0},
@@ -30,6 +31,7 @@ namespace AStar
             _mapSize = new MapSize(minX, minY, maxX, maxY);
         }
 
+        // 创建网格
         public void CreateGrid()
         {
             _row = _mapTerrainData.Row;
@@ -38,6 +40,7 @@ namespace AStar
             _width = (_mapSize._maxX - _mapSize._minX) / _col;
             _length = (_mapSize._maxY - _mapSize._minY) / _row;
 
+            // 使用一维数组存放 node
             _grid = new Node[_row * _col];
 
             for (int i = 0; i < _row; ++i)
@@ -56,21 +59,25 @@ namespace AStar
             }
         }
 
+        // 地图所有节点
         public Node[] Grid()
         {
             return _grid;
         }
 
+        // 地图尺寸
         public MapSize MapSize()
         {
             return _mapSize;
         }
 
+        // 地块 Node 宽
         public float NodeWidth()
         {
             return _width;
         }
 
+        // 地块 Node 长
         public float NodeLength()
         {
             return _length;
