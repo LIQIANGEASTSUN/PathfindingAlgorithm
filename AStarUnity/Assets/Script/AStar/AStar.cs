@@ -32,6 +32,11 @@ namespace AStar
             openHeap.MakeEmpty();
             closedList.Clear();
 
+            foreach (var node in _map.Grid())
+            {
+                node.Clear();
+            }
+
             Node fromNode = _map.PositionToNode(from.X, from.Y);
             Node desitinationNode = _map.PositionToNode(desitination.X, desitination.Y);
             if (fromNode.Row == desitinationNode.Row && fromNode.Col == desitinationNode.Col)
@@ -59,7 +64,7 @@ namespace AStar
 
         private void Neighbor(Node currentNode, Node desitinationNode)
         {
-            UnityEngine.Debug.LogError("Node:" + currentNode.Row + "   " + currentNode.Col + "    " + currentNode.G + "   " + currentNode.H);
+            //UnityEngine.Debug.LogError("Node:" + currentNode.Row + "   " + currentNode.Col + "    " + currentNode.G + "   " + currentNode.H);
             for (int i = 0; i < currentNode.neighborCount; ++i)
             {
                 float distance = 0;
@@ -99,7 +104,7 @@ namespace AStar
                 openHeap.Insert(neighborNode);
             }
 
-            UnityEngine.Debug.LogError(neighborNode.Row + "  " + neighborNode.Col + "   G:" + neighborNode.G + "   H:" + neighborNode.H);
+            //UnityEngine.Debug.LogError(neighborNode.Row + "  " + neighborNode.Col + "   G:" + neighborNode.G + "   H:" + neighborNode.H);
         }
 
     }

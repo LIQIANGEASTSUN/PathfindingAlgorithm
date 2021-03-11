@@ -5,21 +5,18 @@ using UnityEngine;
 
 public class AStarMapQuadTest : MonoBehaviour
 {
-    private MapTerrainData _mapTerrainData;
     private MapQuad _mapQuad;
     private AStar.AStar aStar;
-    private Node pathNode;
+
     private GameObject personGo;
     private GameObject destination;
-    private float speed = 1;
-
-    private AStarMapQuadDrawPath aStarMapQuadDrawPath = new AStarMapQuadDrawPath();
+    private float speed = 2;
 
     private void Start()
     {
         _mapQuad = new MapQuad("Terrain1", 0, 0, 20, 10);
         _mapQuad.CreateGrid();
-        aStarMapQuadDrawPath.CreateNode(_mapQuad);
+        new AStarMapQuadDrawPath(_mapQuad);
 
         aStar = new AStar.AStar();
         aStar.SetMap(_mapQuad);
@@ -55,7 +52,7 @@ public class AStarMapQuadTest : MonoBehaviour
     {
         Position from = new Position(personGo.transform.position.x, personGo.transform.position.z);
         Position to = new Position(destination.transform.position.x, destination.transform.position.z);
-        pathNode = aStar.SearchPath(from, to);
+        Node pathNode = aStar.SearchPath(from, to);
 
         _stackPos.Clear();
         int count = 0;
@@ -64,6 +61,10 @@ public class AStarMapQuadTest : MonoBehaviour
             ++count;
             Position pos = _mapQuad.NodeToPosition(pathNode);
             _stackPos.Push(pos);
+            if (count > 200)
+            {
+                break;
+            }
             pathNode = pathNode.Parent;
         }
     }
@@ -85,24 +86,28 @@ public class AStarMapQuadTest : MonoBehaviour
 
 public class AStarMapQuadDrawPath
 {
-    public AStarMapQuadDrawPath()
+    public AStarMapQuadDrawPath(MapQuad mapQuad)
     {
-
+        CreateNode(mapQuad);
     }
 
-    public void CreateNode(MapQuad _mapQuad)
+    public void CreateNode(MapQuad mapQuad)
     {
         GameObject parent = new GameObject("NodeParent");
         parent.transform.position = Vector3.zero;
-        Node[] nodeArr = _mapQuad.Grid();
+        Node[] nodeArr = mapQuad.Grid();
         for (int i = 0; i < nodeArr.Length; ++i)
         {
             Node node = nodeArr[i];
-            Position pos = _mapQuad.NodeToPosition(node);
+            if (node.NodeType == NodeType.Null)
+            {
+                continue;
+            }
+            Position pos = mapQuad.NodeToPosition(node);
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.name = string.Format("{0}_{1}", node.Row, node.Col);
             go.transform.position = new Vector3(pos.X, 0, pos.Y);
-            go.transform.localScale = new Vector3(_mapQuad.NodeWidth(), 1, _mapQuad.NodeLength()) * 0.9f;
+            go.transform.localScale = new Vector3(mapQuad.NodeWidth(), 1, mapQuad.NodeLength()) * 0.9f;
             go.transform.SetParent(parent.transform);
 
             go.GetComponent<Renderer>().material.color = NodeColor(node.NodeType);

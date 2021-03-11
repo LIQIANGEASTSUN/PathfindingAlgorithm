@@ -82,7 +82,7 @@ namespace AStar
 
         public float F
         {
-            get { return _h + G; }
+            get { return H + G; }
         }
 
         public float H
@@ -100,8 +100,7 @@ namespace AStar
         public float Cost
         {
             get { return _cost; }
-            set { _cost = value;
-            }
+            set { _cost = value; }
         }
 
         public int Row
@@ -129,6 +128,13 @@ namespace AStar
         public int neighborCount
         {
             get { return _neighborCount; }
+        }
+
+        public void Clear()
+        {
+            Parent = null;
+            H = 0;
+            G = 0;
         }
 
         public int CompareTo(Node node)
