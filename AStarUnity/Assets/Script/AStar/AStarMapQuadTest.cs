@@ -73,17 +73,13 @@ public class AStarMapQuadTest : MonoBehaviour
         Position to = new Position(destination.transform.position.x, destination.transform.position.z);
         Node pathNode = aStar.SearchPath(from, to);
 
+        // 栈：FILO 先进后出,存放路径点
         _stackPos.Clear();
-        int count = 0;
         while (null != pathNode)
         {
-            ++count;
             Position pos = _mapQuad.NodeToPosition(pathNode);
+            // 数据入栈
             _stackPos.Push(pos);
-            if (count > 200)
-            {
-                break;
-            }
             pathNode = pathNode.Parent;
         }
     }
