@@ -66,18 +66,18 @@ namespace AStar
     {
         private int _row;
         private int _col;
-        private int _adjoinCount;
+        private int _neighborCount;
         private Node _parent;
         private float _h;
         private float _g;
         private float _cost;
         private NodeType _nodeType;
 
-        public Node(int row, int col, int adjoinCount)
+        public Node(int row, int col, int neighborCount)
         {
             _row = row;
             _col = col;
-            _adjoinCount = adjoinCount;
+            _neighborCount = neighborCount;
         }
 
         public void SetH(float h)
@@ -122,9 +122,9 @@ namespace AStar
             set { _nodeType = value; }
         }
 
-        public int AdjoinCount
+        public int neighborCount
         {
-            get { return _adjoinCount; }
+            get { return _neighborCount; }
         }
 
         public int CompareTo(Node node)

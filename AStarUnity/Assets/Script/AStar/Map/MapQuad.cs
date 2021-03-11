@@ -17,8 +17,8 @@ namespace AStar
         private int _row;
         private int _col;
 
-        private const int _adjoinCount = 8;
-        private int[,] adjoinArr = new int[,] {
+        private const int _neighborCount = 8;
+        private int[,] neighborArr = new int[,] {
             {-1,  1}, { 0,  1}, { 1,  1},
             {-1,  0},           { 1,  0},
             {-1, -1}, { 0, -1}, { 1, -1}
@@ -48,7 +48,7 @@ namespace AStar
                     int nodeType = _mapTerrainData.GetNodeData(i, j, ref cost);
 
                     int index = RCToIndex(i, j);
-                    Node node = new Node(i, j, _adjoinCount);
+                    Node node = new Node(i, j, _neighborCount);
                     node.NodeType = (NodeType)nodeType;
                     node.SetCost(cost);
                     _grid[index] = node;
@@ -86,10 +86,9 @@ namespace AStar
             {
                 return null;
             }
-            int row = (int)((y - _mapSize._minY) / _length);//(int)Math.Ceiling((x - _mapSize._minX) / _width);
-            int col = (int)((x - _mapSize._minX) / _width);//(int)Math.Ceiling((y - _mapSize._minY) / _width);
 
-            UnityEngine.Debug.LogError(x + "   " + y + "   " + row + "  " + col);
+            int row = (int)((_mapSize._maxY - y) / _length);
+            int col = (int)((x - _mapSize._minX) / _width);
 
             int index = RCToIndex(row, col);
             return _grid[index];
@@ -108,10 +107,10 @@ namespace AStar
         /// <summary>
         /// 获取 Node 的第 index 个邻居
         /// </summary>
-        public Node NodeAdjoin(Node node, int index)
+        public Node NodeNeighbor(Node node, int index)
         {
-            int row = node.Row + adjoinArr[index, 0];
-            int col = node.Col + adjoinArr[index, 1];
+            int row = node.Row + neighborArr[index, 0];
+            int col = node.Col + neighborArr[index, 1];
 
             index = RCToIndex(row, col);
             if (index < 0 || index >= _grid.Length)

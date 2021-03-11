@@ -27,7 +27,7 @@ namespace AStar
         /// <summary>
         /// 获取 Node 的第 index 个邻居
         /// </summary>
-        Node NodeAdjoin(Node node, int index);
+        Node NodeNeighbor(Node node, int index);
 
         float G(NodeType nodeType);
     }

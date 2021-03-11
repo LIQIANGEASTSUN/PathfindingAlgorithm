@@ -11,7 +11,7 @@ public class AStarMapQuadTest : MonoBehaviour
     private Node pathNode;
     private GameObject personGo;
     private GameObject destination;
-    private float speed = 2;
+    private float speed = 1;
 
     private AStarMapQuadDrawPath aStarMapQuadDrawPath = new AStarMapQuadDrawPath();
 
@@ -29,19 +29,25 @@ public class AStarMapQuadTest : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (_stackPos.Count > 0)
+        {
+            Position position = _stackPos.Peek();
+            Vector3 destinationPos = new Vector3(position.X, 0.3f, position.Y);
+            Vector3 dir = destinationPos - personGo.transform.position;
+            personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
+            if (Vector3.Distance(personGo.transform.position, destinationPos) <= 0.05f)
+            {
+                _stackPos.Pop();
+            }
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (GUI.Button(new Rect(10, 10, 200, 50), "Start"))
         {
             StartSearchPath();
         }
-
-        while (_stackPos.Count > 0)
-        {
-            Position position = _stackPos.Peek();
-
-            Vector3 dir = new Vector3(position.X, 0, position.Y) - personGo.transform.position;
-            personGo.transform.Translate(dir.normalized * speed, Space.World);
-        }
-
     }
 
     private Stack<Position> _stackPos = new Stack<Position>();
@@ -52,11 +58,12 @@ public class AStarMapQuadTest : MonoBehaviour
         pathNode = aStar.SearchPath(from, to);
 
         _stackPos.Clear();
+        int count = 0;
         while (null != pathNode)
         {
+            ++count;
             Position pos = _mapQuad.NodeToPosition(pathNode);
             _stackPos.Push(pos);
-            //Debug.Log(pathNode.Row + "    " + pathNode.Col);
             pathNode = pathNode.Parent;
         }
     }

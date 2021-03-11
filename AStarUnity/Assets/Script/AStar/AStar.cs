@@ -34,6 +34,10 @@ namespace AStar
 
             Node fromNode = _map.PositionToNode(from.X, from.Y);
             Node desitinationNode = _map.PositionToNode(desitination.X, desitination.Y);
+            if (fromNode.Row == desitinationNode.Row && fromNode.Col == desitinationNode.Col)
+            {
+                return null;
+            }
 
             openHeap.Insert(fromNode);
 
@@ -47,30 +51,37 @@ namespace AStar
                     return node;
                 }
 
-                for (int i = 0; i < node.AdjoinCount; ++i)
+                for (int i = 0; i < node.neighborCount; ++i)
                 {
-                    Node adjoinNode = _map.NodeAdjoin(node, i);
-                    if (   null == adjoinNode
-                        || closedList.Contains(adjoinNode)
-                        || openHeap.DataList.Contains(adjoinNode)
-                        || adjoinNode.NodeType == NodeType.Obstacle)
+                    Node neighborNode = _map.NodeNeighbor(node, i);
+                    if (   null == neighborNode
+                        || closedList.Contains(neighborNode)
+                        || openHeap.DataList.Contains(neighborNode)
+                        || neighborNode.NodeType == NodeType.Obstacle)
                     {
                         continue;
                     }
 
-                    adjoinNode.Parent = node;
+                    neighborNode.Parent = node;
 
-                    float g = Math.Abs(adjoinNode.Row - node.Row) + Math.Abs(adjoinNode.Col - node.Col) + _map.G(node.NodeType);
-                    adjoinNode.SetG(g);
+                    int offsetRow = neighborNode.Row - node.Row;
+                    int offsetCol = neighborNode.Col - node.Col;
+                    float g = (float)Math.Sqrt(offsetRow * offsetRow + offsetCol * offsetCol) + _map.G(node.NodeType);
+                    neighborNode.SetG(g);
 
-                    float h = Math.Abs(adjoinNode.Row - desitinationNode.Row) + Math.Abs(adjoinNode.Col - desitinationNode.Col);
-                    adjoinNode.SetH(h);
+                    float h = Math.Abs(neighborNode.Row - desitinationNode.Row) + Math.Abs(neighborNode.Col - desitinationNode.Col);
+                    neighborNode.SetH(h);
 
-                    openHeap.Insert(adjoinNode);
+                    openHeap.Insert(neighborNode);
                 }
             }
 
             return null;
+        }
+
+        private void Neighbor()
+        {
+
         }
 
     }
