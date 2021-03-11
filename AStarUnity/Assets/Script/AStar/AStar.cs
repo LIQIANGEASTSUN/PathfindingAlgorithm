@@ -29,13 +29,17 @@ namespace AStar
 
         public Node SearchPath(Position from, Position desitination)
         {
-            openHeap.MakeEmpty();
-            closedList.Clear();
-
-            foreach (var node in _map.Grid())
+            foreach (var node in closedList)
             {
                 node.Clear();
             }
+
+            foreach(var node in openHeap._list)
+            {
+                node.Clear();
+            }
+            openHeap.MakeEmpty();
+            closedList.Clear();
 
             Node fromNode = _map.PositionToNode(from.X, from.Y);
             Node desitinationNode = _map.PositionToNode(desitination.X, desitination.Y);
@@ -56,10 +60,7 @@ namespace AStar
                     return node;
                 }
 
-                //if (node.NodeType != NodeType.Null)
-                {
-                    Neighbor(node, desitinationNode);
-                }
+                Neighbor(node, desitinationNode);
             }
 
             return null;
