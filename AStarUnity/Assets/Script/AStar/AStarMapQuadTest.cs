@@ -10,8 +10,9 @@ public class AStarMapQuadTest : MonoBehaviour
 
     private GameObject personGo;
     private GameObject destination;
-    private float speed = 2;
+    private float speed = 3;
 
+    private List<GameObject> pathGoList = new List<GameObject>();
     private void Start()
     {
         _mapQuad = new MapQuad("Terrain1", 0, 0, 20, 10);
@@ -24,6 +25,7 @@ public class AStarMapQuadTest : MonoBehaviour
         CreatePerson();
     }
 
+    private float _intervalTime = 0.1f;
     private void Update()
     {
         if (_stackPos.Count > 0)
@@ -35,6 +37,17 @@ public class AStarMapQuadTest : MonoBehaviour
             if (Vector3.Distance(personGo.transform.position, destinationPos) <= 0.05f)
             {
                 _stackPos.Pop();
+            }
+
+            _intervalTime -= Time.deltaTime;
+            if (_intervalTime <= 0)
+            {
+                _intervalTime = 0.1f;
+                GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                go.transform.localScale = Vector3.one * 0.2f;
+                go.transform.position = new Vector3(personGo.transform.position.x, 0.6f, personGo.transform.position.z);
+                go.GetComponent<Renderer>().material.color = Color.red;
+                pathGoList.Add(go);
             }
         }
     }
@@ -50,6 +63,12 @@ public class AStarMapQuadTest : MonoBehaviour
     private Stack<Position> _stackPos = new Stack<Position>();
     private void StartSearchPath()
     {
+        for (int i = pathGoList.Count - 1; i >= 0; --i)
+        {
+            GameObject.Destroy(pathGoList[i]);
+        }
+        pathGoList.Clear();
+
         Position from = new Position(personGo.transform.position.x, personGo.transform.position.z);
         Position to = new Position(destination.transform.position.x, destination.transform.position.z);
         Node pathNode = aStar.SearchPath(from, to);

@@ -52,6 +52,7 @@ namespace AStar
                 return null;
             }
 
+            fromNode.NodeState = NodeState.InOpenTable;
             // 将起点加入到 open 表
             openHeap.Insert(fromNode);
 
@@ -60,6 +61,7 @@ namespace AStar
                 // 取出 open 表中 F 值最小的节点
                 Node node = openHeap.DelRoot();
                 // 将 node 添加到 closed 表
+                node.NodeState = NodeState.InColsedTable;
                 closedList.Add(node);
 
                 // 如果 node 是终点 则路径查找成功，并退出
@@ -100,13 +102,13 @@ namespace AStar
             }
 
             // 已经加入到 closed 表的 node 不做处理
-            if (closedList.Contains(neighborNode))
+            if (neighborNode.NodeState == NodeState.InColsedTable)
             {
                 return;
             }
 
             // 在 open 表中
-            if (openHeap.DataList.Contains(neighborNode))
+            if (neighborNode.NodeState == NodeState.InOpenTable)
             {
                 // 比较 neighborNode 记录的 G 值是否比 从 currentNode 到 neighborNode 的G 值更大
                 // 如果 neighborNode.G 更大，则更新 neighborNode.G 并设置 neighborNode.Parent = currentNode;
@@ -129,6 +131,8 @@ namespace AStar
 
                 // 设置父节点
                 neighborNode.Parent = currentNode;
+
+                neighborNode.NodeState = NodeState.InOpenTable;
                 openHeap.Insert(neighborNode);
             }
         }

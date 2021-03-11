@@ -62,6 +62,13 @@ namespace AStar
         Obstacle = 10,
     }
 
+    public enum NodeState
+    {
+        Null = 0,
+        InOpenTable = 1,
+        InColsedTable = 2,
+    }
+
     public class Node : IComparable<Node>
     {
         private int _row;
@@ -72,7 +79,7 @@ namespace AStar
         private float _g;
         private float _cost;
         private NodeType _nodeType;
-
+        private NodeState _nodeState;
 
         public Node(int row, int col, int neighborCount)
         {
@@ -126,6 +133,12 @@ namespace AStar
             set { _nodeType = value; }
         }
 
+        public NodeState NodeState
+        {
+            get { return _nodeState; }
+            set { _nodeState = value; }
+        }
+
         public int neighborCount
         {
             get { return _neighborCount; }
@@ -136,6 +149,7 @@ namespace AStar
             Parent = null;
             H = 0;
             G = 0;
+            NodeState = NodeState.Null;
         }
 
         public int CompareTo(Node node)
