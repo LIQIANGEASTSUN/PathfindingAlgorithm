@@ -80,24 +80,28 @@ namespace AStar
             _neighborCount = neighborCount;
         }
 
-        public void SetH(float h)
-        {
-            _h = h;
-        }
-
-        public void SetG(float g)
-        {
-            _g = g;
-        }
-
-        public void SetCost(float c)
-        {
-            _cost = c;
-        }
-
         public float F
         {
-            get { return _h + _g + _cost; }
+            get { return _h + G; }
+        }
+
+        public float H
+        {
+            get { return _h; }
+            set { _h = value; }
+        }
+
+        public float G
+        {
+            get { return _g; }
+            set { _g = value; }
+        }
+
+        public float Cost
+        {
+            get { return _cost; }
+            set { _cost = value;
+            }
         }
 
         public int Row

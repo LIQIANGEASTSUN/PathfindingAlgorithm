@@ -27,9 +27,7 @@ namespace AStar
         /// <summary>
         /// 获取 Node 的第 index 个邻居
         /// </summary>
-        Node NodeNeighbor(Node node, int index);
-
-        float G(NodeType nodeType);
+        Node NodeNeighbor(Node node, int index, ref float distance);
     }
 
     public struct MapSize

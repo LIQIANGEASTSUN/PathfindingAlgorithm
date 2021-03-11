@@ -50,9 +50,8 @@ namespace AStar
                     int index = RCToIndex(i, j);
                     Node node = new Node(i, j, _neighborCount);
                     node.NodeType = (NodeType)nodeType;
-                    node.SetCost(cost);
+                    node.Cost = cost;
                     _grid[index] = node;
-                   
                 }
             }
         }
@@ -107,16 +106,17 @@ namespace AStar
         /// <summary>
         /// 获取 Node 的第 index 个邻居
         /// </summary>
-        public Node NodeNeighbor(Node node, int index)
+        public Node NodeNeighbor(Node node, int index, ref float distance)
         {
             int row = node.Row + neighborArr[index, 0];
             int col = node.Col + neighborArr[index, 1];
-
-            index = RCToIndex(row, col);
-            if (index < 0 || index >= _grid.Length)
+            if (row < 0 || row >= _row || col < 0 || col >= _col)
             {
                 return null;
             }
+
+            distance = (float)Math.Sqrt(Math.Abs(neighborArr[index, 0]) + Math.Abs(neighborArr[index, 1]));
+            index = RCToIndex(row, col);
             return _grid[index];
         }
 
@@ -124,32 +124,6 @@ namespace AStar
         {
             int index = row * _col + col;
             return index;
-        }
-
-        public float G(NodeType nodeType)
-        {
-            if (nodeType == NodeType.Smooth)
-            {
-                return 1;
-            }
-            if (nodeType == NodeType.Mud)
-            {
-                return 2;
-            }
-            if (nodeType == NodeType.Grass)
-            {
-                return 3;
-            }
-            if (nodeType == NodeType.Desert)
-            {
-                return 4;
-            }
-            if (nodeType == NodeType.Obstacle)
-            {
-                return float.MaxValue;
-            }
-
-            return 0;
         }
     }
 }

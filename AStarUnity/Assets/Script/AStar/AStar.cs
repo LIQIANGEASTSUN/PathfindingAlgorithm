@@ -51,38 +51,57 @@ namespace AStar
                     return node;
                 }
 
-                for (int i = 0; i < node.neighborCount; ++i)
-                {
-                    Node neighborNode = _map.NodeNeighbor(node, i);
-                    if (   null == neighborNode
-                        || closedList.Contains(neighborNode)
-                        || openHeap.DataList.Contains(neighborNode)
-                        || neighborNode.NodeType == NodeType.Obstacle)
-                    {
-                        continue;
-                    }
-
-                    neighborNode.Parent = node;
-
-                    int offsetRow = neighborNode.Row - node.Row;
-                    int offsetCol = neighborNode.Col - node.Col;
-                    float g = (float)Math.Sqrt(offsetRow * offsetRow + offsetCol * offsetCol) + _map.G(node.NodeType);
-                    neighborNode.SetG(g);
-
-                    float h = Math.Abs(neighborNode.Row - desitinationNode.Row) + Math.Abs(neighborNode.Col - desitinationNode.Col);
-                    neighborNode.SetH(h);
-
-                    openHeap.Insert(neighborNode);
-                }
+                Neighbor(node, desitinationNode);
             }
 
             return null;
         }
 
-        private void Neighbor()
+        private void Neighbor(Node currentNode, Node desitinationNode)
         {
+            UnityEngine.Debug.LogError("Node:" + currentNode.Row + "   " + currentNode.Col + "    " + currentNode.G + "   " + currentNode.H);
+            for (int i = 0; i < currentNode.neighborCount; ++i)
+            {
+                float distance = 0;
+                Node neighborNode = _map.NodeNeighbor(currentNode, i, ref distance);
+                InsertToOpenHeap(neighborNode, currentNode, desitinationNode, distance);
+            }
+        }
 
+        private void InsertToOpenHeap(Node neighborNode, Node currentNode, Node desitinationNode, float distance)
+        {
+            if (null == neighborNode || neighborNode.NodeType == NodeType.Obstacle)
+            {
+                return;
+            }
+
+            if (closedList.Contains(neighborNode))
+            {
+                return;
+            }
+
+            // 在 open 表中
+            if (openHeap._list.Contains(neighborNode))
+            {
+                if (neighborNode.G > (currentNode.G + currentNode.Cost * distance))
+                {
+                    neighborNode.G = currentNode.G + currentNode.Cost * distance;
+                    neighborNode.Parent = currentNode;
+                    openHeap.HeapCreate();
+                }
+            }
+            else
+            {
+                neighborNode.G = currentNode.G + currentNode.Cost * distance;
+                float h = Math.Abs(neighborNode.Row - desitinationNode.Row) + Math.Abs(neighborNode.Col - desitinationNode.Col);
+                neighborNode.H = h * neighborNode.Cost;
+                neighborNode.Parent = currentNode;
+                openHeap.Insert(neighborNode);
+            }
+
+            UnityEngine.Debug.LogError(neighborNode.Row + "  " + neighborNode.Col + "   G:" + neighborNode.G + "   H:" + neighborNode.H);
         }
 
     }
+
 }
