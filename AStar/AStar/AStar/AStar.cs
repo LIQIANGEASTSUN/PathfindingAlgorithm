@@ -63,7 +63,6 @@ namespace AStar.AStar
             openHeap.Insert(fromNode);
             openList.Add(fromNode);
 
-
             while (openHeap.Count() > 0)
             {
                 Node node = openHeap.DelRoot();
@@ -72,10 +71,9 @@ namespace AStar.AStar
 
                 if (node.Row == desitinationNode.Row && node.Col == desitinationNode.Col)
                 {
-                    break;
+                    return node;
                 }
 
-                float baseG = 1;
                 for (int i = 0; i < node.AdjoinCount; ++i)
                 {
                     Node adjoinNode = _map.NodeAdjoin(node, i);
@@ -84,9 +82,14 @@ namespace AStar.AStar
                         continue;
                     }
 
+                    if (adjoinNode.NodeType == NodeType.Obstacle)
+                    {
+                        continue;
+                    }
+
                     adjoinNode.Parent = node;
 
-                    float g = Math.Abs(adjoinNode.Row - node.Row) + Math.Abs(adjoinNode.Col - node.Col) + baseG;
+                    float g = Math.Abs(adjoinNode.Row - node.Row) + Math.Abs(adjoinNode.Col - node.Col) + _map.G(node.NodeType);
                     adjoinNode.SetG(g);
 
                     float h = Math.Abs(adjoinNode.Row - desitinationNode.Row) + Math.Abs(adjoinNode.Col - desitinationNode.Col);
@@ -97,7 +100,7 @@ namespace AStar.AStar
                 }
             }
 
-            return desitinationNode;
+            return null;
         }
 
     }

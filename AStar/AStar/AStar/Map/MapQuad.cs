@@ -102,5 +102,31 @@ namespace AStar.AStar
             }
             return _grid[index];
         }
+
+        public float G(NodeType nodeType)
+        {
+            if (nodeType == NodeType.Smooth)
+            {
+                return 1;
+            }
+            if (nodeType == NodeType.Mud)
+            {
+                return 2;
+            }
+            if (nodeType == NodeType.Grass)
+            {
+                return 3;
+            }
+            if (nodeType == NodeType.Desert)
+            {
+                return 4;
+            }
+            if (nodeType == NodeType.Obstacle)
+            {
+                return float.MaxValue;
+            }
+
+            return 0;
+        }
     }
 }

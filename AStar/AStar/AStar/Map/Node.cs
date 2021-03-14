@@ -29,6 +29,34 @@ namespace AStar.AStar
         }
     }
 
+    public enum NodeType
+    {
+        /// <summary>
+        /// 平坦的路
+        /// </summary>
+        Smooth = 0,
+
+        /// <summary>
+        /// 泥路
+        /// </summary>
+        Mud = 1,
+
+        /// <summary>
+        /// 草地
+        /// </summary>
+        Grass = 2,
+
+        /// <summary>
+        /// 沙地
+        /// </summary>
+        Desert = 3,
+
+        /// <summary>
+        /// 障碍物
+        /// </summary>
+        Obstacle = 10,
+    }
+
     public class Node : IComparable<Node>
     {
         private int _row;
@@ -37,6 +65,7 @@ namespace AStar.AStar
         private Node _parent;
         private float _h;
         private float _g;
+        private NodeType _nodeType;
 
         public Node(int row, int col, int adjoinCount)
         {
@@ -74,6 +103,12 @@ namespace AStar.AStar
         {
             get { return _parent; }
             set { _parent = value; }
+        }
+
+        public NodeType NodeType
+        {
+            get { return _nodeType; }
+            set { _nodeType = value; }
         }
 
         public int AdjoinCount
