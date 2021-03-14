@@ -10,6 +10,9 @@ namespace AStar
     {
         static void Main(string[] args)
         {
+            AStar.AStarTest.Test();
+
+            Console.ReadLine();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace AStar.AStar
         /// <summary>
         /// 根据坐标获取 Node
         /// </summary>
-        Node PositionToRC(float x, float y);
+        Node PositionToNode(float x, float y);
 
         /// <summary>
         /// 根据 Node index 获取 坐标
@@ -26,6 +26,11 @@ namespace AStar.AStar
         /// <param name="col"></param>
         /// <returns></returns>
         Position RCToPosition(int index);
+
+        /// <summary>
+        /// 获取 Node 的第 index 个邻居
+        /// </summary>
+        Node NodeAdjoin(Node node, int index);
     }
 
     public struct MapSize

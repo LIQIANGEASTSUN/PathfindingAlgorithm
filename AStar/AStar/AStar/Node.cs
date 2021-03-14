@@ -29,18 +29,35 @@ namespace AStar.AStar
         }
     }
 
-    public class Node
+    public class Node : IComparable<Node>
     {
         private int _row;
         private int _col;
         private int _adjoinCount;
         private Node _parent;
+        private float _h;
+        private float _g;
 
         public Node(int row, int col, int adjoinCount)
         {
             _row = row;
             _col = col;
             _adjoinCount = adjoinCount;
+        }
+
+        public void SetH(float h)
+        {
+            _h = h;
+        }
+
+        public void SetG(float g)
+        {
+            _g = g;
+        }
+
+        public float F
+        {
+            get { return _h + _g; }
         }
 
         public int Row
@@ -64,5 +81,9 @@ namespace AStar.AStar
             get { return _adjoinCount; }
         }
 
+        public int CompareTo(Node node)
+        {
+            return F.CompareTo(node.F);
+        }
     }
 }

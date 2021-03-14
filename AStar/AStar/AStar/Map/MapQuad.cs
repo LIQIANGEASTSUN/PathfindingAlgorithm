@@ -57,7 +57,7 @@ namespace AStar.AStar
             return _mapSize;
         }
 
-        public Node PositionToRC(float x, float y)
+        public Node PositionToNode(float x, float y)
         {
             if (!_mapSize.Contians(x, y))
             {
@@ -90,7 +90,7 @@ namespace AStar.AStar
             return index;
         }
 
-        private Node NodeAdjoin(Node node, int index)
+        public Node NodeAdjoin(Node node, int index)
         {
             int row = node.Row + adjoinArr[index, 0];
             int col = node.Col + adjoinArr[index, 1];

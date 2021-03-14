@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AStar\AStar.cs" />
+    <Compile Include="AStar\Heap\Heap.cs" />
+    <Compile Include="AStar\Map\IMap.cs" />
+    <Compile Include="AStar\Map\MapQuad.cs" />
+    <Compile Include="AStar\Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
