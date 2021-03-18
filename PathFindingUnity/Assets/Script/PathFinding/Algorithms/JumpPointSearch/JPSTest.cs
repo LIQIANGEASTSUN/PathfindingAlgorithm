@@ -29,11 +29,6 @@ public class JPSTest : MonoBehaviour
     private float _intervalTime = 0;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            StartSearchPath();
-        }
-
         if (_stackPos.Count > 0)
         {
             Position position = _stackPos.Peek();
@@ -55,6 +50,14 @@ public class JPSTest : MonoBehaviour
                 go.GetComponent<Renderer>().material.color = Color.red;
                 pathGoList.Add(go);
             }
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (GUI.Button(new Rect(10, 10, 200, 50), "Start"))
+        {
+            StartSearchPath();
         }
     }
 
