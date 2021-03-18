@@ -1,10 +1,9 @@
-﻿using AStar;
-using DataStruct.Heap;
+﻿using DataStruct.Heap;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SearchPath
+namespace PathFinding
 {
     public class JPS
     {

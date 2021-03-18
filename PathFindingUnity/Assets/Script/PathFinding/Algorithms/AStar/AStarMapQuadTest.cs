@@ -1,12 +1,11 @@
-﻿using AStar;
-using System.Collections;
+﻿using PathFinding;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AStarMapQuadTest : MonoBehaviour
 {
     private MapQuad _mapQuad;
-    private AStar.AStar aStar;
+    private AStar aStar;
 
     private GameObject personGo;
     private GameObject destination;
@@ -19,7 +18,7 @@ public class AStarMapQuadTest : MonoBehaviour
         _mapQuad.CreateGrid();
         new MapToolsDrawNode(_mapQuad);
 
-        aStar = new AStar.AStar();
+        aStar = new AStar();
         aStar.SetMap(_mapQuad);
 
         CreatePerson();

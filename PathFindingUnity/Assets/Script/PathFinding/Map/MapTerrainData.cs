@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AStar
+namespace PathFinding
 {
     /// <summary>
     /// 地图数据，保存在 csv 中的数据

@@ -1,4 +1,4 @@
-﻿using AStar;
+﻿using PathFinding;
 using UnityEngine;
 
 /// <summary>
