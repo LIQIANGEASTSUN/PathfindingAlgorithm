@@ -20,9 +20,14 @@ namespace AStar
         private const int _neighborCount = 8;
         // 每个节点 8 个邻居的相对二维坐标
         private int[,] neighborArr = new int[,] {
-            {-1,  1}, { 0,  1}, { 1,  1},
-            {-1,  0},           { 1,  0},
-            {-1, -1}, { 0, -1}, { 1, -1}
+            { -1, -1},
+            { -1,  0}, 
+            { -1,  1},
+            {  0,  1}, 
+            {  1,  1},
+            {  1,  0}, 
+            {  1, -1},
+            {  0, -1}
         };
 
         public MapQuad(string mapFile, float minX, float minY, float maxX, float maxY)
@@ -117,13 +122,28 @@ namespace AStar
         {
             int row = node.Row + neighborArr[index, 0];
             int col = node.Col + neighborArr[index, 1];
+            Node temp = GetNode(row, col);
+            if (null != temp)
+            {
+                distance = (float)Math.Sqrt(Math.Abs(neighborArr[index, 0]) + Math.Abs(neighborArr[index, 1]));
+            }
+            return temp;
+        }
+        public Node NodeNeighbor(Node node, int index)
+        {
+            int row = node.Row + neighborArr[index, 0];
+            int col = node.Col + neighborArr[index, 1];
+            Node temp = GetNode(row, col);
+            return temp;
+        }
+        public Node GetNode(int row, int col)
+        {
             if (row < 0 || row >= _row || col < 0 || col >= _col)
             {
                 return null;
             }
 
-            distance = (float)Math.Sqrt(Math.Abs(neighborArr[index, 0]) + Math.Abs(neighborArr[index, 1]));
-            index = RCToIndex(row, col);
+            int index = RCToIndex(row, col);
             return _grid[index];
         }
 

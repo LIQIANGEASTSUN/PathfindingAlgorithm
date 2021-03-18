@@ -17,7 +17,7 @@ public class AStarMapQuadTest : MonoBehaviour
     {
         _mapQuad = new MapQuad("Terrain1", 0, 0, 20, 10);
         _mapQuad.CreateGrid();
-        new AStarMapQuadDrawPath(_mapQuad);
+        new MapToolsDrawNode(_mapQuad);
 
         aStar = new AStar.AStar();
         aStar.SetMap(_mapQuad);
@@ -95,72 +95,5 @@ public class AStarMapQuadTest : MonoBehaviour
         destination.name = "Destination";
         destination.transform.position = new Vector3(2.5f, 0.3f, 2.5f);
         destination.GetComponent<Renderer>().material.color = Color.black;
-    }
-}
-
-
-public class AStarMapQuadDrawPath
-{
-    public AStarMapQuadDrawPath(MapQuad mapQuad)
-    {
-        CreateNode(mapQuad);
-    }
-
-    public void CreateNode(MapQuad mapQuad)
-    {
-        GameObject parent = new GameObject("NodeParent");
-        parent.transform.position = Vector3.zero;
-        Node[] nodeArr = mapQuad.Grid();
-        for (int i = 0; i < nodeArr.Length; ++i)
-        {
-            Node node = nodeArr[i];
-            if (node.NodeType == NodeType.Null)
-            {
-                continue;
-            }
-            Position pos = mapQuad.NodeToPosition(node);
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            go.name = string.Format("{0}_{1}", node.Row, node.Col);
-            go.transform.position = new Vector3(pos.X, 0, pos.Y);
-            go.transform.localScale = new Vector3(mapQuad.NodeWidth(), 1, mapQuad.NodeLength()) * 0.9f;
-            go.transform.SetParent(parent.transform);
-
-            go.GetComponent<Renderer>().material.color = NodeColor(node.NodeType);
-        }
-    }
-
-    private Color NodeColor(NodeType nodeType)
-    {
-        if (nodeType == NodeType.Null)
-        {
-            return Color.black;
-        }
-
-        if (nodeType == NodeType.Smooth)
-        {
-            return new Color32(230, 230, 230, 255);
-        }
-
-        if (nodeType == NodeType.Mud)
-        {
-            return new Color32(139, 123, 115, 255);
-        }
-
-        if (nodeType == NodeType.Grass)
-        {
-            return new Color32(169, 208, 142, 255);
-        }
-
-        if (nodeType == NodeType.Desert)
-        {
-            return new Color32(255, 230, 153, 255);
-        }
-
-        if (nodeType == NodeType.Obstacle)
-        {
-            return new Color32(198, 89, 17, 255);
-        }
-
-        return Color.white;
     }
 }

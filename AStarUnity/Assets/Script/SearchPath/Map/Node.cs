@@ -27,6 +27,20 @@ namespace AStar
         {
             get { return _y; }
         }
+        public static Position operator- (Position left, Position right)
+        {
+            Position p = new Position(left.X - right.X, left.Y - right.Y);
+            return p;
+        }
+        public static Position operator+ (Position left, Position right)
+        {
+            Position p = new Position(left.X + right.X, left.Y + right.Y);
+            return p;
+        }
+        public static float Dot(Position left, Position right)
+        {
+            return left.X * right.X + left.Y * right.Y;
+        }
     }
 
     public enum NodeType
@@ -80,6 +94,7 @@ namespace AStar
         private float _cost;
         private NodeType _nodeType;
         private NodeState _nodeState;
+        private List<Position> _forceNeighbourList = new List<Position>();
 
         public Node(int row, int col, int neighborCount)
         {
@@ -150,8 +165,13 @@ namespace AStar
             H = 0;
             G = 0;
             NodeState = NodeState.Null;
+            ForceNeighbourList.Clear();
         }
 
+        public List<Position> ForceNeighbourList
+        {
+            get { return _forceNeighbourList; }
+        }
         public int CompareTo(Node node)
         {
             return F.CompareTo(node.F);
