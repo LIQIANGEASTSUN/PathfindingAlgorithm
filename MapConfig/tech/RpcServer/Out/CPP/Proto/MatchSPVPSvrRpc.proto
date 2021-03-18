@@ -1,0 +1,10 @@
+import "PublicStruct.proto";
+
+//报告状态通知
+message  MatchSPVPRpcBattleNumNotify
+{
+	optional string IP = 1;	//IP
+	optional sint32 Port = 2[default=-1];	//端口
+	optional sint32 SceneNum = 3[default=0];	//场景人数
+}
+

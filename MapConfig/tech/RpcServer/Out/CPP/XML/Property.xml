@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<Root Module="Property" CName="用户属性" MsgNumStart="13" Comment="">
+    <Operate Name="AddExp" CName="增加经验" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="13" DataStruct="RpcAddExpAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="14" DataStruct="RpcAddExpReply" Comment="" />
+    </Operate>
+    <Struct Name="RpcAddExpAsk" CName="增加经验请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="sint64" FieldId="1" Name="Uid" CName="uid" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="Exp" CName="经验" DefaultValue="0" Comment="" />
+    </Struct>
+    <Struct Name="RpcAddExpReply" CName="增加经验回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+    </Struct>
+    <CliOperate Name="Sync" CName="同步" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="13" DataStruct="RpcSyncAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="14" DataStruct="RpcSyncReply" Comment="" />
+    </CliOperate>
+    <CliStruct Name="RpcSyncAsk" CName="同步请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="0" />
+    <CliStruct Name="RpcSyncReply" CName="同步回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+    </CliStruct>
+    <Table Name="User" CName="用户表" Comment="">
+        <Field Name="uid" Type="bigint" Len="0" Default="0" Comment="" CNName="id" NotNull="True" UniqueKey="False" CreateIndex="False" PrimaryKey="True" SubKey="False" GTZero="True" />
+        <Field Name="name" Type="varchar" Len="64" Default="" Comment="" CNName="用户名" NotNull="True" UniqueKey="True" CreateIndex="False" PrimaryKey="False" SubKey="False" GTZero="False" />
+        <Field Name="mtime" Type="int" Len="0" Default="0" Comment="" CNName="修改时间" NotNull="True" UniqueKey="False" CreateIndex="True" PrimaryKey="False" SubKey="False" GTZero="False" />
+        <Field Name="pwd" Type="varchar" Len="32" Default="" Comment="" CNName="密码" NotNull="False" UniqueKey="False" CreateIndex="False" PrimaryKey="False" SubKey="False" GTZero="False" />
+    </Table>
+</Root>

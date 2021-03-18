@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Root Module="Log" CName="日志服务" MsgNumStart="24" Comment="">
+    <Operate Name="Save" CName="保存日志" Comment="">
+        <OP_NOTIFY Name="Notify" CName="通知" MsgID="24" DataStruct="RpcSaveNotify" Comment="" />
+    </Operate>
+    <Struct Name="RpcSaveNotify" CName="保存日志通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="3">
+        <Field PreDefine="optional" FieldType="string" FieldId="1" Name="Content" CName="日志内容" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="2" Name="LogId" CName="日志Id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="LogSeq" CName="日志顺序" DefaultValue="-1" Comment="" />
+    </Struct>
+</Root>

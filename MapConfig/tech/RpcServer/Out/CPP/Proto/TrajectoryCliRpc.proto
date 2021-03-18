@@ -1,0 +1,117 @@
+import "PublicStruct.proto";
+
+message  TrajectoryTrajectory
+{
+	optional sint32 Id = 1[default=-1];
+	optional sint32 TrajectoryType = 26[default=1];
+	optional sint32 TrackType = 22[default=0];
+	optional sint32 RayCount = 3[default=-1];
+	optional sint32 CircleCount = 5[default=-1];
+	repeated sint32 CircleBulletCountList = 6;
+	repeated float CircleAngleList = 7;
+	repeated float CircleNookList = 21;
+	optional float ForwardDistance = 8[default=-1];
+	optional float Random = 9[default=-1];
+	optional float HorizontalOffsetAngle = 10[default=-1];
+	optional bool SpaceWorld = 23[default=false];
+	optional float VerticalOffsetAngle = 11[default=-1];
+	optional float ScatteringRadius = 25[default=0];
+	optional float Expand = 14[default=1];
+	optional bool ScatteringSync = 24[default=true];
+	repeated float AreaHorizontalAngleList = 15;
+	repeated float AreaVerticalAngleList = 16;
+	repeated float AreaOddsList = 17;
+	repeated TrajectoryBulletGroup BulletGroupList = 18;
+	repeated TrajectoryBullet BulletList = 19;
+	optional sint32 ParentBulletId = 20[default=-1];
+}
+
+message  TrajectoryBulletGroup
+{
+	optional sint32 GroupId = 1[default=-1];
+	optional sint32 BulletShotType = 2[default=0];
+	optional sint32 ShotTimeProgression = 3[default=0];
+	optional float ShotTimeProgressionValue = 4[default=-1];
+	optional sint32 VelocityCorrection = 5[default=0];
+	optional float VelocityCorrectionValue = 6[default=-1];
+	optional sint32 BulletCount = 7[default=-1];
+}
+
+message  TrajectoryBullet
+{
+	optional sint32 SortIndex = 56[default=-1];
+	optional sint32 BulletId = 1[default=-1];
+	optional sint32 GroupId = 2[default=-1];
+	optional sint32 TrackType = 64[default=-1];
+	optional sint32 ShotTime = 51[default=-1];
+	optional float RandomRadius = 10[default=-1];
+	optional string BulletModelName = 11;
+	optional float BulletScaleMin = 71[default=1];
+	optional float BulletScaleMax = 72[default=1];
+	optional bool VelocityRandom = 12[default=false];
+	optional float VelocityMin = 13[default=-1];
+	optional float VelocityMax = 14[default=-1];
+	optional float Mass = 15[default=-1];
+	optional sint32 LineMoveTime = 53[default=-1];
+	optional float LineCoefficient1 = 54[default=-1];
+	optional float LineCoefficient2 = 55[default=-1];
+	optional float VelocityCoefficient = 16[default=-1];
+	optional sint32 BulletType = 17[default=0];
+	optional sint32 CollisionSprite = 73[default=0];
+	optional sint32 CollisionScene = 75[default=0];
+	optional float RayDamageFirst = 20[default=-1];
+	optional sint32 RayTimeCycle = 21[default=-1];
+	optional float RayDamageRadius = 67[default=-1];
+	optional sint32 CallNpcId = 22[default=-1];
+	optional sint32 LifeTime = 37[default=-1];
+	optional bool TakeDamage = 39[default=false];
+	optional sint32 BulletDamageRangeType = 40[default=0];
+	optional float BulletDamageRangeRadius = 41[default=-1];
+	optional float BulletDamageAngle = 42[default=-1];
+	optional float VerticalLineBegin = 57[default=-1];
+	optional float VerticalLineEnd = 58[default=-1];
+	optional sint32 SprayGroundShit = 81[default=-1];
+	optional float SprayGroundScaleMin = 44[default=1];
+	optional float SprayGroundScaleMax = 45[default=1];
+	optional sint32 SprayWallShit = 82[default=-1];
+	optional float SprayWallScaleMin = 47[default=1];
+	optional float SprayWallScaleMax = 48[default=1];
+	optional sint32 CreateChildTime = 68[default=-1];
+	repeated TrajectoryBulletChild ChildArr = 52;
+	optional bool ModelRotate = 59[default=false];
+	optional float RotateX = 60[default=0];
+	optional float RotateY = 61[default=0];
+	optional float RotateZ = 62[default=0];
+	optional float RotateSpeed = 63[default=0];
+	optional bool Clockwise = 83[default=false];
+	optional bool RotateMoveForward = 66[default=false];
+	optional float HAngle = 69[default=0];
+	optional float VAngle = 70[default=0];
+	optional bool GroundBounce = 76[default=false];
+	optional bool WallBounce = 77[default=false];
+	optional float DampBounce = 78[default=-1];
+	optional sint32 BounceTimes = 79[default=-1];
+	optional float BounceVelocity = 80[default=-1];
+}
+
+message  TrajectoryBulletTrajectory
+{
+	optional sint32 TimeLength = 2[default=-1];
+	repeated TrajectoryTrajectory TrajectoryList = 1;
+	optional sint32 Id = 4[default=-1];
+}
+
+message  TrajectoryRpcSyncNotify
+{
+}
+
+message  TrajectoryBulletChild
+{
+	optional sint32 Id = 1[default=-1];
+	optional sint32 ShotTimeType = 2[default=0];
+	optional bool IsFirst = 3[default=false];
+	optional sint32 TimeMinInterval = 6[default=-1];
+	optional sint32 TimeMaxInterval = 5[default=-1];
+	optional sint32 ChildMaxCount = 8[default=-1];
+}
+

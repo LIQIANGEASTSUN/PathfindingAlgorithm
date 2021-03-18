@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<Root Module="Auth" CName="认证服务" MsgNumStart="12" Comment="">
+    <Operate Name="Offline" CName="用户下线" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="12" DataStruct="RpcOfflineAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="13" DataStruct="RpcOfflineReply" Comment="" />
+    </Operate>
+    <Struct Name="RpcOfflineAsk" CName="用户下线请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="sint64" FieldId="1" Name="Uid" CName="uid" DefaultValue="-1" Comment="" />
+    </Struct>
+    <Struct Name="RpcOfflineReply" CName="用户下线回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+    </Struct>
+    <CliOperate Name="Auth" CName="用户认证" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="12" DataStruct="RpcAuthAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="13" DataStruct="RpcAuthReply" Comment="" />
+    </CliOperate>
+    <CliOperate Name="Kick" CName="踢人" Comment="">
+        <OP_SERVER_NOTIFY Name="Notify" CName="服务器通知" MsgID="14" DataStruct="RpcKickNotify" Comment="" />
+    </CliOperate>
+    <CliStruct Name="RpcAuthAsk" CName="用户认证请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="3">
+        <Field PreDefine="optional" FieldType="string" FieldId="1" Name="UserName" CName="用户名" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="2" Name="PassWord" CName="密码" DefaultValue="" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcAuthReply" CName="用户认证回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="14">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;1200 成功&#xD;&#xA;1201 服务器错误&#xD;&#xA;1202 客户端参数错误&#xD;&#xA;1203 配置错误&#xD;&#xA;1204 用户名密码长度不合法&#xD;&#xA;1205 密码不正确&#xD;&#xA;1206 包括了非法字符&#xD;&#xA;&#xD;&#xA;" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="14" Name="UID" CName="信息" DefaultValue="0" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcKickNotify" CName="踢人服务器通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="0" />
+    <Table Name="Online" CName="在线表" Comment="">
+        <Field Name="uid" Type="bigint" Len="0" Default="0" Comment="" CNName="用户ID" NotNull="True" UniqueKey="False" CreateIndex="False" PrimaryKey="True" SubKey="False" GTZero="False" />
+        <Field Name="name" Type="varchar" Len="64" Default="" Comment="" CNName="用户名" NotNull="True" UniqueKey="False" CreateIndex="False" PrimaryKey="False" SubKey="False" GTZero="False" />
+        <Field Name="nodeId" Type="int" Len="0" Default="0" Comment="" CNName="nodeId" NotNull="False" UniqueKey="False" CreateIndex="False" PrimaryKey="False" SubKey="False" GTZero="False" />
+        <Field Name="gateName" Type="varchar" Len="32" Default="" Comment="" CNName="GATE名字" NotNull="False" UniqueKey="False" CreateIndex="False" PrimaryKey="False" SubKey="False" GTZero="False" />
+    </Table>
+</Root>

@@ -1,0 +1,22 @@
+import "PublicStruct.proto";
+
+message  HeroRpcSyncAsk
+{
+}
+
+message  HeroRpcSyncReply
+{
+	optional sint32 Result = 1[default=-9999];
+}
+
+message  HeroRpcActiveAsk
+{
+	optional sint32 HeroID = 1[default=-1];
+}
+
+message  HeroRpcActiveReply
+{
+	optional sint32 Result = 1[default=-9999];
+	optional sint32 HeroID = 2[default=-1];
+}
+

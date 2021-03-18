@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<Root Module="Map" CName="场景编辑器导出数据" MsgNumStart="31" Comment="">
+    <CliStruct Name="SceneData" CName="一个场景的数据" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="26">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="MapId" CName="场景id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="2" Name="SceneName" CName="场景名称" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="20" Name="SceneFileName" CName="场景文件名" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="19" Name="ClientSceneName" CName="客户端场景名" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="3" Name="MapSimplify" CName="简化地图资源" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="4" Name="MapSimplifyRotate1" CName="简图阵容A旋转度数" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="5" Name="MapSimplifyRotate2" CName="简图阵容B旋转度数" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="6" Name="MapPosX" CName="简图位置X偏移" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="7" Name="MapPosY" CName="简图位置Y偏移" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="8" Name="MapPivotX" CName="简图中心点X偏移" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="9" Name="MapPivotY" CName="简图中心点Y偏移" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="10" Name="UIWorldRatio" CName="UI(像素)与世界(米)长度比" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="11" Name="MapDetailed" CName="详图地图资源" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="12" Name="MapDetailedRotate1" CName="简图阵容A旋转度数" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="13" Name="MapDetailedRotate2" CName="." DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="14" Name="ServerUIRadio" CName="服务器UV比" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="PvpData" FieldId="15" Name="Pvp" CName="玩法" Comment="" />
+        <Field PreDefine="repeated" FieldType="SprayData" FieldId="16" Name="Sprays" CName="喷洒数据" Comment="" />
+        <Field PreDefine="repeated" FieldType="TeamData" FieldId="17" Name="Teams" CName="组队数据" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="18" Name="LowModel" CName="low模数据" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="21" Name="AlphaSpeed" CName="敌方喷涂视觉效果蔓延速度" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="22" Name="TransferRadius" CName="传送判定半径" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="23" Name="MapEffectAura" CName="地图装置光环特效" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="24" Name="MapEffecttransfer" CName="地图传送特效" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="25" Name="MapEffectArrive" CName="地图抵达特效" DefaultValue="-1" Comment="" />
+        <Field PreDefine="repeated" FieldType="PositionGraph" FieldId="26" Name="PathGraphs" CName="路径图" Comment="" />
+    </CliStruct>
+    <CliStruct Name="BasePlaymodeData" CName="玩法数据" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="13">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="5" Name="Type" CName="玩法类型" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="1" Name="Desc1" CName="地图名第一行" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="2" Name="Desc2" CName="地图名第二行" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="3" Name="ModeName" CName="玩法名称" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="4" Name="Uibg" CName="底图资源" DefaultValue="" Comment="" />
+        <Field PreDefine="repeated" FieldType="CameraData" FieldId="6" Name="MainCameras" CName="哪些主摄像机" Comment="" />
+        <Field PreDefine="repeated" FieldType="CameraData" FieldId="7" Name="SlaveCameras" CName="那些从摄像机" Comment="" />
+        <Field PreDefine="repeated" FieldType="LiftingConfig" FieldId="8" Name="Liftings" CName="升降台配置" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="9" Name="CharacterAnim" CName="角色开场动画" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="10" Name="ReadyFile" CName="ready字样文件" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="11" Name="ReadyTime" CName="开场动画ready开始时间" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="12" Name="ControlTime" CName="人物可以自行操作的时间" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="13" Name="ChangePriTime" CName="开场动画切个人摄像机时间" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="TeamData" CName="组队数据" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="7">
+        <Field PreDefine="optional" FieldType="string" FieldId="1" Name="Guard" CName="保护罩" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="2" Name="Pedestal" CName="底座" DefaultValue="" Comment="" />
+        <Field PreDefine="repeated" FieldType="PRS" FieldId="3" Name="SpawnPoints" CName="出生点" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="4" Name="Lifting" CName="升降台" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="5" Name="Id" CName="组队Id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="Color4PB" FieldId="6" Name="Color" CName="颜色" Comment="" />
+        <Field PreDefine="optional" FieldType="Vector3PB" FieldId="7" Name="PedestalPosition" CName="底座位置" Comment="" />
+    </CliStruct>
+    <CliStruct Name="SprayData" CName="喷洒数据" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="4">
+        <Field PreDefine="optional" FieldType="string" FieldId="1" Name="Name" CName="GameObject name" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="Vector3PB" FieldId="2" Name="Position" CName="位置" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="Dpi" CName="Dpi" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="4" Name="Coefficient" CName="coefficient" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="PvpData" CName="Pvp玩法结构" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="BasePlaymodeData" FieldId="1" Name="BaseData" CName="各种玩法共用数据" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="2" Name="AddHere" CName="在这里添加配置" DefaultValue="" Comment="" />
+    </CliStruct>
+    <CliStruct Name="PRS" CName="Transform信息" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="3">
+        <Field PreDefine="optional" FieldType="Vector3PB" FieldId="1" Name="Position" CName="位置" Comment="" />
+        <Field PreDefine="optional" FieldType="Vector3PB" FieldId="2" Name="EularRotation" CName="旋转欧拉角" Comment="" />
+        <Field PreDefine="optional" FieldType="Vector3PB" FieldId="3" Name="Scale" CName="缩放" Comment="" />
+    </CliStruct>
+    <CliStruct Name="CameraData" CName="摄像机轨迹配置" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="3">
+        <Field PreDefine="optional" FieldType="string" FieldId="1" Name="Path" CName="场景中摄像机的路径" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="2" Name="StartTime" CName="开始时间" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="3" Name="EndTime" CName="结束时间" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="LiftingConfig" CName="升降台的配置信息" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="float" FieldId="1" Name="StartTime" CName="开始时间" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="2" Name="Speed" CName="上升速度" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="PositionGraph" CName="点图" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="3">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Id" CName="id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="repeated" FieldType="Vector3PB" FieldId="2" Name="Vertices" CName="顶点" Comment="" />
+        <Field PreDefine="repeated" FieldType="Vector2IntPB" FieldId="3" Name="Edges" CName="边" Comment="" />
+    </CliStruct>
+</Root>

@@ -1,0 +1,22 @@
+import "PublicStruct.proto";
+
+//检测是不是有这个英雄请求
+message  HeroRpcCheckHeroIDAsk
+{
+	optional sint32 HeroID = 1[default=-1];	//英雄id
+	optional sint64 Uid = 2[default=-1];	//uid
+}
+
+//检测是不是有这个英雄回应
+message  HeroRpcCheckHeroIDReply
+{
+	/*
+	返回结果
+	-9999 模块未启动
+	-9998 请求字段值范围出错
+	*/
+	optional sint32 Result = 1[default=-9999];
+	optional sint32 HeroID = 2[default=-1];	//英雄id
+	optional sint64 Uid = 3[default=-1];	//uid
+}
+

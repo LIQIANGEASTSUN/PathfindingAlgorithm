@@ -1,0 +1,85 @@
+import "PublicStruct.proto";
+
+//获取表信息请求
+message  MysqlShardingRpcGetTableInfoAsk
+{
+	/*
+	表名
+	如果表名为空，取全部表信息
+	*/
+	optional string Name = 1;
+}
+
+//获取表信息回应
+message  MysqlShardingRpcGetTableInfoReply
+{
+	/*
+	返回结果
+	-9999 模块未启动
+	-9998 请求字段值范围出错
+	*/
+	optional sint32 Result = 1[default=-9999];
+	repeated MysqlShardingTableInfo TableArr = 2;	//表信息数组
+}
+
+//执行SQL语句请求
+message  MysqlShardingRpcExecuteAsk
+{
+	optional string Sql = 1;	//SQL语句
+}
+
+//执行SQL语句回应
+message  MysqlShardingRpcExecuteReply
+{
+	/*
+	返回结果
+	-9999 模块未启动
+	-9998 请求字段值范围出错
+	*/
+	optional sint32 Result = 1[default=-9999];
+	repeated string Fields = 3;	//字段名
+	repeated MysqlShardingRecordLine Records = 4;	//数据行列表
+	optional string ErrorString = 5;	//出错信息
+	optional sint64 InsertId = 6[default=0];	//插入ID
+	optional sint32 NrAffects = 7[default=0];	//多少记录被操作
+}
+
+//执行事务请求
+message  MysqlShardingRpcTransactionAsk
+{
+	repeated string SqlArr = 1;	//SQL语句
+}
+
+//执行事务回应
+message  MysqlShardingRpcTransactionReply
+{
+	/*
+	返回结果
+	-9999 模块未启动
+	-9998 请求字段值范围出错
+	*/
+	optional sint32 Result = 1[default=-9999];
+	repeated string Fields = 3;	//字段名
+	repeated MysqlShardingRecordLine Records = 4;	//数据行列表
+	optional string ErrorString = 5;	//出错信息
+	optional sint64 InsertId = 6[default=0];	//插入ID
+	optional sint32 NrAffects = 7[default=0];	//多少记录被操作
+}
+
+//数据行
+message  MysqlShardingRecordLine
+{
+	repeated string Values = 1;	//字段&值
+}
+
+//表信息
+message  MysqlShardingTableInfo
+{
+	optional string Name = 1;	//表名
+	/*
+	分区字段
+	如果不是分区表，此字段为空
+	*/
+	optional string PartField = 2;
+}
+

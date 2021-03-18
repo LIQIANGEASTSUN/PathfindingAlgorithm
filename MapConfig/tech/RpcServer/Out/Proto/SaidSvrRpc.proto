@@ -1,0 +1,16 @@
+import "PublicStruct.proto";
+
+//创建读取房间通知
+message  SaidRpcCreateLoadRoomNotify
+{
+	optional sint64 ID = 1[default=-1];	//ID
+	repeated sint64 Uid = 2;	//uid
+}
+
+//消息转发通知
+message  SaidRpcMessageForwardNotify
+{
+	optional string Value = 1;	//内容
+	optional sint64 ID = 2[default=-1];	//ID
+}
+

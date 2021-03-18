@@ -1,0 +1,101 @@
+import "PublicStruct.proto";
+
+message  MapSceneData
+{
+	optional sint32 MapId = 1[default=-1];
+	optional string SceneName = 2;
+	optional string SceneFileName = 20;
+	optional string ClientSceneName = 19;
+	optional string MapSimplify = 3;
+	optional sint32 MapSimplifyRotate1 = 4[default=-1];
+	optional sint32 MapSimplifyRotate2 = 5[default=-1];
+	optional float MapPosX = 6[default=-1];
+	optional float MapPosY = 7[default=-1];
+	optional float MapPivotX = 8[default=-1];
+	optional float MapPivotY = 9[default=-1];
+	optional float UIWorldRatio = 10[default=-1];
+	optional string MapDetailed = 11;
+	optional sint32 MapDetailedRotate1 = 12[default=-1];
+	optional sint32 MapDetailedRotate2 = 13[default=-1];
+	optional float ServerUIRadio = 14[default=-1];
+	optional MapPvpData Pvp = 15;
+	repeated MapSprayData Sprays = 16;
+	repeated MapTeamData Teams = 17;
+	optional string LowModel = 18;
+	optional float AlphaSpeed = 21[default=-1];
+	optional float TransferRadius = 22[default=-1];
+	optional string MapEffectAura = 23;
+	optional string MapEffecttransfer = 24;
+	optional string MapEffectArrive = 25;
+	repeated MapPositionGraph PathGraphs = 26;
+}
+
+message  MapBasePlaymodeData
+{
+	optional sint32 Type = 5[default=-1];
+	optional string Desc1 = 1;
+	optional string Desc2 = 2;
+	optional string ModeName = 3;
+	optional string Uibg = 4;
+	repeated MapCameraData MainCameras = 6;
+	repeated MapCameraData SlaveCameras = 7;
+	repeated MapLiftingConfig Liftings = 8;
+	optional string CharacterAnim = 9;
+	optional string ReadyFile = 10;
+	optional float ReadyTime = 11[default=-1];
+	optional float ControlTime = 12[default=-1];
+	optional float ChangePriTime = 13[default=-1];
+}
+
+message  MapTeamData
+{
+	optional string Guard = 1;
+	optional string Pedestal = 2;
+	repeated MapPRS SpawnPoints = 3;
+	optional string Lifting = 4;
+	optional sint32 Id = 5[default=-1];
+	optional Color4PB Color = 6;
+	optional Vector3PB PedestalPosition = 7;
+}
+
+message  MapSprayData
+{
+	optional string Name = 1;
+	optional Vector3PB Position = 2;
+	optional sint32 Dpi = 3[default=-1];
+	optional float Coefficient = 4[default=-1];
+}
+
+message  MapPvpData
+{
+	optional MapBasePlaymodeData BaseData = 1;
+	optional string AddHere = 2;
+}
+
+message  MapPRS
+{
+	optional Vector3PB Position = 1;
+	optional Vector3PB EularRotation = 2;
+	optional Vector3PB Scale = 3;
+}
+
+message  MapCameraData
+{
+	optional string Path = 1;
+	optional float StartTime = 2[default=-1];
+	optional float EndTime = 3[default=-1];
+}
+
+message  MapLiftingConfig
+{
+	optional float StartTime = 1[default=-1];
+	optional float Speed = 2[default=-1];
+}
+
+message  MapPositionGraph
+{
+	optional sint32 Id = 1[default=-1];
+	repeated Vector3PB Vertices = 2;
+	repeated Vector2IntPB Edges = 3;
+}
+

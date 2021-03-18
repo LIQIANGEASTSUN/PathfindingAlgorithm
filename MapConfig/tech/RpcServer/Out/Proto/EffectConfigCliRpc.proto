@@ -1,0 +1,16 @@
+import "PublicStruct.proto";
+
+message  EffectConfigEffectGroup
+{
+	optional string EffectName = 2;
+	repeated EffectConfigEffect EffectList = 1;
+}
+
+message  EffectConfigEffect
+{
+	optional string EffectName = 1;
+	optional sint32 EffectType = 2[default=0];
+	optional sint32 EffectParameter = 3[default=0];
+	repeated string ParamerList = 4;
+}
+

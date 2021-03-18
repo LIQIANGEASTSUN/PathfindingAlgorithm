@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<Root Module="BattleSPVP" CName="战斗同步" MsgNumStart="23" Comment="">
+    <Operate Name="CreateRoomSPVP" CName="创建房间" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="23" DataStruct="RpcCreateRoomSPVPAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="24" DataStruct="RpcCreateRoomSPVPReply" Comment="" />
+    </Operate>
+    <Operate Name="ConnectAIService" CName="连接AI" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="25" DataStruct="RpcConnectAIServiceAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="26" DataStruct="RpcConnectAIServiceReply" Comment="" />
+    </Operate>
+    <Operate Name="AINoticeOper" CName="AI通知操作" Comment="">
+        <OP_NOTIFY Name="Notify" CName="通知" MsgID="27" DataStruct="RpcAINoticeOperNotify" Comment="" />
+    </Operate>
+    <Struct Name="RpcCreateRoomSPVPAsk" CName="创建房间请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="5">
+        <Field PreDefine="repeated" FieldType="UserP" FieldId="1" Name="Members" CName="成员列表" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="3" Name="RoomID" CName="房间id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="4" Name="SceneConfId" CName="场景配置ID" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="5" Name="SceneID" CName="场景id" DefaultValue="1" Comment="" />
+    </Struct>
+    <Struct Name="RpcCreateRoomSPVPReply" CName="创建房间回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+    </Struct>
+    <Struct Name="UserP" CName="创建信息" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="5">
+        <Field PreDefine="optional" FieldType="sint64" FieldId="1" Name="Uid" CName="uid" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="HreoID" CName="英雄id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="IsMonster" CName="是不是机器人" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="4" Name="Key" CName="KEY" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="5" Name="TeamId" CName="队伍ID" DefaultValue="0" Comment="" />
+    </Struct>
+    <Struct Name="RpcConnectAIServiceAsk" CName="连接AI请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="4">
+        <Field PreDefine="optional" FieldType="sint64" FieldId="1" Name="RoomID" CName="房间id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="SceneConfId" CName="场景配置ID" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="SceneID" CName="场景id" DefaultValue="1" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="4" Name="NodeName" CName="节点" DefaultValue="" Comment="" />
+    </Struct>
+    <Struct Name="RpcConnectAIServiceReply" CName="连接AI回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+    </Struct>
+    <Struct Name="RpcAINoticeOperNotify" CName="AI通知操作通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="7">
+        <Field PreDefine="optional" FieldType="sint64" FieldId="1" Name="Uid" CName="uid" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="2" Name="Sceneid" CName="sceneid" DefaultValue="-1" Comment="" />
+        <Field PreDefine="repeated" FieldType="bytes" FieldId="3" Name="Msginfo" CName="msginfo" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="4" Name="Type" CName="type" DefaultValue="-1" Comment="" />
+    </Struct>
+</Root>

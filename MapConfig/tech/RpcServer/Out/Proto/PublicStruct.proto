@@ -1,0 +1,49 @@
+message  Vector3PB
+{
+	optional float X = 1[default=0];
+	optional float Y = 2[default=0];
+	optional float Z = 3[default=0];
+
+}
+
+message  SmallUser
+{
+	optional sint64 Uid = 1[default=0];
+	optional string NickName = 2;
+	optional sint32 Head = 3[default=1];
+	optional sint32 Rank = 4[default=0];
+	optional sint32 Status = 5[default=0];
+	optional sint32 Channel = 12[default=-1];
+
+}
+
+message  User
+{
+	optional sint64 Uid = 1[default=0];
+	optional sint32 Status = 2[default=0];
+	optional sint32 Lv = 3[default=1];
+	optional sint32 Exp = 4[default=0];
+	optional string NickName = 5;
+	optional sint32 Head = 6[default=1];
+	optional sint32 Gold = 7[default=0];
+	optional sint32 Diamond = 8[default=0];
+	optional sint32 Channel = 9[default=0];
+
+}
+
+message  Color4PB
+{
+	optional sint32 R = 1[default=-1];
+	optional sint32 G = 2[default=-1];
+	optional sint32 B = 3[default=-1];
+	optional sint32 A = 4[default=-1];
+
+}
+
+message  Vector2IntPB
+{
+	optional sint32 X = 1[default=-1];
+	optional sint32 Y = 2[default=-1];
+
+}
+

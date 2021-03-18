@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<Root Module="FResult" CName="战斗结果演算" MsgNumStart="29" Comment="">
+    <Operate Name="CalculationFResult" CName="计算战斗结果" Comment="">
+        <OP_NOTIFY Name="Notify" CName="通知" MsgID="29" DataStruct="RpcCalculationFResultNotify" Comment="" />
+    </Operate>
+    <Struct Name="RpcCalculationFResultNotify" CName="计算战斗结果通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="4">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Type" CName="副本类型" DefaultValue="1" Comment="" />
+        <Field PreDefine="optional" FieldType="TeamV" FieldId="2" Name="ATeam" CName="队伍A" Comment="" />
+        <Field PreDefine="optional" FieldType="TeamV" FieldId="3" Name="BTeam" CName="队伍B" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="4" Name="AOrBWin" CName="是不是赢了 0平1A2B" DefaultValue="0" Comment="" />
+    </Struct>
+    <Struct Name="TeamV" CName="队伍信息" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="3">
+        <Field PreDefine="repeated" FieldType="SmallUser" FieldId="1" Name="Role" CName="人物数据" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="Teamid" CName="队伍id" DefaultValue="-1" Comment="" />
+    </Struct>
+</Root>

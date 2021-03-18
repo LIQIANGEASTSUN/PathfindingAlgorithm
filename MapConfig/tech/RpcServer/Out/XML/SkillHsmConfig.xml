@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<Root Module="SkillHsmConfig" CName="技能层次状态机数据" MsgNumStart="30" Comment="">
+    <CliOperate Name="Sync" CName="Sync" Comment="">
+        <OP_NOTIFY Name="Notify" CName="通知" MsgID="30" DataStruct="RpcSyncNotify" Comment="" />
+    </CliOperate>
+    <CliStruct Name="RpcSyncNotify" CName="Sync通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="0" />
+    <CliStruct Name="RectT" CName="RectT" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="4">
+        <Field PreDefine="optional" FieldType="float" FieldId="1" Name="X" CName="X" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="2" Name="Y" CName="Y" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="3" Name="Width" CName="Width" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="4" Name="Height" CName="Height" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="HSMParameter" CName="HSMParameter" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="10">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="ParameterType" CName="参数类型" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="2" Name="ParameterName" CName="参数名" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="9" Name="CNName" CName="中文参数名" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="IntValue" CName="IntValue" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="4" Name="FloatValue" CName="FloatValue" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="bool" FieldId="5" Name="BoolValue" CName="BoolValue" DefaultValue="false" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="6" Name="Compare" CName="Compare" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="10" Name="Index" CName="下表" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="Transition" CName="Transition" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="4">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="TransitionId" CName="TransitionId" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="ToStateId" CName="ToStateId" DefaultValue="-1" Comment="" />
+        <Field PreDefine="repeated" FieldType="HSMParameter" FieldId="3" Name="ParameterList" CName="参数数组" Comment="" />
+        <Field PreDefine="repeated" FieldType="TransitionGroup" FieldId="4" Name="GroupList" CName="条件组" Comment="" />
+    </CliStruct>
+    <CliStruct Name="NodeData" CName="NodeData" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="11">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Id" CName="Id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="NodeType" CName="节点类型" DefaultValue="-1" Comment="" />
+        <Field PreDefine="repeated" FieldType="HSMParameter" FieldId="3" Name="ParameterList" CName="参数数组" Comment="" />
+        <Field PreDefine="repeated" FieldType="Transition" FieldId="4" Name="TransitionList" CName="转换数组" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="5" Name="NodeName" CName="节点名" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="6" Name="Identification" CName="唯一标示ID" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="7" Name="Descript" CName="描述" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="RectT" FieldId="8" Name="Position" CName="节点坐标" Comment="" />
+        <Field PreDefine="repeated" FieldType="sint32" FieldId="10" Name="ChildIdList" CName="子状态ID数组" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="11" Name="ParentId" CName="父节点" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="HSMTreeData" CName="HSMTreeData" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="7">
+        <Field PreDefine="optional" FieldType="string" FieldId="7" Name="FileName" CName="FileName" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="DefaultStateId" CName="默认节点" DefaultValue="-1" Comment="" />
+        <Field PreDefine="repeated" FieldType="NodeData" FieldId="2" Name="NodeList" CName="节点数组" Comment="" />
+        <Field PreDefine="repeated" FieldType="HSMParameter" FieldId="3" Name="ParameterList" CName="参数数组" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="4" Name="Descript" CName="描述" DefaultValue="" Comment="" />
+    </CliStruct>
+    <CliStruct Name="TransitionGroup" CName="转换条件组" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Index" CName="index" DefaultValue="-1" Comment="" />
+        <Field PreDefine="repeated" FieldType="string" FieldId="2" Name="ParameterList" CName="参数名" DefaultValue="" Comment="" />
+    </CliStruct>
+</Root>

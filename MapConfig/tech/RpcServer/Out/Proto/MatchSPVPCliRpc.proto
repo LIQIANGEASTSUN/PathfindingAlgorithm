@@ -1,0 +1,128 @@
+import "PublicStruct.proto";
+
+message  MatchSPVPUserMessage
+{
+	optional sint32 HeroID = 6[default=0];
+	optional SmallUser PeoM = 8;
+	optional sint32 IsSelect = 9[default=0];
+	optional sint32 GroupID = 10[default=0];
+}
+
+message  MatchSPVPRpcStartMatchAsk
+{
+	optional sint32 IsMatch = 1[default=1];
+	optional sint32 SceneID = 2[default=1];
+	optional sint32 ActiveID = 3[default=0];
+	optional sint64 TeamID = 4[default=-1];
+}
+
+message  MatchSPVPRpcStartMatchReply
+{
+	optional sint32 Result = 1[default=-9999];
+	optional sint32 IsMatch = 2[default=1];
+	optional sint32 TimeStart = 3[default=-1];
+	optional sint32 TimeEnd = 4[default=-1];
+	optional sint32 Timer = 5[default=-1];
+	optional sint32 SceneID = 6[default=1];
+	optional sint32 ActiveID = 7[default=0];
+	optional sint64 TeamID = 8[default=-1];
+}
+
+message  MatchSPVPRpcInvitationAsk
+{
+	optional sint64 Uid = 1[default=-1];
+}
+
+message  MatchSPVPRpcInvitationReply
+{
+	optional sint32 Result = 1[default=-9999];
+	optional sint64 Uid = 2[default=-1];
+}
+
+message  MatchSPVPRpcMatchBroadcasNotify
+{
+	optional sint32 Type = 1[default=1];
+	optional sint32 TimeStart = 2[default=-1];
+	optional sint32 TimeEnd = 3[default=-1];
+	optional sint32 Timer = 4[default=-1];
+	repeated MatchSPVPUserMessage UMess = 5;
+}
+
+message  MatchSPVPRpcAgreeInvitationNotify
+{
+	optional sint64 Uid = 1[default=-1];
+	optional sint32 IsAgree = 2[default=0];
+	optional sint32 Type = 3[default=0];
+}
+
+message  MatchSPVPRpcStartGameNotify
+{
+	optional sint64 LoadID = 1[default=-1];
+	repeated MatchSPVPUserMessage UMess = 2;
+	repeated MatchSPVPUserMessage UMessOther = 3;
+	optional string IP = 4;
+	optional sint32 Port = 5[default=-1];
+	optional string Key = 6;
+}
+
+message  MatchSPVPRpcDeleteMatchNotify
+{
+}
+
+message  MatchSPVPRpcStartSelectNotify
+{
+	optional sint32 TimeStart = 1[default=-1];
+	optional sint32 TimeEnd = 2[default=-1];
+	repeated MatchSPVPUserMessage UMess = 3;
+	repeated MatchSPVPUserMessage OtherUMess = 4;
+	optional sint32 Timer = 5[default=-1];
+}
+
+message  MatchSPVPRpcSelectHeroAsk
+{
+	optional sint32 HeroID = 1[default=-1];
+}
+
+message  MatchSPVPRpcSelectHeroReply
+{
+	optional sint32 Result = 1[default=-9999];
+	optional sint32 HeroID = 2[default=-1];
+}
+
+message  MatchSPVPRpcGetStatusAsk
+{
+}
+
+message  MatchSPVPRpcGetStatusReply
+{
+	optional sint32 Result = 1[default=-9999];
+	optional sint32 Type = 2[default=-1];
+	optional sint32 TimeStart = 5[default=-1];
+	optional sint32 TimeEnd = 6[default=-1];
+	optional sint32 Timer = 7[default=-1];
+	repeated MatchSPVPUserMessage UMess = 8;
+	repeated MatchSPVPUserMessage UMessOther = 9;
+	optional string Key = 10;
+}
+
+message  MatchSPVPRpcChangeStatusNotify
+{
+	optional MatchSPVPUserMessage UMess = 1;
+}
+
+message  MatchSPVPRpcShotOffAsk
+{
+	optional sint64 Uid = 1[default=-1];
+}
+
+message  MatchSPVPRpcShotOffReply
+{
+	optional sint32 Result = 1[default=-9999];
+	optional sint64 Uid = 2[default=-1];
+}
+
+message  MatchSPVPRpcSelectSceneNotify
+{
+	optional sint32 SceneID = 1[default=1];
+}
+

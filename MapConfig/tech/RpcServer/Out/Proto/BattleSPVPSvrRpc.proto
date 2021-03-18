@@ -1,0 +1,61 @@
+import "PublicStruct.proto";
+
+//创建房间请求
+message  BattleSPVPRpcCreateRoomSPVPAsk
+{
+	repeated BattleSPVPUserP Members = 1;	//成员列表
+	optional sint64 RoomID = 3[default=-1];	//房间id
+	optional sint32 SceneConfId = 4[default=0];	//场景配置ID
+	optional sint32 SceneID = 5[default=1];	//场景id
+}
+
+//创建房间回应
+message  BattleSPVPRpcCreateRoomSPVPReply
+{
+	/*
+	返回结果
+	-9999 模块未启动
+	-9998 请求字段值范围出错
+	*/
+	optional sint32 Result = 1[default=-9999];
+}
+
+//创建信息
+message  BattleSPVPUserP
+{
+	optional sint64 Uid = 1[default=-1];	//uid
+	optional sint32 HreoID = 2[default=-1];	//英雄id
+	optional sint32 IsMonster = 3[default=-1];	//是不是机器人
+	optional string Key = 4;	//KEY
+	optional sint32 TeamId = 5[default=0];	//队伍ID
+}
+
+//连接AI请求
+message  BattleSPVPRpcConnectAIServiceAsk
+{
+	optional sint64 RoomID = 1[default=-1];	//房间id
+	optional sint32 SceneConfId = 2[default=0];	//场景配置ID
+	optional sint32 SceneID = 3[default=1];	//场景id
+	optional string NodeName = 4;	//节点
+}
+
+//连接AI回应
+message  BattleSPVPRpcConnectAIServiceReply
+{
+	/*
+	返回结果
+	-9999 模块未启动
+	-9998 请求字段值范围出错
+	*/
+	optional sint32 Result = 1[default=-9999];
+}
+
+//AI通知操作通知
+message  BattleSPVPRpcAINoticeOperNotify
+{
+	optional sint64 Uid = 1[default=-1];	//uid
+	optional sint64 Sceneid = 2[default=-1];	//sceneid
+	repeated bytes Msginfo = 3;	//msginfo
+	optional sint32 Type = 4[default=-1];	//type
+}
+

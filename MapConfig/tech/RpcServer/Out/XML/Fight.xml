@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<Root Module="Fight" CName="Fight" MsgNumStart="19" Comment="">
+    <CliOperate Name="Start" CName="开始" Comment="">
+        <OP_SERVER_NOTIFY Name="Notify" CName="服务器通知" MsgID="19" DataStruct="RpcStartNotify" Comment="" />
+    </CliOperate>
+    <CliOperate Name="SyncUserProp" CName="同步属性" Comment="">
+        <OP_SERVER_NOTIFY Name="Notify" CName="服务器通知" MsgID="20" DataStruct="RpcSyncUserPropNotify" Comment="" />
+    </CliOperate>
+    <CliOperate Name="InsertRoom" CName="进入房间" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="21" DataStruct="RpcInsertRoomAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="22" DataStruct="RpcInsertRoomReply" Comment="" />
+    </CliOperate>
+    <CliOperate Name="HPChange" CName="生命值变化" Comment="">
+        <OP_SERVER_NOTIFY Name="Notify" CName="服务器通知" MsgID="23" DataStruct="RpcHPChangeNotify" Comment="" />
+    </CliOperate>
+    <CliOperate Name="RoveOver" CName="漫游结束" Comment="">
+        <OP_DUPLEX_NOTIFY Name="Notify" CName="双向通知" MsgID="24" DataStruct="RpcRoveOverNotify" Comment="" />
+    </CliOperate>
+    <CliOperate Name="SkillTransfer" CName="传送" Comment="">
+        <OP_DUPLEX_NOTIFY Name="Notify" CName="双向通知" MsgID="25" DataStruct="RpcSkillTransferNotify" Comment="" />
+    </CliOperate>
+    <CliStruct Name="FightUser" CName="战斗用户信息" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="13">
+        <Field PreDefine="optional" FieldType="sint64" FieldId="1" Name="Uid" CName="用户id" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="11" Name="ObjId" CName="实例id" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="Vector3PB" FieldId="2" Name="Pos" CName="世界位置" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="Stat" CName="用户状态" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="bool" FieldId="4" Name="Shake" CName="是否抖动" DefaultValue="false" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="5" Name="VAngle" CName="垂直朝向" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="6" Name="HAngle" CName="水平朝向" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="7" Name="Group" CName="用户所在组" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="8" Name="HeroID" CName="HeroID" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="Vector3PB" FieldId="9" Name="ForwardVec" CName="朝向" Comment="" />
+        <Field PreDefine="optional" FieldType="Vector3PB" FieldId="10" Name="FootVec" CName="朝向" Comment="" />
+        <Field PreDefine="optional" FieldType="UserProp" FieldId="12" Name="Prop" CName="属性" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="13" Name="AvatarID" CName="AvatarID" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcSyncUserInfoNotify" CName="服务器定时同步服务器通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="repeated" FieldType="FightUser" FieldId="1" Name="FightUserInfos" CName="用户信息" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcStartNotify" CName="开始服务器通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="7">
+        <Field PreDefine="repeated" FieldType="FightUser" FieldId="1" Name="FightUserInfos" CName="用户信息" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="Sumtime" CName="游戏时长" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="3" Name="Uid" CName="用户Id" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="4" Name="SceneID" CName="场景id" DefaultValue="1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="5" Name="ObjId" CName="实例ID" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="6" Name="TeamFlagC0" CName="场景id" DefaultValue="1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="7" Name="TeamFlagC1" CName="场景id" DefaultValue="1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcSyncUserPropNotify" CName="同步属性服务器通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="7">
+        <Field PreDefine="repeated" FieldType="UserProp" FieldId="1" Name="UserValue" CName="用户id" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="7" Name="Type" CName="状态0初始1战斗" DefaultValue="0" Comment="" />
+    </CliStruct>
+    <CliStruct Name="UserProp" CName="小数据" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="20">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="ObjId" CName="实例id" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="2" Name="Hp" CName="体力" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="3" Name="Energy" CName="能量" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="float" FieldId="4" Name="Stunt" CName="大招值" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="5" Name="HeroID" CName="英雄id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="6" Name="IsMonster" CName="是不是怪物" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="8" Name="Group" CName="用户所在组" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="9" Name="State" CName="状态0活着1死亡" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="10" Name="ReviveTime" CName="多少秒后复活" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="11" Name="ReviveTimeSys" CName="服务器当前格林时间" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="12" Name="KillPeopleNum" CName="击杀人数" DefaultValue="0" Comment="" />
+        <Field PreDefine="repeated" FieldType="BuffData" FieldId="13" Name="BuffV" CName="buff" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="14" Name="Flag" CName="人物身上标志位变更" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="16" Name="Seed" CName="随机种子" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="19" Name="MainMonster" CName="mianmonster" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="20" Name="AvatarID" CName="AvatarID" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcInsertRoomAsk" CName="进入房间请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="string" FieldId="1" Name="Key" CName="KEY" DefaultValue="" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcInsertRoomReply" CName="进入房间回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+    </CliStruct>
+    <CliStruct Name="BuffData" CName="buff数据" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="9">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="ID" CName="buffid" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="5" Name="Lifttime" CName="倒计时" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="Vector3PB" FieldId="9" Name="Pos" CName="固定位置" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcHPChangeNotify" CName="生命值变化服务器通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="3">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Objid" CName="血量变化的Id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="ObjSrcId" CName="源头" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="ChangeHP" CName="变化多少" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcRoveOverNotify" CName="漫游结束双向通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Timer" CName="时间" DefaultValue="0" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcSkillTransferNotify" CName="传送通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="6">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="ObjId" CName="objID" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="SkillId" CName="SkillId" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="TargetObjId" CName="TargetObjId" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="Vector3PB" FieldId="4" Name="TargetPos" CName="目标位置" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="5" Name="Ret" CName="Ret" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="6" Name="Type" CName="Type" DefaultValue="-1" Comment="" />
+    </CliStruct>
+</Root>

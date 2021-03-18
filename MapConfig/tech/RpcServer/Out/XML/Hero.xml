@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<Root Module="Hero" CName="英雄" MsgNumStart="20" Comment="">
+    <Operate Name="CheckHeroID" CName="检测是不是有这个英雄" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="20" DataStruct="RpcCheckHeroIDAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="21" DataStruct="RpcCheckHeroIDReply" Comment="" />
+    </Operate>
+    <Struct Name="RpcCheckHeroIDAsk" CName="检测是不是有这个英雄请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="HeroID" CName="英雄id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="2" Name="Uid" CName="uid" DefaultValue="-1" Comment="" />
+    </Struct>
+    <Struct Name="RpcCheckHeroIDReply" CName="检测是不是有这个英雄回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="3">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="HeroID" CName="英雄id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="3" Name="Uid" CName="uid" DefaultValue="-1" Comment="" />
+    </Struct>
+    <CliOperate Name="Sync" CName="同步数据" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="20" DataStruct="RpcSyncAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="21" DataStruct="RpcSyncReply" Comment="" />
+    </CliOperate>
+    <CliOperate Name="Active" CName="激活英雄" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="22" DataStruct="RpcActiveAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="23" DataStruct="RpcActiveReply" Comment="" />
+    </CliOperate>
+    <CliStruct Name="RpcSyncAsk" CName="同步数据请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="0" />
+    <CliStruct Name="RpcSyncReply" CName="同步数据回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;2000  成功&#xD;&#xA;2001  系统错误&#xD;&#xA;2002  参数错误&#xD;&#xA;2003  配置错误" />
+    </CliStruct>
+    <CliStruct Name="RpcActiveAsk" CName="激活英雄请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="HeroID" CName="激活的英雄id" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcActiveReply" CName="激活英雄回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;2000  成功&#xD;&#xA;2001  系统错误&#xD;&#xA;2002  参数错误&#xD;&#xA;2003  配置错误&#xD;&#xA;2004  已经激活了&#xD;&#xA;2005  激活错误具体后续再定" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="HeroID" CName="激活的英雄id" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <Table Name="Hero" CName="英雄" Comment="">
+        <Field Name="mtime" Type="int" Len="0" Default="0" Comment="" CNName="修改时间" NotNull="True" UniqueKey="False" CreateIndex="True" PrimaryKey="False" SubKey="False" GTZero="False" />
+        <Field Name="id" Type="bigint" Len="0" Default="0" Comment="" CNName="唯一key" NotNull="True" UniqueKey="False" CreateIndex="False" PrimaryKey="True" SubKey="False" GTZero="False" />
+        <Field Name="activetime" Type="int" Len="0" Default="0" Comment="" CNName="激活时间" NotNull="False" UniqueKey="False" CreateIndex="False" PrimaryKey="False" SubKey="False" GTZero="False" />
+        <Field Name="uid" Type="bigint" Len="0" Default="0" Comment="" CNName="userid" NotNull="True" UniqueKey="False" CreateIndex="True" PrimaryKey="False" SubKey="True" GTZero="False" />
+    </Table>
+</Root>

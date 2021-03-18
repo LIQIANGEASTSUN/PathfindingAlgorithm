@@ -1,0 +1,18 @@
+import "PublicStruct.proto";
+
+//计算战斗结果通知
+message  FResultRpcCalculationFResultNotify
+{
+	optional sint32 Type = 1[default=1];	//副本类型
+	optional FResultTeamV ATeam = 2;	//队伍A
+	optional FResultTeamV BTeam = 3;	//队伍B
+	optional sint32 AOrBWin = 4[default=0];	//是不是赢了 0平1A2B
+}
+
+//队伍信息
+message  FResultTeamV
+{
+	repeated SmallUser Role = 1;	//人物数据
+	optional sint32 Teamid = 2[default=-1];	//队伍id
+}
+

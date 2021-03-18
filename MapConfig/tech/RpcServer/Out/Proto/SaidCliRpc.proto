@@ -1,0 +1,29 @@
+import "PublicStruct.proto";
+
+message  SaidRpcSaidAsk
+{
+	optional SaidSaidData Value = 2;
+}
+
+message  SaidRpcSaidReply
+{
+	optional sint32 Result = 1[default=-9999];
+	optional SaidSaidData Value = 2;
+}
+
+message  SaidRpcSaidBroadcasNotify
+{
+	optional SaidSaidData Value = 1;
+}
+
+message  SaidSaidData
+{
+	optional sint32 Channel  = 1[default=-1];
+	optional string Content = 2;
+	optional SmallUser Who = 3;
+	optional SmallUser To = 4;
+	optional sint32 BigType = 5[default=0];
+	optional sint32 SmallType = 6[default=0];
+	optional sint64 ID = 7[default=-1];
+}
+

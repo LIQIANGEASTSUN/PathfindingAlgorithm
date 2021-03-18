@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<Root Module="EffectConfig" CName="特效配置" MsgNumStart="26" Comment="">
+    <CliStruct Name="EffectGroup" CName="特效组" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="string" FieldId="2" Name="EffectName" CName="特效名" DefaultValue="" Comment="" />
+        <Field PreDefine="repeated" FieldType="Effect" FieldId="1" Name="EffectList" CName="特效数组" Comment="" />
+    </CliStruct>
+    <CliStruct Name="Effect" CName="特效" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="4">
+        <Field PreDefine="optional" FieldType="string" FieldId="1" Name="EffectName" CName="特效名" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="EffectType" CName="特效类型" DefaultValue="0" Comment="0  ParticleSystem&#xD;&#xA;&#xD;&#xA;1  GameObject" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="EffectParameter" CName="参数类型" DefaultValue="0" Comment="0    StartColor&#xD;&#xA;&#xD;&#xA;1    材质球" />
+        <Field PreDefine="repeated" FieldType="string" FieldId="4" Name="ParamerList" CName="参数数组" DefaultValue="" Comment="" />
+    </CliStruct>
+</Root>

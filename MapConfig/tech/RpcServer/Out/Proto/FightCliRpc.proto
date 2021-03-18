@@ -1,0 +1,100 @@
+import "PublicStruct.proto";
+
+message  FightFightUser
+{
+	optional sint64 Uid = 1[default=0];
+	optional sint32 ObjId = 11[default=0];
+	optional Vector3PB Pos = 2;
+	optional sint32 Stat = 3[default=0];
+	optional bool Shake = 4[default=false];
+	optional float VAngle = 5[default=0];
+	optional float HAngle = 6[default=0];
+	optional sint32 Group = 7[default=0];
+	optional sint32 HeroID = 8[default=-1];
+	optional Vector3PB ForwardVec = 9;
+	optional Vector3PB FootVec = 10;
+	optional FightUserProp Prop = 12;
+	optional sint32 AvatarID = 13[default=-1];
+}
+
+message  FightRpcSyncUserInfoNotify
+{
+	repeated FightFightUser FightUserInfos = 1;
+}
+
+message  FightRpcStartNotify
+{
+	repeated FightFightUser FightUserInfos = 1;
+	optional sint32 Sumtime = 2[default=0];
+	optional sint64 Uid = 3[default=0];
+	optional sint32 SceneID = 4[default=1];
+	optional sint32 ObjId = 5[default=-1];
+	optional sint32 TeamFlagC0 = 6[default=1];
+	optional sint32 TeamFlagC1 = 7[default=1];
+}
+
+message  FightRpcSyncUserPropNotify
+{
+	repeated FightUserProp UserValue = 1;
+	optional sint32 Type = 7[default=0];
+}
+
+message  FightUserProp
+{
+	optional sint32 ObjId = 1[default=0];
+	optional float Hp = 2[default=0];
+	optional float Energy = 3[default=0];
+	optional float Stunt = 4[default=0];
+	optional sint32 HeroID = 5[default=-1];
+	optional sint32 IsMonster = 6[default=-1];
+	optional sint32 Group = 8[default=0];
+	optional sint32 State = 9[default=0];
+	optional sint64 ReviveTime = 10[default=0];
+	optional sint64 ReviveTimeSys = 11[default=0];
+	optional sint32 KillPeopleNum = 12[default=0];
+	repeated FightBuffData BuffV = 13;
+	optional sint32 Flag = 14[default=-1];
+	optional sint32 Seed = 16[default=0];
+	optional sint64 MainMonster = 19[default=-1];
+	optional sint32 AvatarID = 20[default=-1];
+}
+
+message  FightRpcInsertRoomAsk
+{
+	optional string Key = 1;
+}
+
+message  FightRpcInsertRoomReply
+{
+	optional sint32 Result = 1[default=-9999];
+}
+
+message  FightBuffData
+{
+	optional sint32 ID = 2[default=-1];
+	optional sint32 Lifttime = 5[default=0];
+	optional Vector3PB Pos = 9;
+}
+
+message  FightRpcHPChangeNotify
+{
+	optional sint32 Objid = 1[default=-1];
+	optional sint32 ObjSrcId = 2[default=-1];
+	optional sint32 ChangeHP = 3[default=-1];
+}
+
+message  FightRpcRoveOverNotify
+{
+	optional sint32 Timer = 1[default=0];
+}
+
+message  FightRpcSkillTransferNotify
+{
+	optional sint32 ObjId = 1[default=-1];
+	optional sint32 SkillId = 2[default=-1];
+	optional sint32 TargetObjId = 3[default=-1];
+	optional Vector3PB TargetPos = 4;
+	optional sint32 Ret = 5[default=-1];
+	optional sint32 Type = 6[default=-1];
+}
+

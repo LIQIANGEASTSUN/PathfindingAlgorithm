@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<Root Module="Team" CName="组队" MsgNumStart="28" Comment="">
+    <Operate Name="GetTeam" CName="获取队伍" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="28" DataStruct="RpcGetTeamAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="29" DataStruct="RpcGetTeamReply" Comment="" />
+    </Operate>
+    <Operate Name="TeamOver" CName="组队成功" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="30" DataStruct="RpcTeamOverAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="31" DataStruct="RpcTeamOverReply" Comment="" />
+    </Operate>
+    <Struct Name="RpcGetTeamAsk" CName="获取队伍请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="sint64" FieldId="1" Name="TeamID" CName="队伍id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="2" Name="UID" CName="队长id" DefaultValue="-1" Comment="" />
+    </Struct>
+    <Struct Name="RpcGetTeamReply" CName="获取队伍回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="3">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+        <Field PreDefine="repeated" FieldType="sint64" FieldId="2" Name="UIDS" CName="组队人员id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="3" Name="TeamID" CName="队伍id" DefaultValue="-1" Comment="" />
+    </Struct>
+    <Struct Name="RpcTeamOverAsk" CName="组队成功请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="sint64" FieldId="1" Name="TeamID" CName="队伍id" DefaultValue="-1" Comment="" />
+    </Struct>
+    <Struct Name="RpcTeamOverReply" CName="组队成功回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="2" Name="TeamID" CName="队伍id" DefaultValue="-1" Comment="" />
+    </Struct>
+    <CliOperate Name="PullTeammate" CName="拉队友" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="28" DataStruct="RpcPullTeammateAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="29" DataStruct="RpcPullTeammateReply" Comment="" />
+    </CliOperate>
+    <CliOperate Name="AddTeamNoify" CName="拉队友收到的消息" Comment="">
+        <OP_DUPLEX_NOTIFY Name="Notify" CName="双向通知" MsgID="30" DataStruct="RpcAddTeamNoifyNotify" Comment="" />
+    </CliOperate>
+    <CliOperate Name="GetTeam" CName="获取team消息" Comment="">
+        <OP_DUPLEX_NOTIFY Name="Notify" CName="双向通知" MsgID="31" DataStruct="RpcGetTeamNotify" Comment="" />
+    </CliOperate>
+    <CliOperate Name="CtrlTeam" CName="操作队伍" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="32" DataStruct="RpcCtrlTeamAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="33" DataStruct="RpcCtrlTeamReply" Comment="" />
+    </CliOperate>
+    <CliOperate Name="FindTeam" CName="寻找队伍" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="34" DataStruct="RpcFindTeamAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="35" DataStruct="RpcFindTeamReply" Comment="" />
+    </CliOperate>
+    <CliStruct Name="RpcPullTeammateAsk" CName="拉队友请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="3">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="UID" CName="uid" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="2" Name="UserName" CName="名字" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="Type" CName="0被邀请1主动进入" DefaultValue="0" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcPullTeammateReply" CName="拉队友回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="4">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="UID" CName="uid" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="string" FieldId="3" Name="UserName" CName="名字" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="4" Name="Type" CName="0被邀请1主动进入" DefaultValue="0" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcAddTeamNoifyNotify" CName="拉队友收到的消息双向通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="7">
+        <Field PreDefine="optional" FieldType="SmallUser" FieldId="3" Name="User" CName="邀请人的信息" Comment="" />
+        <Field PreDefine="optional" FieldType="SmallUser" FieldId="4" Name="BeUser" CName="被邀请人的信息" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="6" Name="IsOk" CName="是否同意" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="7" Name="Type" CName="0被邀请1主动进入" DefaultValue="0" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcGetTeamNotify" CName="获取team消息双向通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="TeamV" FieldId="1" Name="Team" CName="队伍信息" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcCtrlTeamAsk" CName="操作队伍请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="3">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Type" CName="类型1创建队伍2删除队伍3踢人4自己离开" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="UID" CName="uid" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcCtrlTeamReply" CName="操作队伍回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="3">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="2" Name="Type" CName="类型1创建队伍2删除队伍3踢人4自己离开" DefaultValue="-1" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="UID" CName="uid" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcFindTeamAsk" CName="寻找队伍请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="sint64" FieldId="1" Name="TeamID" CName="ID" DefaultValue="-1" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcFindTeamReply" CName="寻找队伍回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+        <Field PreDefine="repeated" FieldType="TeamV" FieldId="2" Name="Teams" CName="所有队伍" Comment="" />
+    </CliStruct>
+    <CliStruct Name="TeamV" CName="队伍信息" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="3">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="TeamID" CName="队伍id" DefaultValue="-1" Comment="" />
+        <Field PreDefine="repeated" FieldType="SmallUser" FieldId="2" Name="Role" CName="人员" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="3" Name="CaptainID" CName="队长id" DefaultValue="-1" Comment="" />
+    </CliStruct>
+</Root>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<Root Module="Said" CName="聊天" MsgNumStart="22" Comment="">
+    <Operate Name="CreateLoadRoom" CName="创建读取房间" Comment="">
+        <OP_NOTIFY Name="Notify" CName="通知" MsgID="22" DataStruct="RpcCreateLoadRoomNotify" Comment="" />
+    </Operate>
+    <Operate Name="MessageForward" CName="消息转发" Comment="">
+        <OP_NOTIFY Name="Notify" CName="通知" MsgID="23" DataStruct="RpcMessageForwardNotify" Comment="" />
+    </Operate>
+    <Struct Name="RpcCreateLoadRoomNotify" CName="创建读取房间通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="sint64" FieldId="1" Name="ID" CName="ID" DefaultValue="-1" Comment="" />
+        <Field PreDefine="repeated" FieldType="sint64" FieldId="2" Name="Uid" CName="uid" DefaultValue="0" Comment="" />
+    </Struct>
+    <Struct Name="RpcMessageForwardNotify" CName="消息转发通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="string" FieldId="1" Name="Value" CName="内容" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="2" Name="ID" CName="ID" DefaultValue="-1" Comment="" />
+    </Struct>
+    <CliOperate Name="Said" CName="聊天" Comment="">
+        <OP_ASK Name="Ask" CName="请求" MsgID="22" DataStruct="RpcSaidAsk" Comment="" />
+        <OP_REPLY Name="Reply" CName="回应" MsgID="23" DataStruct="RpcSaidReply" Comment="" />
+    </CliOperate>
+    <CliOperate Name="SaidBroadcas" CName="聊天广播" Comment="">
+        <OP_SERVER_NOTIFY Name="Notify" CName="服务器通知" MsgID="24" DataStruct="RpcSaidBroadcasNotify" Comment="" />
+    </CliOperate>
+    <CliStruct Name="RpcSaidAsk" CName="聊天请求" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="SaidData" FieldId="2" Name="Value" CName="数据" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcSaidReply" CName="聊天回应" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="2">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Result" CName="返回结果" DefaultValue="-9999" Comment="-9999 模块未启动&#xD;&#xA;-9998 请求字段值范围出错" />
+        <Field PreDefine="optional" FieldType="SaidData" FieldId="2" Name="Value" CName="数据" Comment="" />
+    </CliStruct>
+    <CliStruct Name="RpcSaidBroadcasNotify" CName="聊天广播服务器通知" ProtoType="RpcProto" Comment="" DataType="RPCData" MaxFieldId="1">
+        <Field PreDefine="optional" FieldType="SaidData" FieldId="1" Name="Value" CName="数据" Comment="" />
+    </CliStruct>
+    <CliStruct Name="SaidData" CName="聊天存储" ProtoType="RpcProto" Comment="" DataType="ItemData" MaxFieldId="7">
+        <Field PreDefine="optional" FieldType="sint32" FieldId="1" Name="Channel " CName="频道" DefaultValue="-1" Comment="1Load2世界3私聊4队伍5场景" />
+        <Field PreDefine="optional" FieldType="string" FieldId="2" Name="Content" CName="内容" DefaultValue="" Comment="" />
+        <Field PreDefine="optional" FieldType="SmallUser" FieldId="3" Name="Who" CName="谁说" Comment="" />
+        <Field PreDefine="optional" FieldType="SmallUser" FieldId="4" Name="To" CName="给谁说" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="5" Name="BigType" CName="大类型" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint32" FieldId="6" Name="SmallType" CName="小类型" DefaultValue="0" Comment="" />
+        <Field PreDefine="optional" FieldType="sint64" FieldId="7" Name="ID" CName="特殊id" DefaultValue="-1" Comment="" />
+    </CliStruct>
+</Root>

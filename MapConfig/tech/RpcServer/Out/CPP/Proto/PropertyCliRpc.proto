@@ -1,0 +1,11 @@
+import "PublicStruct.proto";
+
+message  PropertyRpcSyncAsk
+{
+}
+
+message  PropertyRpcSyncReply
+{
+	optional sint32 Result = 1[default=-9999];
+}
+
