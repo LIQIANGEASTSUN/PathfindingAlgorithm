@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AStarMapQuadTest : MonoBehaviour
+public class AStarTest : MonoBehaviour
 {
     private MapQuad _mapQuad;
     private AStar aStar;
