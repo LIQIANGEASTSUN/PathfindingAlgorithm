@@ -3,8 +3,6 @@ namespace PathFinding
 {
     public interface IMap
     {
-        void CreateGrid();
-
         Node[] Grid();
 
         MapSize MapSize();

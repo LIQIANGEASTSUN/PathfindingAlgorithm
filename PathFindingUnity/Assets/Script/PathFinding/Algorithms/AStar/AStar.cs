@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace PathFinding
 {
+    // A* 寻路算法
     public class AStar
     {
         // 地图数据
@@ -14,15 +15,12 @@ namespace PathFinding
         // closed 表
         private List<Node> closedList;
 
-        public AStar()
+        public AStar(IMap map)
         {
             openHeap = new Heap<Node>();
             openHeap.SetHeapType(false);
             closedList = new List<Node>();
-        }
 
-        public void SetMap(IMap map)
-        {
             _map = map;
         }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace PathFinding
 {
+    // Jump Point Search 算法
     public class JPS
     {
         // 地图数据

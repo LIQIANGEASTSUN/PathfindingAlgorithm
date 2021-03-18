@@ -34,10 +34,11 @@ namespace PathFinding
         {
             _mapTerrainData = new MapTerrainData(mapFile);
             _mapSize = new MapSize(minX, minY, maxX, maxY);
+            CreateGrid();
         }
 
         // 创建网格
-        public void CreateGrid()
+        private void CreateGrid()
         {
             _row = _mapTerrainData.Row;
             _col = _mapTerrainData.Col;

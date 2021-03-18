@@ -18,7 +18,6 @@ public class DijkstraTest : MonoBehaviour
     private void Start()
     {
         _mapQuad = new MapQuad("Terrain2", 0, 0, 20, 10);
-        _mapQuad.CreateGrid();
         new MapToolsDrawNode(_mapQuad);
 
         dijkstra = new Dijkstra();
