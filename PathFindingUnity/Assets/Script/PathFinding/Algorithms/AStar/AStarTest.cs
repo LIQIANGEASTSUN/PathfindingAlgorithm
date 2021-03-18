@@ -12,7 +12,7 @@ public class AStarTest : MonoBehaviour
     private void Start()
     {
         // 获取地图数据
-        _mapQuad = new MapQuad("Terrain1", 0, 0, 20, 10);
+        _mapQuad = new MapQuad("Terrain3", 0, 0, 20, 10);
         // 初始化 算法，并将地图数据传递进去
         _aStar = new AStar(_mapQuad);
     }
@@ -68,9 +68,11 @@ public class AStarTest : MonoBehaviour
     private GameObject personGo;
     private GameObject destination;
     private float _intervalTime = 0.1f;
+    private float _insertTime = 0.02f;
     private float speed = 3;
     private bool _init = false;
     private List<GameObject> pathGoList = new List<GameObject>();
+    public static List<Node> insertOpenList = new List<Node>();
     private void DebugUse()
     {
         if (!_init)
@@ -79,6 +81,26 @@ public class AStarTest : MonoBehaviour
             // 将地图数据路点创建出来，为了看到路点
             new MapToolsDrawNode(_mapQuad);
             CreatePerson();
+        }
+
+        _insertTime -= Time.deltaTime;
+        if (insertOpenList.Count > 0 && _insertTime <= 0)
+        {
+            _insertTime = 0.02f;
+
+            Node node = insertOpenList[0];
+            insertOpenList.RemoveAt(0);
+
+            Position pos = _mapQuad.NodeToPosition(node);
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            go.transform.localScale = Vector3.one * 0.2f;
+            go.transform.position = new Vector3(pos.X + 0.1f, 0.6f, pos.Y + 0.1f);
+            go.GetComponent<Renderer>().material.color = Color.blue;
+            pathGoList.Add(go);
+        }
+        if (insertOpenList.Count > 0)
+        {
+            return;
         }
 
         if (_stackPos.Count > 0)

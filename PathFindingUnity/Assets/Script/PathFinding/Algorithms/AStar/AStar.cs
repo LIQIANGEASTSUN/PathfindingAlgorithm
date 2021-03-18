@@ -129,6 +129,7 @@ namespace PathFinding
 
                 neighborNode.NodeState = NodeState.InOpenTable;
                 openHeap.Insert(neighborNode);
+                AStarTest.insertOpenList.Add(neighborNode);
             }
         }
     }
