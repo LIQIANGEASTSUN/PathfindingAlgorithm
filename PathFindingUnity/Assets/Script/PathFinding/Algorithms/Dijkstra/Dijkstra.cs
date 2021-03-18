@@ -4,7 +4,10 @@ using DataStruct.Heap;
 
 namespace PathFinding
 {
+    // Dijkstra 算法最初被设计出来是为了解决图论中最短路径问题
+    // 即：从开始点 S 出发，到达所有能通过的点的最短路径
 
+    // 此处的寻路算法是为了找出从 开始点 S 到 目标点 D 的最短路径。
     public class Dijkstra
     {
         // 地图数据
@@ -12,15 +15,10 @@ namespace PathFinding
         private Heap<Node> _openHeap;
         private List<Node> _closeList = new List<Node>();
 
-        public Dijkstra()
+        public Dijkstra(IMap map)
         {
             _openHeap = new Heap<Node>();
             _openHeap.SetHeapType(false);
-
-        }
-
-        public void SetMap(IMap map)
-        {
             _map = map;
         }
 

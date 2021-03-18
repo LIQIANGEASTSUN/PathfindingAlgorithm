@@ -15,15 +15,11 @@ namespace PathFinding
         // closed 表
         private List<Node> closedList;
 
-        public JPS()
+        public JPS(IMap map)
         {
             openHeap = new Heap<Node>();
             openHeap.SetHeapType(false);
             closedList = new List<Node>();
-        }
-
-        public void SetMap(IMap map)
-        {
             _map = map;
         }
 
