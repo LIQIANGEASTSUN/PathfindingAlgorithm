@@ -4,3 +4,4 @@
 到目录 tech/csv
 
 
+然后将 .csv 放置到 PathFindingUnity/Assets/StreamingAssets，运行项目加载配置文件
