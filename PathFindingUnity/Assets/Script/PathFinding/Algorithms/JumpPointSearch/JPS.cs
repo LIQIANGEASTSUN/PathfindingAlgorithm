@@ -346,6 +346,9 @@ namespace PathFinding
             //go.name = string.Format("open:{0}_{1}", node.Row, node.Col);
             //go.GetComponent<Renderer>().material.color = Color.green;
 
+            string name = string.Format("open:{0}_{1}", node.Row, node.Col);
+            Debug.LogError(name);
+
             KeyValuePair<int, Node> kv = new KeyValuePair<int, Node>(1, node);
             JPSTest.checkNodeList.Add(kv);
         }
@@ -359,6 +362,9 @@ namespace PathFinding
             //string name = string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
             //go.name = name;
             //go.GetComponent<Renderer>().material.color = Color.blue;
+
+            string name = string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
+            Debug.LogError(name);
 
             KeyValuePair<int, Node> kv = new KeyValuePair<int, Node>(0, node);
             JPSTest.checkNodeList.Add(kv);
