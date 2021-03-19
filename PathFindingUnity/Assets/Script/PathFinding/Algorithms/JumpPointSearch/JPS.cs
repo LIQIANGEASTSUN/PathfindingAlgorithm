@@ -173,7 +173,7 @@ namespace PathFinding
 
         private void SearchHV(Node origin, Node desitination, Node currentNode, Node temp)
         {
-            if (!InvalidNode(temp))
+            if (!InvalidNode(temp) || temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
             {
                 return;
             }
@@ -190,6 +190,11 @@ namespace PathFinding
                 InsertToOpenHeap(jumpNode, currentNode, desitination);
             }
 
+            Debug.LogError("SearchHV:" + temp.Row + "   " + temp.Col + "   " + horizontalDir + "   " + verticalDir);
+            if (temp.Row == 6 && temp.Col == 8 && horizontalDir == 0 && verticalDir == 1)
+            {
+                int a = 0;
+            }
             jumpNode = JumpSearchHV(origin, desitination, temp, horizontalDir, verticalDir);
             if (null != jumpNode)
             {
