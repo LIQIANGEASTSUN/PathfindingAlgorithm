@@ -9,7 +9,7 @@ public class JPSTest : MonoBehaviour
     private void Start()
     {
         // 获取地图数据
-        _mapQuad = new MapQuad("Terrain4", 0, 0, 20, 10);
+        _mapQuad = new MapQuad("Terrain5", 0, 0, 20, 10);
         // 初始化 算法，并将地图数据传递进去
         _jps = new JPS(_mapQuad);
     }

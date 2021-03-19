@@ -265,4 +265,70 @@ struct Terrain4T : ConfigBaseT
 };
 CreateCsvClass(Terrain4);
 
+struct Terrain5T : ConfigBaseT
+{
+	virtual ~Terrain5T()
+	{
+	}
+	Terrain5T()
+	{
+		FileName = "Terrain5.csv";
+		_kf =
+		{
+			{"Terraiin",{INT_FD, &Terraiin}},
+			{"ColCount",{INT_FD, &ColCount}},
+			{"col0",{TSTR_FD, &col0}},
+			{"col1",{TSTR_FD, &col1}},
+			{"col2",{TSTR_FD, &col2}},
+			{"col3",{TSTR_FD, &col3}},
+			{"col4",{TSTR_FD, &col4}},
+			{"col5",{TSTR_FD, &col5}},
+			{"col6",{TSTR_FD, &col6}},
+			{"col7",{TSTR_FD, &col7}},
+			{"col8",{TSTR_FD, &col8}},
+			{"col9",{TSTR_FD, &col9}},
+			{"col10",{TSTR_FD, &col10}},
+			{"col11",{TSTR_FD, &col11}},
+			{"col12",{TSTR_FD, &col12}},
+			{"col13",{TSTR_FD, &col13}},
+			{"col14",{TSTR_FD, &col14}},
+			{"col15",{TSTR_FD, &col15}},
+			{"col16",{TSTR_FD, &col16}},
+			{"col17",{TSTR_FD, &col17}},
+			{"col18",{TSTR_FD, &col18}},
+			{"col19",{TSTR_FD, &col19}}
+		};
+	}
+	virtual Terrain5T* create()
+	{
+		return new Terrain5T();
+	}
+	enum
+	{
+	};
+	INT32 Terraiin = 0;            //主键
+	INT32 ColCount = 0;				//总列数
+	TStr col0 = "";				//列0
+	TStr col1 = "";				//列1
+	TStr col2 = "";				//列2
+	TStr col3 = "";				//列3
+	TStr col4 = "";				//列4
+	TStr col5 = "";				//列5
+	TStr col6 = "";				//列6
+	TStr col7 = "";				//列7
+	TStr col8 = "";				//列8
+	TStr col9 = "";				//列9
+	TStr col10 = "";				//列10
+	TStr col11 = "";				//列11
+	TStr col12 = "";				//列12
+	TStr col13 = "";				//列13
+	TStr col14 = "";				//列14
+	TStr col15 = "";				//列15
+	TStr col16 = "";				//列16
+	TStr col17 = "";				//列17
+	TStr col18 = "";				//列18
+	TStr col19 = "";				//列19
+};
+CreateCsvClass(Terrain5);
+
 #endif
