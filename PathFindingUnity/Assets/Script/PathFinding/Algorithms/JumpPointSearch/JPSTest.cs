@@ -55,6 +55,8 @@ public class JPSTest : MonoBehaviour
     private float speed = 3;
     private List<GameObject> pathGoList = new List<GameObject>();
     private bool _init = false;
+    public static List<KeyValuePair<int, Node>> checkNodeList = new List<KeyValuePair<int, Node>>();
+    private float _checkTime = 0.3f;
     private void Update()
     {
         if (!_init)
@@ -62,6 +64,27 @@ public class JPSTest : MonoBehaviour
             _init = true;
             new MapToolsDrawNode(_mapQuad);
             CreatePerson();
+        }
+
+        _checkTime -= Time.deltaTime;
+        if (checkNodeList.Count > 0 && _checkTime <= 0)
+        {
+            _checkTime = 0.3f;
+            KeyValuePair<int, Node> kv = checkNodeList[0];
+            checkNodeList.RemoveAt(0);
+
+            Node node = kv.Value;
+            Position pos = _mapQuad.NodeToPosition(node);
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            go.transform.position = (kv.Key == 1) ? new Vector3(pos.X + 0.1f, 1f, pos.Y + 0.1f) : new Vector3(pos.X - 0.1f, 1f, pos.Y - 0.1f);
+            go.transform.localScale = Vector3.one * 0.3f;
+            go.name = (kv.Key == 1) ? string.Format("open:{0}_{1}", node.Row, node.Col) : string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
+            go.GetComponent<Renderer>().material.color = (kv.Key == 1) ? Color.green : Color.blue;
+        }
+
+        if (checkNodeList.Count > 0)
+        {
+            return;
         }
 
         if (_stackPos.Count > 0)
