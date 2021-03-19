@@ -9,7 +9,7 @@ public class JPSTest : MonoBehaviour
     private void Start()
     {
         // 获取地图数据
-        _mapQuad = new MapQuad("Terrain2", 0, 0, 20, 10);
+        _mapQuad = new MapQuad("Terrain4", 0, 0, 20, 10);
         // 初始化 算法，并将地图数据传递进去
         _jps = new JPS(_mapQuad);
     }
@@ -96,8 +96,8 @@ public class JPSTest : MonoBehaviour
         }
     }
 
-    private Vector3 persionPos = new Vector3(18.5f, 0.3f, 7.5f);
-    private Vector3 desitinationPos = new Vector3(3.5f, 0.3f, 5.5f);
+    private Vector3 persionPos = new Vector3(4.5f, 0.3f, 6.5f);
+    private Vector3 desitinationPos = new Vector3(12.5f, 0.3f, 3.5f);
     private void CreatePerson()
     {
         personGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);

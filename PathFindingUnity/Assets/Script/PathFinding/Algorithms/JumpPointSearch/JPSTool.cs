@@ -9,7 +9,7 @@ namespace PathFinding
         /// </summary>
         public static bool HasForceNeighbour(IMap _map, Node node, Position dir)
         {
-            if (null == node)
+            if (null == node || node.NodeType == NodeType.Null || node.NodeType == NodeType.Obstacle)
             {
                 return false;
             }
