@@ -131,7 +131,7 @@ namespace PathFinding
         /// </summary>
         private Node IsJumpPoint(Node origin, Node desitination, Node preNode, Node node, int rowDir, int colDir)
         {
-            if (!InvalidNode(node))
+            if (!InvalidNode(node) || node.NodeType == NodeType.Null || node.NodeType == NodeType.Obstacle)
             {
                 return null;
             }
@@ -180,13 +180,6 @@ namespace PathFinding
 
             int horizontalDir = Dir(temp.Row, currentNode.Row);
             int verticalDir = Dir(temp.Col, currentNode.Col);
-
-            if (currentNode.Row == 4 && currentNode.Col == 3 && temp.Row == 4 && temp.Col == 2)
-            {
-                int a = 0;
-            }
-
-            UnityEngine.Debug.LogError("SearchHV:" + currentNode.Row + "   " + currentNode.Col + "    " + temp.Row + "   " + temp.Col);
             Node jumpNode = IsJumpPoint(origin, desitination, currentNode, temp, horizontalDir, verticalDir);
             if (null != jumpNode)
             {
@@ -224,10 +217,14 @@ namespace PathFinding
                     break;
                 }
 
-                UnityEngine.Debug.LogError("SearchDiagonal:" + currentNode.Row + "   " + currentNode.Col + "    " + temp.Row + "   " + temp.Col);
                 if (null != IsJumpPoint(origin, desitination, preNode, temp, horizontalDir, verticalDir))
                 {
                     InsertToOpenHeap(temp, currentNode, desitination);
+                    break;
+                }
+
+                if (temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
+                {
                     break;
                 }
 
@@ -344,7 +341,7 @@ namespace PathFinding
         {
             Position pos = _map.NodeToPosition(node);
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            go.transform.position = new Vector3(pos.X, 1f, pos.Y);
+            go.transform.position = new Vector3(pos.X + 0.1f, 1f, pos.Y + 0.1f);
             go.transform.localScale = Vector3.one * 0.3f;
             go.name = string.Format("open:{0}_{1}", node.Row, node.Col);
             go.GetComponent<Renderer>().material.color = Color.green;
@@ -359,8 +356,6 @@ namespace PathFinding
             string name = string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
             go.name = name;
             go.GetComponent<Renderer>().material.color = Color.blue;
-
-            UnityEngine.Debug.LogError(name);
         }
     }
 }
