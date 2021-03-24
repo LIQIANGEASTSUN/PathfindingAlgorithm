@@ -344,33 +344,16 @@ namespace PathFinding
 
         private void Check(Node node)
         {
-            //Position pos = _map.NodeToPosition(node);
-            //GameObject go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            //go.transform.position = new Vector3(pos.X + 0.1f, 1f, pos.Y + 0.1f);
-            //go.transform.localScale = Vector3.one * 0.3f;
-            //go.name = string.Format("open:{0}_{1}", node.Row, node.Col);
-            //go.GetComponent<Renderer>().material.color = Color.green;
-
-            string name = string.Format("open:{0}_{1}", node.Row, node.Col);
-            Debug.LogError(name);
-
+            //string name = string.Format("open:{0}_{1}", node.Row, node.Col);
+            //Debug.LogError(name);
             KeyValuePair<int, Node> kv = new KeyValuePair<int, Node>(1, node);
             JPSTest.checkNodeList.Add(kv);
         }
 
         private void InsertOpen(Node node)
         {
-            //Position pos = _map.NodeToPosition(node);
-            //GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            //go.transform.localScale = Vector3.one * 0.3f;
-            //go.transform.position = new Vector3(pos.X - 0.1f, 1, pos.Y - 0.1f);
             //string name = string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
-            //go.name = name;
-            //go.GetComponent<Renderer>().material.color = Color.blue;
-
-            string name = string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
-            Debug.LogError(name);
-
+            //Debug.LogError(name);
             KeyValuePair<int, Node> kv = new KeyValuePair<int, Node>(0, node);
             JPSTest.checkNodeList.Add(kv);
         }
