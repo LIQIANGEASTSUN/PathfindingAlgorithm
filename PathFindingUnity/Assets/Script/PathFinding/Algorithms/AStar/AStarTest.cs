@@ -12,7 +12,7 @@ public class AStarTest : MonoBehaviour
     private void Start()
     {
         // 获取地图数据
-        _mapQuad = new MapQuad("Terrain3", 0, 0, 20, 10);
+        _mapQuad = new MapQuad("Terrain5", 0, 0, 20, 10);
         // 初始化 算法，并将地图数据传递进去
         _aStar = new AStar(_mapQuad);
     }
@@ -67,12 +67,12 @@ public class AStarTest : MonoBehaviour
 
     private GameObject personGo;
     private GameObject destination;
-    private float _intervalTime = 0.1f;
-    private float _insertTime = 0.02f;
+    private float _intervalTime = 0.3f;
+    private float _insertTime = 0.3f;
     private float speed = 3;
     private bool _init = false;
     private List<GameObject> pathGoList = new List<GameObject>();
-    public static List<Node> insertOpenList = new List<Node>();
+    public static List<KeyValuePair<int, Node>> checkNodeList = new List<KeyValuePair<int, Node>>();
     private void DebugUse()
     {
         if (!_init)
@@ -84,21 +84,25 @@ public class AStarTest : MonoBehaviour
         }
 
         _insertTime -= Time.deltaTime;
-        if (insertOpenList.Count > 0 && _insertTime <= 0)
+        if (checkNodeList.Count > 0 && _insertTime <= 0)
         {
-            _insertTime = 0.02f;
+            _insertTime = 0.3f;
 
-            Node node = insertOpenList[0];
-            insertOpenList.RemoveAt(0);
+            KeyValuePair<int, Node> kv = checkNodeList[0];
+
+            Node node = kv.Value;
+            checkNodeList.RemoveAt(0);
 
             Position pos = _mapQuad.NodeToPosition(node);
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            go.transform.localScale = Vector3.one * 0.2f;
-            go.transform.position = new Vector3(pos.X + 0.1f, 0.6f, pos.Y + 0.1f);
-            go.GetComponent<Renderer>().material.color = Color.blue;
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            go.transform.position = (kv.Key == 1) ? new Vector3(pos.X + 0.1f, 1f, pos.Y + 0.1f) : new Vector3(pos.X - 0.1f, 1f, pos.Y - 0.1f);
+            go.transform.localScale = Vector3.one * 0.3f;
+            go.name = (kv.Key == 1) ? string.Format("open:{0}_{1}", node.Row, node.Col) : string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
+            go.GetComponent<Renderer>().material.color = (kv.Key == 1) ? Color.green : Color.blue;
+
             pathGoList.Add(go);
         }
-        if (insertOpenList.Count > 0)
+        if (checkNodeList.Count > 0)
         {
             return;
         }
@@ -127,16 +131,18 @@ public class AStarTest : MonoBehaviour
         }
     }
 
+    private Vector3 persionPos = new Vector3(0.5f, 0.3f, 6.5f);
+    private Vector3 desitinationPos = new Vector3(12.5f, 0.3f, 0.5f);
     private void CreatePerson()
     {
         personGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         personGo.name = "Person";
-        personGo.transform.position = new Vector3(19.5f, 0.3f, 6.5f);
+        personGo.transform.position = persionPos;
         personGo.GetComponent<Renderer>().material.color = Color.green;
 
         destination = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         destination.name = "Destination";
-        destination.transform.position = new Vector3(2.5f, 0.3f, 2.5f);
+        destination.transform.position = desitinationPos;
         destination.GetComponent<Renderer>().material.color = Color.black;
     }
     #endregion

@@ -119,8 +119,8 @@ public class JPSTest : MonoBehaviour
         }
     }
 
-    private Vector3 persionPos = new Vector3(4.5f, 0.3f, 6.5f);
-    private Vector3 desitinationPos = new Vector3(12.5f, 0.3f, 3.5f);
+    private Vector3 persionPos = new Vector3(0.5f, 0.3f, 6.5f);
+    private Vector3 desitinationPos = new Vector3(12.5f, 0.3f, 0.5f);
     private void CreatePerson()
     {
         personGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);

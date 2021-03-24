@@ -59,6 +59,7 @@ namespace PathFinding
                 node.NodeState = NodeState.InColsedTable;
                 closedList.Add(node);
 
+                Check(node);
                 // 如果 node 是终点 则路径查找成功，并退出
                 if (node.Row == desitinationNode.Row && node.Col == desitinationNode.Col)
                 {
@@ -129,8 +130,24 @@ namespace PathFinding
 
                 neighborNode.NodeState = NodeState.InOpenTable;
                 openHeap.Insert(neighborNode);
-                AStarTest.insertOpenList.Add(neighborNode);
+                InsertOpen(neighborNode);
             }
+        }
+
+        private void Check(Node node)
+        {
+            //string name = string.Format("open:{0}_{1}", node.Row, node.Col);
+            //Debug.LogError(name);
+            KeyValuePair<int, Node> kv = new KeyValuePair<int, Node>(1, node);
+            AStarTest.checkNodeList.Add(kv);
+        }
+
+        private void InsertOpen(Node node)
+        {
+            //string name = string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
+            //Debug.LogError(name);
+            KeyValuePair<int, Node> kv = new KeyValuePair<int, Node>(0, node);
+            AStarTest.checkNodeList.Add(kv);
         }
     }
 }

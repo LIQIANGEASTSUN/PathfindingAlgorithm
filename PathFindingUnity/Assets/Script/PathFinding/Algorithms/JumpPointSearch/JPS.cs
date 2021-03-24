@@ -58,6 +58,8 @@ namespace PathFinding
                 node.NodeState = NodeState.InColsedTable;
                 closedList.Add(node);
 
+                Check(node);
+
                 // 如果 node 是终点 则路径查找成功，并退出
                 if (node.Row == desitinationNode.Row && node.Col == desitinationNode.Col)
                 {
@@ -72,7 +74,6 @@ namespace PathFinding
 
         private void CheckNode(Node origin, Node desitination, Node node)
         {
-            Check(node);
             if (null == node.Parent)
             {
                 // 搜索上下左右四个方向
@@ -190,11 +191,6 @@ namespace PathFinding
                 InsertToOpenHeap(jumpNode, currentNode, desitination);
             }
 
-            Debug.LogError("SearchHV:" + temp.Row + "   " + temp.Col + "   " + horizontalDir + "   " + verticalDir);
-            if (temp.Row == 6 && temp.Col == 8 && horizontalDir == 0 && verticalDir == 1)
-            {
-                int a = 0;
-            }
             jumpNode = JumpSearchHV(origin, desitination, temp, horizontalDir, verticalDir);
             if (null != jumpNode)
             {
