@@ -12,7 +12,7 @@ public class DijkstraTest : MonoBehaviour
     private void Start()
     {
         // 获取地图数据
-        _mapQuad = new MapQuad("Terrain2", 0, 0, 20, 10);
+        _mapQuad = new MapQuad("Terrain6", 0, 0, 20, 10);
         // 初始化 算法，并将地图数据传递进去
         dijkstra = new Dijkstra(_mapQuad);
     }
@@ -125,12 +125,12 @@ public class DijkstraTest : MonoBehaviour
     {
         personGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         personGo.name = "Person";
-        personGo.transform.position = new Vector3(19.5f, 0.3f, 6.5f);
+        personGo.transform.position = new Vector3(10.5f, 0.3f, 4.2f);
         personGo.GetComponent<Renderer>().material.color = Color.green;
 
         destination = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         destination.name = "Destination";
-        destination.transform.position = new Vector3(2.5f, 0.3f, 2.5f);
+        destination.transform.position = new Vector3(4.5f, 0.3f, 4.2f);
         destination.GetComponent<Renderer>().material.color = Color.black;
     }
     #endregion

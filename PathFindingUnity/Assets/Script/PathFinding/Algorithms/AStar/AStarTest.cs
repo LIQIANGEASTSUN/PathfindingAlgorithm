@@ -12,7 +12,7 @@ public class AStarTest : MonoBehaviour
     private void Start()
     {
         // 获取地图数据
-        _mapQuad = new MapQuad("Terrain5", 0, 0, 20, 10);
+        _mapQuad = new MapQuad("Terrain6", 0, 0, 20, 10);
         // 初始化 算法，并将地图数据传递进去
         _aStar = new AStar(_mapQuad);
     }
@@ -68,7 +68,7 @@ public class AStarTest : MonoBehaviour
     private GameObject personGo;
     private GameObject destination;
     private float _intervalTime = 0.3f;
-    private float _insertTime = 0.3f;
+    private float _insertTime = 0.1f;
     private float speed = 3;
     private bool _init = false;
     private List<GameObject> pathGoList = new List<GameObject>();
@@ -86,7 +86,7 @@ public class AStarTest : MonoBehaviour
         _insertTime -= Time.deltaTime;
         if (checkNodeList.Count > 0 && _insertTime <= 0)
         {
-            _insertTime = 0.3f;
+            _insertTime = 0.06f;
 
             KeyValuePair<int, Node> kv = checkNodeList[0];
 
@@ -121,7 +121,7 @@ public class AStarTest : MonoBehaviour
             _intervalTime -= Time.deltaTime;
             if (_intervalTime <= 0)
             {
-                _intervalTime = 0.1f;
+                _intervalTime = 0.06f;
                 GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 go.transform.localScale = Vector3.one * 0.2f;
                 go.transform.position = new Vector3(personGo.transform.position.x, 0.6f, personGo.transform.position.z);
@@ -131,8 +131,8 @@ public class AStarTest : MonoBehaviour
         }
     }
 
-    private Vector3 persionPos = new Vector3(0.5f, 0.3f, 6.5f);
-    private Vector3 desitinationPos = new Vector3(12.5f, 0.3f, 0.5f);
+    private Vector3 persionPos = new Vector3(10.5f, 0.3f, 4.2f);
+    private Vector3 desitinationPos = new Vector3(4.5f, 0.3f, 4.2f);
     private void CreatePerson()
     {
         personGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);

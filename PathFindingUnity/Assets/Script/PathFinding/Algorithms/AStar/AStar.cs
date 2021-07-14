@@ -26,17 +26,7 @@ namespace PathFinding
 
         public Node SearchPath(Position from, Position desitination)
         {
-            // 重置上次访问过的节点
-            foreach (var node in closedList)
-            {
-                node.Clear();
-            }
-            foreach(var node in openHeap.DataList)
-            {
-                node.Clear();
-            }
-            openHeap.MakeEmpty();
-            closedList.Clear();
+
 
             // 起点
             Node fromNode = _map.PositionToNode(from.X, from.Y);
@@ -51,6 +41,7 @@ namespace PathFinding
             // 将起点加入到 open 表
             openHeap.Insert(fromNode);
 
+            Node result = null;
             while (openHeap.Count() > 0)
             {
                 // 取出 open 表中 F 值最小的节点
@@ -63,13 +54,26 @@ namespace PathFinding
                 // 如果 node 是终点 则路径查找成功，并退出
                 if (node.Row == desitinationNode.Row && node.Col == desitinationNode.Col)
                 {
-                    return node;
+                    result = node;
+                    break;
                 }
 
                 Neighbor(node, desitinationNode);
             }
 
-            return null;
+            // 重置上次访问过的节点
+            foreach (var node in closedList)
+            {
+                node.Clear();
+            }
+            foreach (var node in openHeap.DataList)
+            {
+                node.Clear();
+            }
+            openHeap.MakeEmpty();
+            closedList.Clear();
+
+            return result;
         }
 
         /// <summary>

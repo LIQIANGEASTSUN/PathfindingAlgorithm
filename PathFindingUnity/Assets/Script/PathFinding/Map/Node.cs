@@ -81,6 +81,7 @@ namespace PathFinding
         Null = 0,
         InOpenTable = 1,
         InColsedTable = 2,
+        Known = 3,
     }
 
     public class Node : IComparable<Node>
