@@ -1,8 +1,12 @@
 PathFindingUnity/Library/*
 PathFindingUnity/obj/*
 PathFindingUnity/Temp/*
-
 PathFindingUnity/.vs/*
+
+Labyrinth/Library/*
+Labyrinth/obj/*
+Labyrinth/Temp/*
+Labyrinth/.vs/*
 
 *.csproj
 
