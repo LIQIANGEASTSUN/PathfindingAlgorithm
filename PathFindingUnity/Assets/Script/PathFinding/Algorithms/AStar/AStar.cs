@@ -26,7 +26,18 @@ namespace PathFinding
 
         public Node SearchPath(Position from, Position desitination)
         {
+            // 重置上次访问过的节点
+            foreach (var node in closedList)
+            {
+                node.Clear();
+            }
+            foreach (var node in openHeap.DataList)
+            {
+                node.Clear();
+            }
 
+            openHeap.MakeEmpty();
+            closedList.Clear();
 
             // 起点
             Node fromNode = _map.PositionToNode(from.X, from.Y);
@@ -60,18 +71,6 @@ namespace PathFinding
 
                 Neighbor(node, desitinationNode);
             }
-
-            // 重置上次访问过的节点
-            foreach (var node in closedList)
-            {
-                node.Clear();
-            }
-            foreach (var node in openHeap.DataList)
-            {
-                node.Clear();
-            }
-            openHeap.MakeEmpty();
-            closedList.Clear();
 
             return result;
         }
