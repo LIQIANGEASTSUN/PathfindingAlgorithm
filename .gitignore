@@ -8,6 +8,12 @@ Labyrinth/obj/*
 Labyrinth/Temp/*
 Labyrinth/.vs/*
 
+
+Labyrinth2/Library/*
+Labyrinth2/obj/*
+Labyrinth2/Temp/*
+Labyrinth2/.vs/*
+
 *.csproj
 
 *.user
