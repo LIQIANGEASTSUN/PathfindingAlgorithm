@@ -41,7 +41,7 @@ public class FindPath : MonoBehaviour
 
     private void Find(SearchType type)
     {
-        LabyrinthData.Instance.ResetGrid();
+        //LabyrinthData.Instance.ResetGrid();
         labyrinthLogic.FindPath(LabyrinthData.Instance.Grid, 4, 0, type);
     }
 
