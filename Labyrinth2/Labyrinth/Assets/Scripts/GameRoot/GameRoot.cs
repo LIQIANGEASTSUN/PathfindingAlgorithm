@@ -22,6 +22,7 @@ public class GameRoot : MonoBehaviour
     void Update()
     {
         _findPath.Update();
+        RoleController.GetInstance().LateUpdate();
     }
 
     private void OnGUI()
