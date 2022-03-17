@@ -40,7 +40,7 @@ public class MapDataPlanB : MapDataBase
 
     private int ReacCell(int row, int col, ref int index)
     {
-        if (row < 0 || row > TotalRow || col < 0 || col > TotalCol)
+        if (row < 0 || row >= TotalRow || col < 0 || col >= TotalCol)
         {
             return 0;
         }
@@ -49,7 +49,6 @@ public class MapDataPlanB : MapDataBase
         if (!_tableDic.TryGetValue(index, out value))
         {
             string content = ReadCellValue(row, col);
-            Debug.LogError(row + "  " + col + "  :" + content);
             value = int.Parse(content);
             _tableDic.Add(index, value);
         }
