@@ -83,6 +83,11 @@ namespace PathFinding
             {
                 float distance = 0;
                 Node neighborNode = _map.NodeNeighbor(currentNode, i, ref distance);
+                int bit = 1 << i;
+                if ((currentNode.Flag & bit) != 0)
+                {
+                    continue;
+                }
                 InsertToOpenHeap(neighborNode, currentNode, desitinationNode, distance);
             }
         }

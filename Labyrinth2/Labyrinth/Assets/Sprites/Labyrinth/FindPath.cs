@@ -52,11 +52,12 @@ public class FindPath
             return;
         }
 
-        Node node = list[0];
-        list.RemoveAt(0);
+        Node node = list[list.Count - 1];
+        list.RemoveAt(list.Count - 1);
 
+        Debug.LogError(node.Row + "   " + node.Col);
         Position position = _imap.NodeToPosition(node);
-        Vector3 pos = new Vector3(position.X, position.Y);
+        Vector3 pos = new Vector3(position.X + 1, position.Y + 1, 0);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         go.transform.localScale = Vector3.one * 0.5f;
         go.transform.localPosition = pos;
