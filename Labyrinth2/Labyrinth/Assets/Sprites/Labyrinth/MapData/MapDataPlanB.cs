@@ -57,12 +57,6 @@ public class MapDataPlanB : MapDataBase
 
     private void CheckCell(MapCell mapCell)
     {
-        if (mapCell.value == -1)
-        {
-            mapCell.flag = 0;
-            return;
-        }
-
         int row = mapCell.row;
         int col = mapCell.col;
         for (int i = 0; i < _cellDir.Length; ++i)
@@ -71,11 +65,21 @@ public class MapDataPlanB : MapDataBase
             int newRow = row + arr[0];
             int newCol = col + arr[1];
             int value = ReadCall(row + arr[0], col + arr[1]);
-            if (value == -1 || mapCell.value == value)
+            if (mapCell.value == -1)
             {
-                continue;
+                if (value == 0)
+                {
+                    mapCell.flag |= (1 << i);
+                }
             }
-            mapCell.flag |= (1 << i);
+            else
+            {
+                if (value == -1 || mapCell.value == value)
+                {
+                    continue;
+                }
+                mapCell.flag |= (1 << i);
+            }
         }
     }
 }

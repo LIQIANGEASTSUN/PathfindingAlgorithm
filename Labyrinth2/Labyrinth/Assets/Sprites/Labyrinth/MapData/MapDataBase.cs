@@ -23,7 +23,7 @@ public abstract class MapDataBase
     private int _totalCol = 0;
     private Dictionary<int, MapCell> _mapCellDic = new Dictionary<int, MapCell>();
 
-    protected int[][] _cellDir = new int[][] {
+    public static int[][] _cellDir = new int[][] {
         new int[]{ -1, 0}, // 上
         new int[]{  1, 0}, // 下
         new int[]{  0,-1}, // 左

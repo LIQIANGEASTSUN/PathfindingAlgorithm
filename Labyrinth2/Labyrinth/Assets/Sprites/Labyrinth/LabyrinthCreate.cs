@@ -49,4 +49,9 @@ public class LabyrinthCreate
         tile.sprite = _labyrinthTexture.SpriteList[mapCell.flag];
         _tileMap.RefreshTile(pos);
     }
+
+    public MapDataBase MapDataBase
+    {
+        get { return _mapDataBase; }
+    }
 }
