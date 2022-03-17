@@ -28,9 +28,9 @@ public class LabyrinthData : MonoBehaviour
 
     private void ReadWall()
     {
-        for (int i = 0; i < _totalRow; ++i)
+        for (int i = 0; i < _totalRow * 2 + 1; ++i)
         {
-            for (int j = 0; j < _totalCol; ++j)
+            for (int j = 0; j < _totalCol * 2 + 1; ++j)
             {
                 if ((i % 2 == 0 && j % 2 == 0)
                     || (i % 2 == 1 && j % 2 == 1))

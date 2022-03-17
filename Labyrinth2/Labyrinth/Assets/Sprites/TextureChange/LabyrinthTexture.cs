@@ -9,7 +9,7 @@ public class LabyrinthTexture
     public LabyrinthTexture()
     {
         TextureChange textureChange = new TextureChange();
-        for (int i = 0; i < 15; ++i)
+        for (int i = 0; i < 16; ++i)
         {
             //string filePath = string.Format("Assets/Resources/Tile{0}.png", i);
             string filePath = string.Format("Tile{0}", i);
