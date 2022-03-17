@@ -30,8 +30,7 @@ public class MapDataPlanA : MapDataBase
                     continue;
                 }
 
-                string colName = string.Format("c{0}", j);
-                string wallStr = TableRead.Instance.GetData(_tableName, i, colName);
+                string wallStr = ReadCellValue(i, j);
                 if (!string.IsNullOrEmpty(wallStr))
                 {
                     string hash = WallHash(i, j);
@@ -41,14 +40,14 @@ public class MapDataPlanA : MapDataBase
         }
     }
 
-    protected override void CreateMapCell()
+    private void CreateMapCell()
     {
         for (int i = 0; i < TotalRow; ++i)
         {
             for (int j = 0; j < TotalCol; ++j)
             {
-                MapCell mapCell = new MapCell() { row = i, col = j };
-                int index = i * TotalCol + j;
+                MapCell mapCell = new MapCell(i, j);
+                int index = CellIndex(i, j);
                 CheckCell(mapCell);
                 MapCellDic.Add(index, mapCell);
             }

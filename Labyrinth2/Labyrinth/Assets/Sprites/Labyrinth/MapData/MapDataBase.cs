@@ -6,9 +6,15 @@ public class MapCell
 {
     public int row;
     public int col;
+    public int value;
     public int flag;
-}
 
+    public MapCell(int row, int col)
+    {
+        this.row = row;
+        this.col = col;
+    }
+}
 
 public abstract class MapDataBase
 {
@@ -46,7 +52,16 @@ public abstract class MapDataBase
 
     protected abstract void AnalysisTable();
 
-    protected abstract void CreateMapCell();
+    protected string ReadCellValue(int row, int col)
+    {
+        string colName = string.Format("c{0}", col);
+        return TableRead.Instance.GetData(_tableName, row, colName);
+    }
+
+    protected int CellIndex(int row, int col)
+    {
+        return row * TotalCol + col;
+    }
 
     protected string WallHash(int row, int col)
     {

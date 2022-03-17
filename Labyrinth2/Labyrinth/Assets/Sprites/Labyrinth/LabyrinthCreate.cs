@@ -14,7 +14,8 @@ public class LabyrinthCreate
     public void Init()
     {
         _labyrinthTexture = new LabyrinthTexture();
-        _mapDataBase = new MapDataPlanA("labyrinth1");
+        //_mapDataBase = new MapDataPlanA("labyrinth1");
+        _mapDataBase = new MapDataPlanB("labyrinth2");
 
         GetTileMap();
         Create();
