@@ -144,15 +144,13 @@ public class MapData : IMap
     /// </summary>
     public Node PositionToNode(float x, float y)
     {
-        return PositionToNode((int)x, (int)y);
-    }
-
-    /// <summary>
-    /// 根据坐标获取 Node
-    /// </summary>
-    public Node PositionToNode(int x, int y)
-    {
-        int index = CellIndex(x, y);
+        //int col = 0;
+        //int row = 0;
+        //x = col + 1;
+        //y = row * -1 + 1;
+        int row = (int)(1 - y);
+        int col = (int)(x - 1);
+        int index = CellIndex(row, col);
         return _nodeGrid[index];
     }
 
@@ -161,7 +159,7 @@ public class MapData : IMap
     /// </summary>
     public Position NodeToPosition(Node node)
     {
-        Position position = new Position(node.Col, node.Row * -1);
+        Position position = new Position(node.Col, node.Row * -1) + new Position(1, 1);
         return position;
     }
 

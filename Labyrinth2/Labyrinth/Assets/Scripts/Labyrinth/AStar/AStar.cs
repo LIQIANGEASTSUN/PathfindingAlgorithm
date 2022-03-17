@@ -24,7 +24,7 @@ namespace PathFinding
             _map = map;
         }
 
-        public Node SearchPath(Position from, Position desitination)
+        public Node SearchPath(int startRow, int startCol, int endRow, int endCol)
         {
             // 重置上次访问过的节点
             foreach (var node in closedList)
@@ -40,9 +40,9 @@ namespace PathFinding
             closedList.Clear();
 
             // 起点
-            Node fromNode = _map.PositionToNode(from.X, from.Y);
+            Node fromNode = _map.GetNode(startRow, startCol);
             // 终点
-            Node desitinationNode = _map.PositionToNode(desitination.X, desitination.Y);
+            Node desitinationNode = _map.GetNode(endRow, endCol);
             if (fromNode.Row == desitinationNode.Row && fromNode.Col == desitinationNode.Col)
             {
                 return null;

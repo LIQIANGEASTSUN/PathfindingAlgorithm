@@ -24,9 +24,7 @@ public class FindPath
     {
         if(GUI.Button(new Rect(10, 10, 100, 60), "寻路"))
         {
-            Position from = new Position(2, 0);
-            Position end = new Position(12, 9);
-            Node resultNode = _aStar.SearchPath(from, end);
+            Node resultNode = _aStar.SearchPath(2, 0, 12, 9);
             while (null != resultNode)
             {
                 list.Add(resultNode);
@@ -55,9 +53,8 @@ public class FindPath
         Node node = list[list.Count - 1];
         list.RemoveAt(list.Count - 1);
 
-        Debug.LogError(node.Row + "   " + node.Col);
         Position position = _imap.NodeToPosition(node);
-        Vector3 pos = new Vector3(position.X + 1, position.Y + 1, 0);
+        Vector3 pos = new Vector3(position.X, position.Y, 0);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         go.transform.localScale = Vector3.one * 0.5f;
         go.transform.localPosition = pos;

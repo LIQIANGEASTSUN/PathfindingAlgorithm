@@ -15,6 +15,9 @@ public class GameRoot : MonoBehaviour
     {
         Instance = this;
         ConfigLoad.Instance.Load(LoadConfigCallBack);
+
+        go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        go.transform.position = new Vector3(0, 0, -1);
     }
 
     // Update is called once per frame
@@ -25,7 +28,15 @@ public class GameRoot : MonoBehaviour
             _findPath.Update();
         }
         RoleController.GetInstance().LateUpdate();
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Node node = _labyrinthCreate.MapData.PositionToNode(go.transform.position.x, go.transform.position.y);
+            Debug.LogError(node.Row + "   " + node.Col);
+        }
     }
+
+    private GameObject go;
 
     private void OnGUI()
     {

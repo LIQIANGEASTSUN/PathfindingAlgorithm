@@ -17,6 +17,11 @@ namespace PathFinding
         /// </summary>
         Position NodeToPosition(Node node);
 
+        /// <summary>
+        /// 根据 Node 获取 Tile 坐标
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         Position NodeToTilePosition(Node node);
 
         /// <summary>
