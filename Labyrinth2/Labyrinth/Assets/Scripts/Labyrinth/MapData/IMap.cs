@@ -17,6 +17,8 @@ namespace PathFinding
         /// </summary>
         Position NodeToPosition(Node node);
 
+        Position NodeToTilePosition(Node node);
+
         /// <summary>
         /// 获取 Node 的第 index 个邻居
         /// </summary>

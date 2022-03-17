@@ -40,8 +40,8 @@ public class GameRoot : MonoBehaviour
         _labyrinthCreate = new LabyrinthCreate();
         _labyrinthCreate.Init();
 
-        _aStar = new AStar(_labyrinthCreate.MapDataBase);
-        _findPath = new FindPath(_labyrinthCreate.MapDataBase, _aStar);
+        _aStar = new AStar(_labyrinthCreate.MapData);
+        _findPath = new FindPath(_labyrinthCreate.MapData, _aStar);
     }
 
 }
