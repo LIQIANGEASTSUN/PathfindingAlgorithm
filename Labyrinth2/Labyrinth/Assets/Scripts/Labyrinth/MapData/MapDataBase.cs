@@ -32,11 +32,8 @@ public abstract class MapDataBase : IMap
 
     protected virtual void Init()
     {
-        string path = Application.streamingAssetsPath;
-        TableRead.Instance.ReadCustomPath(path);
-
-        _totalRow = int.Parse(TableRead.Instance.GetData(_tableName, 9999, "c0"));
-        _totalCol = int.Parse(TableRead.Instance.GetData(_tableName, 9999, "c1"));
+        _totalRow = int.Parse(TableDatas.GetData(_tableName, "9999", "c0"));
+        _totalCol = int.Parse(TableDatas.GetData(_tableName, "9999", "c1"));
         _mapSize = new MapSize(0, 0, _totalRow, _totalCol);
     }
 
@@ -45,7 +42,7 @@ public abstract class MapDataBase : IMap
     protected string ReadCellValue(int row, int col)
     {
         string colName = string.Format("c{0}", col);
-        return TableRead.Instance.GetData(_tableName, row, colName);
+        return TableDatas.GetData(_tableName, row.ToString(), colName);
     }
 
     public int CellIndex(int row, int col)
