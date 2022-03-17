@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Text;
 using UnityEngine.Tilemaps;
+using PathFinding;
 
 public class LabyrinthCreate
 {
@@ -36,17 +37,18 @@ public class LabyrinthCreate
             for (int j = 0; j < totalCol; ++j)
             {
                 int index = i * totalCol + j;
-                MapCell mapCell = _mapDataBase.MapCellDic[index];
-                LoadTileAsset(mapCell);
+                Node node = _mapDataBase.Grid()[index];
+                LoadTileAsset(node);
             }
         }
     }
 
-    private void LoadTileAsset(MapCell mapCell)
+    private void LoadTileAsset(Node node)
     {
-        Vector3Int pos = new Vector3Int(mapCell.col, mapCell.row * -1, 0);
+        Position position = _mapDataBase.NodeToPosition(node);
+        Vector3Int pos = new Vector3Int((int)position.X, (int)position.Y, 0);
         Tile tile = _tileMap.GetTile<Tile>(pos);
-        tile.sprite = _labyrinthTexture.SpriteList[mapCell.flag];
+        tile.sprite = _labyrinthTexture.SpriteList[node.Flag];
         _tileMap.RefreshTile(pos);
     }
 

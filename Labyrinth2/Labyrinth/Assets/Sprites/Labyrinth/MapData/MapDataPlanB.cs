@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PathFinding;
 
 public class MapDataPlanB : MapDataBase
 {
@@ -19,15 +20,16 @@ public class MapDataPlanB : MapDataBase
 
     protected override void AnalysisTable()
     {
+        _nodeGrid = new Node[TotalRow * TotalCol];
         for (int i = 0; i < TotalRow; ++i)
         {
             for (int j = 0; j < TotalCol; ++j)
             {
                 int index = 0;
-                MapCell mapCell = new MapCell(i, j);
-                mapCell.value = ReacCell(i, j, ref index);
-                CheckCell(mapCell);
-                MapCellDic.Add(index, mapCell);
+                Node node = new Node(i, j, 4);
+                node.Value = ReacCell(i, j, ref index);
+                CheckCell(node);
+                _nodeGrid[index] = node;
             }
         }
     }
@@ -55,30 +57,30 @@ public class MapDataPlanB : MapDataBase
         return value;
     }
 
-    private void CheckCell(MapCell mapCell)
+    private void CheckCell(Node node)
     {
-        int row = mapCell.row;
-        int col = mapCell.col;
-        for (int i = 0; i < _cellDir.Length; ++i)
+        int row = node.Row;
+        int col = node.Col;
+        for (int i = 0; i < _neighborArr.Length; ++i)
         {
-            int[] arr = _cellDir[i];
+            int[] arr = _neighborArr[i];
             int newRow = row + arr[0];
             int newCol = col + arr[1];
             int value = ReadCall(row + arr[0], col + arr[1]);
-            if (mapCell.value == -1)
+            if (node.Value == -1)
             {
                 if (value == 0)
                 {
-                    mapCell.flag |= (1 << i);
+                    node.Flag |= (1 << i);
                 }
             }
             else
             {
-                if (value == -1 || mapCell.value == value)
+                if (value == -1 || node.Value == value)
                 {
                     continue;
                 }
-                mapCell.flag |= (1 << i);
+                node.Flag |= (1 << i);
             }
         }
     }

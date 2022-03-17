@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using PathFinding;
 
-public class FindPath : MonoBehaviour
+public class FindPath
 {
-    private LabyrinthLogic labyrinthLogic;
-    List<int> list = new List<int>();
-    public void Start()
+    private IMap _imap;
+    private AStar _aStar;
+    List<Node> list = new List<Node>();
+
+    public FindPath(IMap map, AStar aStar)
     {
-        labyrinthLogic = new LabyrinthLogic();
+        _imap = map;
+        _aStar = aStar;
     }
 
     public void Update()
@@ -16,33 +20,19 @@ public class FindPath : MonoBehaviour
     }
 
     private string msg;
-    private void OnGUI()
+    public void OnGUI()
     {
-        if(GUI.Button(new Rect(10, 10, 100, 60), "寻路:递归实现"))
+        if(GUI.Button(new Rect(10, 10, 100, 60), "寻路"))
         {
-            Find(SearchType.RECURSION);
-            SetPathData();
-        }
-
-        if (GUI.Button(new Rect(10, 100, 100, 60), "寻路:迭代实现"))
-        {
-            Find(SearchType.ITERATION);
-            SetPathData();
-        }
-
-        if (labyrinthLogic.ResultList.Count > 0)
-        {
-            if (GUI.Button(new Rect(10, 200, 100, 60), msg))
+            Position from = new Position(2, 0);
+            Position end = new Position(12, 9);
+            Node resultNode = _aStar.SearchPath(from, end);
+            while (null != resultNode)
             {
-                SetPathData();
+                list.Add(resultNode);
+                resultNode = resultNode.Parent;
             }
         }
-    }
-
-    private void Find(SearchType type)
-    {
-        //LabyrinthData.Instance.ResetGrid();
-        //labyrinthLogic.FindPath(LabyrinthData.Instance.Grid, 4, 0, type);
     }
 
     private float interval = 0.06f;
@@ -50,44 +40,27 @@ public class FindPath : MonoBehaviour
     private List<GameObject> goList = new List<GameObject>();
     private void ShowPath()
     {
-        //interval -= Time.deltaTime;
-        //if (interval >= 0)
-        //{
-        //    return;
-        //}
-        //interval = 0.06f;
-
-        //if (list.Count <= 0)
-        //{
-        //    return;
-        //}
-
-        //int n = LabyrinthData.Instance.Grid.Length;
-        //int index = list[0];
-        //list.RemoveAt(0);
-
-        //int row = index / n;
-        //int col = index % n;
-        //Vector3 pos = new Vector3(row, 1, col);
-        //GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        //go.transform.localScale = Vector3.one * 0.5f;
-        //go.transform.localPosition = pos;
-        //go.GetComponent<Renderer>().material.color = Color.green;
-        //goList.Add(go);
-    }
-
-    private void SetPathData()
-    {
-        if (labyrinthLogic.ResultList.Count > 0)
+        interval -= Time.deltaTime;
+        if (interval >= 0)
         {
-            list = labyrinthLogic.ResultList[0];
-            labyrinthLogic.ResultList.RemoveAt(0);
+            return;
         }
-        for (int i = goList.Count - 1; i >= 0; --i)
+        interval = 0.06f;
+
+        if (list.Count <= 0)
         {
-            GameObject.Destroy(goList[i]);
+            return;
         }
-        goList.Clear();
-        msg = string.Format("还有{0}条路径\n展示下一条路径", labyrinthLogic.ResultList.Count);
+
+        Node node = list[0];
+        list.RemoveAt(0);
+
+        Position position = _imap.NodeToPosition(node);
+        Vector3 pos = new Vector3(position.X, position.Y);
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        go.transform.localScale = Vector3.one * 0.5f;
+        go.transform.localPosition = pos;
+        go.GetComponent<Renderer>().material.color = Color.green;
+        goList.Add(go);
     }
 }
