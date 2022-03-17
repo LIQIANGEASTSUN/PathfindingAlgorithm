@@ -5,20 +5,16 @@ using System;
 using System.Text;
 using UnityEngine.Tilemaps;
 
-public class LabyrinthCreate : MonoBehaviour
+public class LabyrinthCreate
 {
-    public static LabyrinthCreate Instance;
     private Tilemap _tileMap;
     private LabyrinthTexture _labyrinthTexture;
-
     private MapDataBase _mapDataBase;
 
-    void Start()
+    public void Init()
     {
-        Instance = this;
         _labyrinthTexture = new LabyrinthTexture();
-
-        _mapDataBase = new MapDataPlanA("labyrinth2");
+        _mapDataBase = new MapDataPlanA("labyrinth1");
 
         GetTileMap();
         Create();
@@ -51,6 +47,5 @@ public class LabyrinthCreate : MonoBehaviour
         Tile tile = _tileMap.GetTile<Tile>(pos);
         tile.sprite = _labyrinthTexture.SpriteList[mapCell.flag];
         _tileMap.RefreshTile(pos);
-        Debug.LogError(mapCell.row + "  " + mapCell.col + "  " + pos + "   " + mapCell.flag);
     }
 }

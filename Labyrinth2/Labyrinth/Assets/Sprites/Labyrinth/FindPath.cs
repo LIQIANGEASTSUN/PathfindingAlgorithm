@@ -42,7 +42,7 @@ public class FindPath : MonoBehaviour
     private void Find(SearchType type)
     {
         //LabyrinthData.Instance.ResetGrid();
-        labyrinthLogic.FindPath(LabyrinthData.Instance.Grid, 4, 0, type);
+        //labyrinthLogic.FindPath(LabyrinthData.Instance.Grid, 4, 0, type);
     }
 
     private float interval = 0.06f;
@@ -50,30 +50,30 @@ public class FindPath : MonoBehaviour
     private List<GameObject> goList = new List<GameObject>();
     private void ShowPath()
     {
-        interval -= Time.deltaTime;
-        if (interval >= 0)
-        {
-            return;
-        }
-        interval = 0.06f;
+        //interval -= Time.deltaTime;
+        //if (interval >= 0)
+        //{
+        //    return;
+        //}
+        //interval = 0.06f;
 
-        if (list.Count <= 0)
-        {
-            return;
-        }
+        //if (list.Count <= 0)
+        //{
+        //    return;
+        //}
 
-        int n = LabyrinthData.Instance.Grid.Length;
-        int index = list[0];
-        list.RemoveAt(0);
+        //int n = LabyrinthData.Instance.Grid.Length;
+        //int index = list[0];
+        //list.RemoveAt(0);
 
-        int row = index / n;
-        int col = index % n;
-        Vector3 pos = new Vector3(row, 1, col);
-        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        go.transform.localScale = Vector3.one * 0.5f;
-        go.transform.localPosition = pos;
-        go.GetComponent<Renderer>().material.color = Color.green;
-        goList.Add(go);
+        //int row = index / n;
+        //int col = index % n;
+        //Vector3 pos = new Vector3(row, 1, col);
+        //GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //go.transform.localScale = Vector3.one * 0.5f;
+        //go.transform.localPosition = pos;
+        //go.GetComponent<Renderer>().material.color = Color.green;
+        //goList.Add(go);
     }
 
     private void SetPathData()
