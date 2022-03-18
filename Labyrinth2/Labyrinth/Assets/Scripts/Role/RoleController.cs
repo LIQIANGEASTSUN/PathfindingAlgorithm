@@ -59,6 +59,10 @@ public class RoleController : SingletonObject<RoleController>
         _roleTr.Translate(dir * _moveSpeed * Time.deltaTime, Space.World);
     }
 
+    /// <summary>
+    /// 将摇杆方向转换为沿着轴(上、下、左、右 _axisArr)的方向
+    /// 摇杆方向与 (上、下、左、右 _axisArr)某一个轴 的点乘 > 0, 则摇杆方向转换为 该轴的方向
+    /// </summary>
     private bool TransitionRockerDir(Vector3 dir, ref Vector3 result)
     {
         DirEnum axis = DirClosetAxis(dir);
@@ -70,6 +74,10 @@ public class RoleController : SingletonObject<RoleController>
         return true;
     }
 
+    /// <summary>
+    /// 将摇杆方向转换为沿着轴(上、下、左、右 _axisArr)的方向
+    /// 如角色当前最近的轴是 上，则摇杆方向与 上(0, 1) 点乘 > 0 则摇杆方向转换为上，否则转换为下
+    /// </summary>
     private bool TransitionRockerDirWithAxis(Vector3 dir, ref Vector3 result, ref DirEnum axis)
     {
         axis = RoleClosestAxis();
@@ -82,6 +90,10 @@ public class RoleController : SingletonObject<RoleController>
         return true;
     }
 
+    /// <summary>
+    /// 沿着轴走的时候将角色贴到轴上，防止坐标偏移
+    /// </summary>
+    /// <param name="axis"></param>
     private void PressRoleToAxis(DirEnum axis)
     {
         Vector3 pos = Position;
@@ -96,6 +108,9 @@ public class RoleController : SingletonObject<RoleController>
         _roleTr.transform.position = pos;
     }
 
+    /// <summary>
+    /// 方向轴对于当前节点是否有效，如果轴方向上有墙，则无效
+    /// </summary>
     private bool ValidAxis(DirEnum axis)
     {
         if (axis == DirEnum.none)
@@ -135,6 +150,10 @@ public class RoleController : SingletonObject<RoleController>
         get { return _rotateSpeed; }
     }
 
+    /// <summary>
+    /// 角色当前所在节点
+    /// </summary>
+    /// <returns></returns>
     private Node CurrentNode()
     {
         if (null != _currentNode)
@@ -212,6 +231,10 @@ public class RoleController : SingletonObject<RoleController>
         return false;
     }
 
+    /// <summary>
+    /// 偏移量 = 角色坐标 - 当前节点坐标
+    /// </summary>
+    /// <returns></returns>
     private Vector2 Offset()
     {
         Vector2 pos = GameServer.GetInstance().MapProxy.NodeToPosition(_currentNode);
