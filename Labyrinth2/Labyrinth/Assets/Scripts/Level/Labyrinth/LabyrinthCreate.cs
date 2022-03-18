@@ -13,6 +13,11 @@ public class LabyrinthCreate
 
     public LabyrinthCreate()
     {
+
+    }
+
+    public void Init()
+    {
         _labyrinthTexture = new LabyrinthTexture();
         GetTileMap();
         Create();

@@ -17,6 +17,17 @@ public class Level
         _mapController = new MapController(_mapData);
         _labyrinthCreate = new LabyrinthCreate();
         _pathFind = new PathFind();
+
+        #region GameServer Register
+        GameServer.GetInstance().SetMapProxy(_mapController);
+        #endregion
+
+        Init();
+    }
+
+    public void Init()
+    {
+        _labyrinthCreate.Init();
     }
 
     public void Update()
@@ -28,4 +39,10 @@ public class Level
 
         RoleController.GetInstance().LateUpdate();
     }
+
+    public void Release()
+    {
+
+    }
+
 }
