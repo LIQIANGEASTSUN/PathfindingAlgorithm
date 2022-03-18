@@ -45,8 +45,8 @@ public class LabyrinthCreate
 
     private void LoadTileAsset(Node node)
     {
-        Position position = _mapData.NodeToTilePosition(node);
-        Vector3Int pos = new Vector3Int((int)position.X, (int)position.Y, 0);
+        PositionInt position = _mapData.NodeToTilePosition(node);
+        Vector3Int pos = new Vector3Int(position.X, position.Y, 0);
         Tile tile = _tileMap.GetTile<Tile>(pos);
         tile.sprite = _labyrinthTexture.SpriteList[node.Flag];
         _tileMap.RefreshTile(pos);

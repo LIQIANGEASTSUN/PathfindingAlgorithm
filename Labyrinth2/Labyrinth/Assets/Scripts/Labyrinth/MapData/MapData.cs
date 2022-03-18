@@ -160,9 +160,9 @@ public class MapData : IMap
         return position;
     }
 
-    public Position NodeToTilePosition(Node node)
+    public PositionInt NodeToTilePosition(Node node)
     {
-        Position position = new Position(node.Col, node.Row * -1);
+        PositionInt position = new PositionInt(node.Col, node.Row * -1);
         return position;
     }
 

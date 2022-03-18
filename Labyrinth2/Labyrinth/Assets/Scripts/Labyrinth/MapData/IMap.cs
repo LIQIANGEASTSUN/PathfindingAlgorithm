@@ -22,7 +22,7 @@ namespace PathFinding
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        Position NodeToTilePosition(Node node);
+        PositionInt NodeToTilePosition(Node node);
 
         /// <summary>
         /// 获取 Node 的第 index 个邻居

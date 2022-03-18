@@ -43,6 +43,42 @@ namespace PathFinding
         }
     }
 
+    public struct PositionInt
+    {
+        private int _x;
+        private int _y;
+
+        public PositionInt(int x, int y)
+        {
+            _x = x;
+            _y = y;
+        }
+
+        public int X
+        {
+            get { return _x; }
+        }
+
+        public int Y
+        {
+            get { return _y; }
+        }
+        public static PositionInt operator -(PositionInt left, PositionInt right)
+        {
+            PositionInt p = new PositionInt(left.X - right.X, left.Y - right.Y);
+            return p;
+        }
+        public static PositionInt operator +(PositionInt left, PositionInt right)
+        {
+            PositionInt p = new PositionInt(left.X + right.X, left.Y + right.Y);
+            return p;
+        }
+        public static int Dot(PositionInt left, PositionInt right)
+        {
+            return left.X * right.X + left.Y * right.Y;
+        }
+    }
+
     public enum NodeType
     {
         /// <summary>
