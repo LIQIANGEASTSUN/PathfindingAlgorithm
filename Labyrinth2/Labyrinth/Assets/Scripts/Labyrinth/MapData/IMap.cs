@@ -1,4 +1,6 @@
 ﻿
+using UnityEngine;
+
 namespace PathFinding
 {
     public interface IMap
@@ -15,14 +17,14 @@ namespace PathFinding
         /// <summary>
         /// 根据 Node 获取坐标
         /// </summary>
-        Position NodeToPosition(Node node);
+        Vector2 NodeToPosition(Node node);
 
         /// <summary>
         /// 根据 Node 获取 Tile 坐标
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        PositionInt NodeToTilePosition(Node node);
+        Vector3Int NodeToTilePosition(Node node);
 
         /// <summary>
         /// 获取 Node 的第 index 个邻居

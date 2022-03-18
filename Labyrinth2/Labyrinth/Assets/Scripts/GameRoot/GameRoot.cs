@@ -39,8 +39,8 @@ public class GameRoot : MonoBehaviour
             }
             else
             {
-                Position position = _labyrinthCreate.MapData.NodeToPosition(node);
-                Debug.LogError(go.transform.position.ToString("f2") + "  Node:" + new Vector2Int(node.Row, node.Col) + "   position:" + position.X + ", " + position.Y);
+                Vector2 position = _labyrinthCreate.MapData.NodeToPosition(node);
+                Debug.LogError(go.transform.position.ToString("f2") + "  Node:" + new Vector2Int(node.Row, node.Col) + "   position:" + position.x + ", " + position.y);
             }
         }
     }

@@ -53,11 +53,10 @@ public class FindPath
         Node node = list[list.Count - 1];
         list.RemoveAt(list.Count - 1);
 
-        Position position = _imap.NodeToPosition(node);
-        Vector3 pos = new Vector3(position.X, position.Y, 0);
+        Vector2 position = _imap.NodeToPosition(node);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         go.transform.localScale = Vector3.one * 0.5f;
-        go.transform.localPosition = pos;
+        go.transform.localPosition = position;
         go.GetComponent<Renderer>().material.color = Color.green;
         goList.Add(go);
     }

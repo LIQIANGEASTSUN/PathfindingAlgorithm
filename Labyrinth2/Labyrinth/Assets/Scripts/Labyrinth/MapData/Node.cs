@@ -3,81 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace PathFinding
 {
 
-    public struct Position
-    {
-        private float _x;
-        private float _y;
+    //public struct Position
+    //{
+    //    private float _x;
+    //    private float _y;
 
-        public Position(float x, float y)
-        {
-            _x = x;
-            _y = y;
-        }
+    //    public Position(float x, float y)
+    //    {
+    //        _x = x;
+    //        _y = y;
+    //    }
 
-        public float X
-        {
-            get { return _x; }
-        }
+    //    public float X
+    //    {
+    //        get { return _x; }
+    //    }
 
-        public float Y
-        {
-            get { return _y; }
-        }
-        public static Position operator- (Position left, Position right)
-        {
-            Position p = new Position(left.X - right.X, left.Y - right.Y);
-            return p;
-        }
-        public static Position operator+ (Position left, Position right)
-        {
-            Position p = new Position(left.X + right.X, left.Y + right.Y);
-            return p;
-        }
-        public static float Dot(Position left, Position right)
-        {
-            return left.X * right.X + left.Y * right.Y;
-        }
-    }
-
-    public struct PositionInt
-    {
-        private int _x;
-        private int _y;
-
-        public PositionInt(int x, int y)
-        {
-            _x = x;
-            _y = y;
-        }
-
-        public int X
-        {
-            get { return _x; }
-        }
-
-        public int Y
-        {
-            get { return _y; }
-        }
-        public static PositionInt operator -(PositionInt left, PositionInt right)
-        {
-            PositionInt p = new PositionInt(left.X - right.X, left.Y - right.Y);
-            return p;
-        }
-        public static PositionInt operator +(PositionInt left, PositionInt right)
-        {
-            PositionInt p = new PositionInt(left.X + right.X, left.Y + right.Y);
-            return p;
-        }
-        public static int Dot(PositionInt left, PositionInt right)
-        {
-            return left.X * right.X + left.Y * right.Y;
-        }
-    }
+    //    public float Y
+    //    {
+    //        get { return _y; }
+    //    }
+    //    public static Position operator- (Position left, Position right)
+    //    {
+    //        Position p = new Position(left.X - right.X, left.Y - right.Y);
+    //        return p;
+    //    }
+    //    public static Position operator+ (Position left, Position right)
+    //    {
+    //        Position p = new Position(left.X + right.X, left.Y + right.Y);
+    //        return p;
+    //    }
+    //    public static float Dot(Position left, Position right)
+    //    {
+    //        return left.X * right.X + left.Y * right.Y;
+    //    }
+    //}
 
     public enum NodeType
     {
@@ -131,7 +96,7 @@ namespace PathFinding
         private float _cost;
         private NodeType _nodeType;
         private NodeState _nodeState;
-        private List<Position> _forceNeighbourList = new List<Position>();
+        private List<Vector2> _forceNeighbourList = new List<Vector2>();
         private int _value;
         private int _flag;
 
@@ -219,7 +184,7 @@ namespace PathFinding
             ForceNeighbourList.Clear();
         }
 
-        public List<Position> ForceNeighbourList
+        public List<Vector2> ForceNeighbourList
         {
             get { return _forceNeighbourList; }
         }

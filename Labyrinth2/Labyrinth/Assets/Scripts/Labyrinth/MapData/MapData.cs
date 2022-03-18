@@ -152,17 +152,17 @@ public class MapData : IMap
     /// <summary>
     /// 根据 Node 获取坐标
     /// </summary>
-    public Position NodeToPosition(Node node)
+    public Vector2 NodeToPosition(Node node)
     {
         int x = 1 + node.Col;
         int y = 1 - node.Row;
-        Position position = new Position(x, y);
+        Vector2 position = new Vector2(x, y);
         return position;
     }
 
-    public PositionInt NodeToTilePosition(Node node)
+    public Vector3Int NodeToTilePosition(Node node)
     {
-        PositionInt position = new PositionInt(node.Col, node.Row * -1);
+        Vector3Int position = new Vector3Int(node.Col, node.Row * -1, 0);
         return position;
     }
 
