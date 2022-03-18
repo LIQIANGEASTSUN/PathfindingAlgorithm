@@ -1,13 +1,21 @@
 ﻿
 public enum StateEnum
 {
-    EAT = 0,        // 吃饭
 
-    RESET = 1,      // 休息
+    #region Scene
+    /// <summary>
+    /// 游戏 Loading 
+    /// </summary>
+    SCENE_LOADING,
+    /// <summary>
+    /// 家园
+    /// </summary>
+    SCENE_HOME,
+    /// <summary>
+    /// 关卡
+    /// </summary>
+    SCENE_LEVEL,
+    #endregion
 
-    BASKETBALL = 2, // 打篮球
 
-    HOMEWORK = 3,   // 写作业
-
-    LEVEL_LOADING,  // 游戏 Loading 
 }

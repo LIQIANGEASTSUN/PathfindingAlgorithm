@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateLevelBase : StateBase
+public class StateSceneBase : StateBase
 {
     public override void OnEnter()
     {
