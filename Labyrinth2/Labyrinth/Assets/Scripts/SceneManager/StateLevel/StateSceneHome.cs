@@ -13,4 +13,11 @@ public class StateSceneHome : StateSceneBase
         _state = StateEnum.SCENE_HOME;
     }
 
+    public override void OnEnter()
+    {
+        base.OnEnter();
+
+        Debug.LogError("HomeEnter");
+    }
+
 }

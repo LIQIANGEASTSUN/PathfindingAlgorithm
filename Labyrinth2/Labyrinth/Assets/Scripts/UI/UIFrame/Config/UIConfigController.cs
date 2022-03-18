@@ -46,6 +46,7 @@ public class UIConfigController
     private void RegisterPlaneInfo()
     {
         AddPlaneInfo(UIPlaneType.Role_Operation, new UIRoleOperationPlane(), "UIRoleOperationView", "MainLayer");
+        AddPlaneInfo(UIPlaneType.Scene_Loading, new UISceneLoadingPanel(), "UILoadingView", "MainLayer");
     }
 
     // 注册互斥面板

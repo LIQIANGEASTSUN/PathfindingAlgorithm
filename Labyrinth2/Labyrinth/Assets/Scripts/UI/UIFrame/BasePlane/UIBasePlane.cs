@@ -56,7 +56,9 @@ public abstract class UIBasePlane : IUIController
 
     protected IUIView View
     {
-        get { return _view; }
+        get {
+            return _view;
+        }
         set { _view = value; }
     }
 

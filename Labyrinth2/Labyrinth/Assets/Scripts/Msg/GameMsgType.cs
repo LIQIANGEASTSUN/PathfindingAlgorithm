@@ -2,6 +2,7 @@
 {
     MSG_CHANGE_SCENE,  // 切换场景
 
+    MSG_CONFIG_LOADING_PROCESS, // 配置文件加载进度
 
 
     MSG_PATH_FIND,     // 寻路

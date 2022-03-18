@@ -17,6 +17,7 @@ public class ConfigLoad : MonoBehaviour
     private List<string> configList;
     private List<string> behaviorCfgList;
     private int totleConfigNum;
+    private int loadedNum = 0;
 
     public void Awake()
     {
@@ -39,15 +40,24 @@ public class ConfigLoad : MonoBehaviour
         {
             yield return StartCoroutine(LoadData("CSVAssets", configList[i], 0));
             TableDatas.LoadCsv(title, textContent);
+            LoadComplete();
         }
 
         for (int i = 0; i < behaviorCfgList.Count; ++i)
         {
             yield return StartCoroutine(LoadData("Bina", behaviorCfgList[i], 1));
             //DataCenter.behaviorData.LoadData(byteData);
+            LoadComplete();
         }
 
         handler?.Invoke();
+    }
+
+    private void LoadComplete()
+    {
+        ++loadedNum;
+        float value = loadedNum * 1.0f / totleConfigNum;
+        GameNotifycation.GetInstance().Notify<float>(ENUM_MSG_TYPE.MSG_CONFIG_LOADING_PROCESS, value);
     }
 
     StringBuilder _sb = new StringBuilder();

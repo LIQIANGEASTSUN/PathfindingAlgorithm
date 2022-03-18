@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 6792189534822649347}
   - component: {fileID: 2453365152778003944}
   m_Layer: 5
-  m_Name: RoleOperationView
+  m_Name: UIRoleOperationView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -276,8 +276,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -99.999985, y: -30}
-  m_SizeDelta: {x: 160, y: 50}
+  m_AnchoredPosition: {x: -100, y: -50}
+  m_SizeDelta: {x: 157, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8988263896043114441
 CanvasRenderer:
@@ -306,8 +306,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: fd9a188271420f442976c1da99f9bbad, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

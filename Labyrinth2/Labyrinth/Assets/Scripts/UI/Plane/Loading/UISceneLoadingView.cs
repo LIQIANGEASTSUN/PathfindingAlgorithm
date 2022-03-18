@@ -29,8 +29,15 @@ public class UISceneLoadingView : IUIView
         GameNotifycation.GetInstance().Notify<int>(ENUM_MSG_TYPE.MSG_CHANGE_SCENE, (int)StateEnum.SCENE_HOME);
     }
 
-    private void SliderValueChange(float value)
+    public void SliderValueChange(float value)
     {
         _slider.value = value;
     }
+
+    public void LoadingComplete()
+    {
+        //_slider.gameObject.SetActive(false);
+        _startBtn.gameObject.SetActive(true);
+    }
+
 }
