@@ -19,17 +19,13 @@ public class FindPath
         ShowPath();
     }
 
-    private string msg;
-    public void OnGUI()
+    public void Find()
     {
-        if(GUI.Button(new Rect(10, 10, 100, 60), "寻路"))
+        Node resultNode = _aStar.SearchPath(2, 0, 12, 9);
+        while (null != resultNode)
         {
-            Node resultNode = _aStar.SearchPath(2, 0, 12, 9);
-            while (null != resultNode)
-            {
-                list.Add(resultNode);
-                resultNode = resultNode.Parent;
-            }
+            list.Add(resultNode);
+            resultNode = resultNode.Parent;
         }
     }
 

@@ -171,9 +171,7 @@ public class MapData : IMap
     /// </summary>
     public Node NodeNeighbor(Node node, int index, ref float distance)
     {
-        int row = node.Row + _neighborArr[index][0];
-        int col = node.Col + _neighborArr[index][1];
-        Node temp = GetNode(row, col);
+        Node temp = NodeNeighbor(node, index);
         if (null != temp)
         {
             distance = (float)Math.Sqrt(Math.Abs(_neighborArr[index][0]) + Math.Abs(_neighborArr[index][1]));
