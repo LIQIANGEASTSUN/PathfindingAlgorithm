@@ -34,8 +34,12 @@ public class RoleRockerInput : IRock
 
         // 设置开始拖拽区域为：从屏幕左下角到屏幕正中间之间的位置
         // 只要是在左侧屏幕开始拖拽，都能产生拖拽效果
-        Vector2 minPickPos = new Vector2(0, 0);
-        Vector2 pickSize = new Vector2(Screen.width * 0.5f, Screen.height);
+
+        Vector2 btnPosition = Utility.PositionConvert.UIPositionToScreenPosition(rockerBtnTr.position);
+        //Vector2 minPickPos = new Vector2(0, 0);
+        //Vector2 pickSize = new Vector2(Screen.width * 0.5f, Screen.height);
+        Vector2 minPickPos = btnPosition - new Vector2(150, 150);
+        Vector2 pickSize = new Vector2(300, 300);
         Vector2 minActivePos = minPickPos;
         // 设置拖拽过程中手指在activeSize范围内都可以拖动
         Vector2 activeSize = new Vector2(Screen.width, Screen.height);

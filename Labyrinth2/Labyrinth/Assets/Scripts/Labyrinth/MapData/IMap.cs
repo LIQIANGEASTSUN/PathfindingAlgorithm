@@ -30,6 +30,8 @@ namespace PathFinding
         Node NodeNeighbor(Node node, int index, ref float distance);
         Node NodeNeighbor(Node node, int index);
         Node GetNode(int row, int col);
+
+        bool IsValid(int row, int col);
     }
 
     public struct MapSize

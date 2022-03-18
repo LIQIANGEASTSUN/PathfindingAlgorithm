@@ -17,7 +17,8 @@ public class GameRoot : MonoBehaviour
         ConfigLoad.Instance.Load(LoadConfigCallBack);
 
         go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        go.transform.position = new Vector3(0, 0, -1);
+        go.transform.position = new Vector3(0.5f, 1.5f, 0);
+        go.transform.localScale = Vector3.one * 0.2f;
     }
 
     // Update is called once per frame
@@ -32,7 +33,15 @@ public class GameRoot : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             Node node = _labyrinthCreate.MapData.PositionToNode(go.transform.position.x, go.transform.position.y);
-            Debug.LogError(node.Row + "   " + node.Col);
+            if (null == node)
+            {
+                Debug.LogError("node is null:" + go.transform.position.ToString("f2"));
+            }
+            else
+            {
+                Position position = _labyrinthCreate.MapData.NodeToPosition(node);
+                Debug.LogError(go.transform.position.ToString("f2") + "  Node:" + new Vector2Int(node.Row, node.Col) + "   position:" + position.X + ", " + position.Y);
+            }
         }
     }
 

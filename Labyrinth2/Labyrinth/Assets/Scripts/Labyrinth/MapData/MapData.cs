@@ -144,14 +144,9 @@ public class MapData : IMap
     /// </summary>
     public Node PositionToNode(float x, float y)
     {
-        //int col = 0;
-        //int row = 0;
-        //x = col + 1;
-        //y = row * -1 + 1;
-        int row = (int)(1 - y);
-        int col = (int)(x - 1);
-        int index = CellIndex(row, col);
-        return _nodeGrid[index];
+        int row = Mathf.CeilToInt(1.5f - y) - 1;
+        int col = Mathf.CeilToInt(x - 0.5f) - 1;
+        return GetNode(row, col);
     }
 
     /// <summary>
@@ -159,7 +154,9 @@ public class MapData : IMap
     /// </summary>
     public Position NodeToPosition(Node node)
     {
-        Position position = new Position(node.Col, node.Row * -1) + new Position(1, 1);
+        int x = 1 + node.Col;
+        int y = 1 - node.Row;
+        Position position = new Position(x, y);
         return position;
     }
 
@@ -194,7 +191,7 @@ public class MapData : IMap
 
     public Node GetNode(int row, int col)
     {
-        if (row < 0 || row >= TotalRow || col < 0 || col >= TotalCol)
+        if (!IsValid(row, col))
         {
             return null;
         }
@@ -202,4 +199,10 @@ public class MapData : IMap
         int index = CellIndex(row, col);
         return _nodeGrid[index];
     }
+
+    public bool IsValid(int row, int col)
+    {
+        return (row >= 0 && row < TotalRow && col >= 0 && col < TotalCol);
+    }
+
 }
