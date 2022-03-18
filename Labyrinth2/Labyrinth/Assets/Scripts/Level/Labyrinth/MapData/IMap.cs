@@ -5,6 +5,8 @@ namespace PathFinding
 {
     public interface IMap
     {
+        void Init();
+
         Node[] Grid();
 
         MapSize MapSize();
@@ -41,6 +43,8 @@ namespace PathFinding
         int TotalRow { get; set; }
 
         int TotalCol { get; set; }
+
+        void Release();
     }
 
     public struct MapSize

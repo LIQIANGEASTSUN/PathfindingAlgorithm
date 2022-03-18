@@ -51,4 +51,9 @@ public class LabyrinthCreate
         tile.sprite = _labyrinthTexture.SpriteList[node.Flag];
         _tileMap.RefreshTile(position);
     }
+
+    public void Release()
+    {
+
+    }
 }

@@ -14,9 +14,10 @@ public class Level
     {
         string mapFile = "labyrinth2";
         _mapData = new MapData(mapFile);
-        _mapController = new MapController(_mapData);
         _labyrinthCreate = new LabyrinthCreate();
         _pathFind = new PathFind();
+
+        _mapController = new MapController(_mapData);
 
         #region GameServer Register
         GameServer.GetInstance().SetMapProxy(_mapController);
@@ -27,7 +28,9 @@ public class Level
 
     public void Init()
     {
+        _mapData.Init();
         _labyrinthCreate.Init();
+        _pathFind.Init();
     }
 
     public void Update()
@@ -42,7 +45,9 @@ public class Level
 
     public void Release()
     {
-
+        _mapData.Release();
+        _labyrinthCreate.Release();
+        _pathFind.Release();
     }
 
 }

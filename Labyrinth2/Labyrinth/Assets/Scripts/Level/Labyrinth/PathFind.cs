@@ -13,6 +13,11 @@ public class PathFind
         _aStar = new AStar();
     }
 
+    public void Init()
+    {
+
+    }
+
     public void Update()
     {
         ShowPath();
@@ -63,5 +68,10 @@ public class PathFind
         go.transform.localPosition = position;
         go.GetComponent<Renderer>().material.color = Color.green;
         goList.Add(go);
+    }
+
+    public void Release()
+    {
+        Clear();
     }
 }

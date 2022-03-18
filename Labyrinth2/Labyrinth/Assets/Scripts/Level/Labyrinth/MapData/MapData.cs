@@ -23,7 +23,6 @@ public class MapData : IMap
     public MapData(string tableName)
     {
         SetTableName(tableName);
-        Init();
     }
 
     public void SetTableName(string tableName)
@@ -31,7 +30,7 @@ public class MapData : IMap
         _tableName = tableName;
     }
 
-    protected void Init()
+    public void Init()
     {
         _totalRow = int.Parse(TableDatas.GetData(_tableName, "9999", "c0"));
         _totalCol = int.Parse(TableDatas.GetData(_tableName, "9999", "c1"));
@@ -203,4 +202,9 @@ public class MapData : IMap
         return (row >= 0 && row < TotalRow && col >= 0 && col < TotalCol);
     }
 
+    public void Release()
+    {
+        _nodeGrid = null;
+        _tableDic.Clear();
+    }
 }
