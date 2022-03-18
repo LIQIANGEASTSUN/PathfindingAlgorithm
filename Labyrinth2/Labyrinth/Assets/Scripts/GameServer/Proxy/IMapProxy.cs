@@ -6,6 +6,8 @@ using UnityEngine;
 public interface IMapProxy
 {
 
+    IMap IMap();
+
     /// <summary>
     /// 根据坐标获取 Node
     /// </summary>

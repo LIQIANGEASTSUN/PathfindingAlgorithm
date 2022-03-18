@@ -7,21 +7,16 @@ namespace PathFinding
     // A* 寻路算法
     public class AStar
     {
-        // 地图数据
-        private IMap _map;
-
         // 小根堆保存开放节点，目的在于提高获取最小F值点效率
         private Heap<Node> openHeap;
         // closed 表
         private List<Node> closedList;
 
-        public AStar(IMap map)
+        public AStar()
         {
             openHeap = new Heap<Node>();
             openHeap.SetHeapType(false);
             closedList = new List<Node>();
-
-            _map = map;
         }
 
         public Node SearchPath(int startRow, int startCol, int endRow, int endCol)
@@ -40,9 +35,9 @@ namespace PathFinding
             closedList.Clear();
 
             // 起点
-            Node fromNode = _map.GetNode(startRow, startCol);
+            Node fromNode = GameServer.GetInstance().MapProxy.IMap().GetNode(startRow, startCol);
             // 终点
-            Node desitinationNode = _map.GetNode(endRow, endCol);
+            Node desitinationNode = GameServer.GetInstance().MapProxy.IMap().GetNode(endRow, endCol);
             if (fromNode.Row == desitinationNode.Row && fromNode.Col == desitinationNode.Col)
             {
                 return null;
@@ -82,7 +77,7 @@ namespace PathFinding
             for (int i = 0; i < currentNode.neighborCount; ++i)
             {
                 float distance = 0;
-                Node neighborNode = _map.NodeNeighbor(currentNode, i, ref distance);
+                Node neighborNode = GameServer.GetInstance().MapProxy.IMap().NodeNeighbor(currentNode, i, ref distance);
                 int bit = 1 << i;
                 if ((currentNode.Flag & bit) != 0)
                 {

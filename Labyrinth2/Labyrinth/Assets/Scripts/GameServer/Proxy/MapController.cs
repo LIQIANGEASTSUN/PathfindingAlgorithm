@@ -5,23 +5,29 @@ using UnityEngine;
 
 public class MapController : IMapProxy
 {
-    public MapController()
+    private IMap _imap;
+    public MapController(IMap imap)
     {
+        _imap = imap;
+    }
 
+    public IMap IMap()
+    {
+        return _imap;
     }
 
     public Node NodeNeighbor(Node node, int index)
     {
-        throw new System.NotImplementedException();
+        return _imap.NodeNeighbor(node, index);
     }
 
     public Vector2 NodeToPosition(Node node)
     {
-        throw new System.NotImplementedException();
+        return _imap.NodeToPosition(node);
     }
 
     public Node PositionToNode(float x, float y)
     {
-        throw new System.NotImplementedException();
+        return _imap.PositionToNode(x, y);
     }
 }

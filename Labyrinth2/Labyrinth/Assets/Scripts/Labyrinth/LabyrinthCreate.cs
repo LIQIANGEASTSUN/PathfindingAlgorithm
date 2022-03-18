@@ -10,13 +10,15 @@ public class LabyrinthCreate
 {
     private Tilemap _tileMap;
     private LabyrinthTexture _labyrinthTexture;
-    private MapData _mapData;
+
+    public LabyrinthCreate()
+    {
+        Init();
+    }
 
     public void Init()
     {
         _labyrinthTexture = new LabyrinthTexture();
-        //_mapDataBase = new MapDataPlanA("labyrinth1");
-        _mapData = new MapData("labyrinth2");
 
         GetTileMap();
         Create();
@@ -30,14 +32,14 @@ public class LabyrinthCreate
 
     private void Create()
     {
-        int totalRow = _mapData.TotalRow;
-        int totalCol = _mapData.TotalCol;
+        int totalRow = GameServer.GetInstance().MapProxy.IMap().TotalRow;
+        int totalCol = GameServer.GetInstance().MapProxy.IMap().TotalCol;
         for (int i = 0; i < totalRow; ++i)
         {
             for (int j = 0; j < totalCol; ++j)
             {
                 int index = i * totalCol + j;
-                Node node = _mapData.Grid()[index];
+                Node node = GameServer.GetInstance().MapProxy.IMap().Grid()[index];
                 LoadTileAsset(node);
             }
         }
@@ -45,14 +47,10 @@ public class LabyrinthCreate
 
     private void LoadTileAsset(Node node)
     {
-        Vector3Int position = _mapData.NodeToTilePosition(node);
+        Vector3Int position = GameServer.GetInstance().MapProxy.IMap().NodeToTilePosition(node);
         Tile tile = _tileMap.GetTile<Tile>(position);
         tile.sprite = _labyrinthTexture.SpriteList[node.Flag];
         _tileMap.RefreshTile(position);
     }
 
-    public MapData MapData
-    {
-        get { return _mapData; }
-    }
 }

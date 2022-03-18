@@ -4,13 +4,11 @@ using PathFinding;
 
 public class FindPath
 {
-    private IMap _imap;
     private AStar _aStar;
     List<Node> list = new List<Node>();
 
-    public FindPath(IMap map, AStar aStar)
+    public FindPath(AStar aStar)
     {
-        _imap = map;
         _aStar = aStar;
     }
 
@@ -49,7 +47,7 @@ public class FindPath
         Node node = list[list.Count - 1];
         list.RemoveAt(list.Count - 1);
 
-        Vector2 position = _imap.NodeToPosition(node);
+        Vector2 position = GameServer.GetInstance().MapProxy.NodeToPosition(node);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         go.transform.localScale = Vector3.one * 0.5f;
         go.transform.localPosition = position;

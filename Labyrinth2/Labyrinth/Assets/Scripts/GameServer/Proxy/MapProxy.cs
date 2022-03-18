@@ -11,6 +11,11 @@ public class MapProxy : IMapProxy
         this.mapProxy = mapProxy;
     }
 
+    public IMap IMap()
+    {
+        return mapProxy.IMap();
+    }
+
     public Vector2 NodeToPosition(Node node)
     {
         return mapProxy.NodeToPosition(node);

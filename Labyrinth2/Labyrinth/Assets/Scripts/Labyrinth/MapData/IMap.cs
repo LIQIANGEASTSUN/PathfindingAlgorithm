@@ -37,6 +37,10 @@ namespace PathFinding
         Node GetNode(int row, int col);
 
         bool IsValid(int row, int col);
+
+        int TotalRow { get; set; }
+
+        int TotalCol { get; set; }
     }
 
     public struct MapSize
