@@ -30,11 +30,21 @@ public class RoleController : SingletonObject<RoleController>
 
     public RoleController()
     {
-        _roleTr = GameObject.Find("Role").transform;
+        LoadRole();
     }
 
     public void LateUpdate()
     {
+    }
+
+    private void LoadRole()
+    {
+        GameObject go = ResourcesManager.GetInstance().Load<GameObject>("Role");
+        go = GameObject.Instantiate(go);
+        _roleTr = go.transform;
+        _roleTr.position = new Vector3(1, -1, 0);
+        _roleTr.localScale = Vector3.one;
+        _roleTr.rotation = Quaternion.identity;
     }
 
     public void Move(Vector3 dir)

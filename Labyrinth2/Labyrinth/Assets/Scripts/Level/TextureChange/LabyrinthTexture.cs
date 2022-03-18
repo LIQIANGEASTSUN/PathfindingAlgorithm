@@ -13,7 +13,7 @@ public class LabyrinthTexture
         {
             //string filePath = string.Format("Assets/Resources/Tile{0}.png", i);
             string filePath = string.Format("Tile{0}", i);
-            Texture2D texture2D = Resources.Load<Texture2D>(filePath);
+            Texture2D texture2D = ResourcesManager.GetInstance().Load<Texture2D>(filePath);
             textureChange.WriteColor(i, texture2D);
             Sprite sprite = TextureToSprite(texture2D);
             _spriteList.Add(sprite);

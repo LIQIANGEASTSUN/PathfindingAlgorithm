@@ -162,7 +162,7 @@ public class UIManager : SingletonObject<UIManager>
         UIConfig uiConfig = _uiConfigController.GetConfig(type);
         if (null == uiConfig.BasePlane.Tr)
         {
-            GameObject go = Resources.Load<GameObject>(uiConfig.AssetName);
+            GameObject go = ResourcesManager.GetInstance().Load<GameObject>(uiConfig.AssetName);
             Transform layerTr = LayerTransform(uiConfig.Layer);
             GameObject instance = GameObject.Instantiate(go, layerTr);
             instance.transform.SetAsLastSibling();
