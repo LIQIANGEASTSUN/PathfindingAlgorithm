@@ -12,6 +12,7 @@ public class GameRoot : MonoBehaviour
     {
         Instance = this;
         ConfigLoad.Instance.Load(LoadConfigCallBack);
+        UIManager.GetInstance().Open(UIPlaneType.Role_Operation, null);
     }
 
     // Update is called once per frame
