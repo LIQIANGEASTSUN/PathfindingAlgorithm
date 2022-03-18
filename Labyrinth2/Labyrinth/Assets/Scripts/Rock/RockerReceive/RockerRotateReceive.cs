@@ -19,10 +19,10 @@ public class RockerRotateReceive : IRock
 
     public void Move(Vector2 pos, float percentage)
     {
-        //Vector3 dir = (Vector3)(pos.normalized);
-        //float rockerAngle = AngleTools.AngleUI(Vector3.up, dir);
-        //Quaternion quaternion = Quaternion.AngleAxis(rockerAngle, Vector3.forward);
-        //RoleController.GetInstance().Rotate(quaternion);
+        Vector3 dir = (Vector3)(pos.normalized);
+        float rockerAngle = AngleTools.AngleUI(Vector3.up, dir);
+        Quaternion quaternion = Quaternion.AngleAxis(rockerAngle, Vector3.forward);
+        RoleController.GetInstance().Rotate(quaternion);
     }
 
     public void End(Vector2 pos)

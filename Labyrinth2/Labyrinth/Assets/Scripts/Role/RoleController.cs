@@ -15,7 +15,7 @@ public enum DirEnum
 public class RoleController : SingletonObject<RoleController>
 {
     private Transform _roleTr;
-    private float _moveSpeed = 0.5f;
+    private float _moveSpeed = 1.5f;
     private float _rotateSpeed = 0.2f;
     private Node _currentNode;
     private Vector2 _currentNodePosition;
@@ -54,21 +54,9 @@ public class RoleController : SingletonObject<RoleController>
             {
                 return;
             }
-
-            Debug.LogError(dir.ToString("f2"));
-            //Vector3 pos = Position;
-            //if (axis == DirEnum.up || axis == DirEnum.down)
-            //{
-            //    pos.x = _currentNodePosition.x;
-            //}
-            //else if (axis == DirEnum.left || axis == DirEnum.right)
-            //{
-            //    pos.y = _currentNodePosition.y;
-            //}
-            //_roleTr.transform.position = pos;
+            PressRoleToAxis(axis);
         }
         _roleTr.Translate(dir * _moveSpeed * Time.deltaTime, Space.World);
-        MoveDirToRotate(dir);
     }
 
     private bool TransitionRockerDir(Vector3 dir, ref Vector3 result)
@@ -89,13 +77,23 @@ public class RoleController : SingletonObject<RoleController>
         {
             return false;
         }
-        result = _axisArr[(int)axis];
         float dot = Vector2.Dot(dir, _axisArr[(int)axis]);
-        if (dot < 0)
-        {
-            result *= 1;
-        }
+        result = (dot > 0) ? _axisArr[(int)axis] : _axisArr[(int)axis] * -1;
         return true;
+    }
+
+    private void PressRoleToAxis(DirEnum axis)
+    {
+        Vector3 pos = Position;
+        if (axis == DirEnum.up || axis == DirEnum.down)
+        {
+            pos.x = _currentNodePosition.x;
+        }
+        else if (axis == DirEnum.left || axis == DirEnum.right)
+        {
+            pos.y = _currentNodePosition.y;
+        }
+        _roleTr.transform.position = pos;
     }
 
     private bool ValidAxis(DirEnum axis)
@@ -106,13 +104,6 @@ public class RoleController : SingletonObject<RoleController>
         }
         int bit = 1 << (int)axis;
         return (_currentNode.Flag & bit) == 0;
-    }
-
-    private void MoveDirToRotate(Vector3 dir)
-    {
-        float rockerAngle = AngleTools.AngleUI(Vector3.up, dir);
-        Quaternion quaternion = Quaternion.AngleAxis(rockerAngle, Vector3.forward);
-        Rotate(quaternion);
     }
 
     public void Rotate(Quaternion quaternion)
