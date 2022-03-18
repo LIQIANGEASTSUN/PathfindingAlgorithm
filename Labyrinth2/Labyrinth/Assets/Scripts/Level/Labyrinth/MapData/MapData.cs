@@ -10,6 +10,7 @@ public class MapData : IMap
     private MapSize _mapSize;
     private int _totalRow;
     private int _totalCol;
+    private float _nodeSize = 1;
     protected Node[] _nodeGrid = new Node[] { };
     private Dictionary<int, int> _tableDic = new Dictionary<int, int>();
 
@@ -126,6 +127,12 @@ public class MapData : IMap
     {
         get { return _totalCol; }
         set { _totalCol = value; }
+    }
+
+    public float NodeSize
+    {
+        get { return _nodeSize; }
+        set { _nodeSize = value; }
     }
 
     public Node[] Grid()

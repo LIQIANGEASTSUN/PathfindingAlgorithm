@@ -44,6 +44,8 @@ namespace PathFinding
 
         int TotalCol { get; set; }
 
+        float NodeSize { get; set; }
+
         void Release();
     }
 

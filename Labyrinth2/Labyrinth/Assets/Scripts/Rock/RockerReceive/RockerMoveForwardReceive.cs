@@ -19,7 +19,7 @@ public class RockerMoveForwardReceive : IRock
 
     public void Move(Vector2 pos, float percentage)
     {
-        Vector3 dir = RoleController.GetInstance().RoleForward;
+        Vector3 dir = RoleController.GetInstance().Forward;
         RoleController.GetInstance().Move(dir);
     }
 }
