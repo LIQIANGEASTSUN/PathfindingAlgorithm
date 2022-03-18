@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LabyrinthTexture
 {
-    private List<Sprite> spriteList = new List<Sprite>();
+    private List<Sprite> _spriteList = new List<Sprite>();
     // Start is called before the first frame update
     public LabyrinthTexture()
     {
@@ -16,7 +16,7 @@ public class LabyrinthTexture
             Texture2D texture2D = Resources.Load<Texture2D>(filePath);
             textureChange.WriteColor(i, texture2D);
             Sprite sprite = TextureToSprite(texture2D);
-            spriteList.Add(sprite);
+            _spriteList.Add(sprite);
         }
     }
 
@@ -28,6 +28,12 @@ public class LabyrinthTexture
 
     public List<Sprite> SpriteList
     {
-        get { return spriteList; }
+        get { return _spriteList; }
     }
+
+    public void Release()
+    {
+        _spriteList.Clear();
+    }
+
 }

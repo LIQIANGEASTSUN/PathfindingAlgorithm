@@ -54,6 +54,6 @@ public class LabyrinthCreate
 
     public void Release()
     {
-
+        _labyrinthTexture.Release();
     }
 }
