@@ -28,6 +28,15 @@ public class PathFind
         }
     }
 
+    public void Clear()
+    {
+        for (int i = goList.Count - 1; i >= 0; --i)
+        {
+            GameObject.Destroy(goList[i]);
+        }
+        goList.Clear();
+    }
+
     private float interval = 0.06f;
     private float lastTime;
     private List<GameObject> goList = new List<GameObject>();
