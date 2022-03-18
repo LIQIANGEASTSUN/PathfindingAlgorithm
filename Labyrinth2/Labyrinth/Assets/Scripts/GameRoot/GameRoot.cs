@@ -7,17 +7,14 @@ public class GameRoot : MonoBehaviour
     public static GameRoot Instance;
     private Level _level;
 
-    private SceneManager _sceneManager;
-
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
 
-        _sceneManager = new SceneManager();
-
-        ConfigLoad.Instance.Load(LoadConfigCallBack);
-        UIManager.GetInstance().Open(UIPlaneType.Role_Operation, null);
+        SceneManager.GetInstance().Init();
+        //ConfigLoad.Instance.Load(LoadConfigCallBack);
+        //UIManager.GetInstance().Open(UIPlaneType.Role_Operation, null);
     }
 
     // Update is called once per frame
@@ -28,11 +25,12 @@ public class GameRoot : MonoBehaviour
             _level.Update();
         }
         UIManager.GetInstance().Update();
+        SceneManager.GetInstance().Update();
     }
 
-    private void LoadConfigCallBack()
-    {
-        _level = new Level();
-    }
+    //private void LoadConfigCallBack()
+    //{
+    //    _level = new Level();
+    //}
 
 }

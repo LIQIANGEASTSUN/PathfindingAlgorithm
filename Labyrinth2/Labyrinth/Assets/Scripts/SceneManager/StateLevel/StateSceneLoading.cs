@@ -19,7 +19,7 @@ public class StateSceneLoading : StateSceneBase
     public override void OnEnter()
     {
         base.OnEnter();
-
+        ConfigLoad.Instance.Load(LoadConfigCallBack);
     }
 
     public override void OnExecute()
@@ -34,23 +34,9 @@ public class StateSceneLoading : StateSceneBase
 
     }
 
-//    ConfigLoad.Instance.Load(LoadConfigCallBack);
-//        UIManager.GetInstance().Open(UIPlaneType.Role_Operation, null);
-//}
-
-//// Update is called once per frame
-//void Update()
-//{
-//    if (null != _level)
-//    {
-//        _level.Update();
-//    }
-//    UIManager.GetInstance().Update();
-//}
-
-//private void LoadConfigCallBack()
-//{
-//    _level = new Level();
-//}
+    private void LoadConfigCallBack()
+    {
+        Debug.LogError("LoadCallBack");
+    }
 
 }

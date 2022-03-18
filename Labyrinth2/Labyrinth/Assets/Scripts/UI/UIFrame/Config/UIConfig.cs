@@ -61,9 +61,7 @@ public class UIConfig
 
 public enum UIPlaneType
 {
-    Main,        // 主界面
-    Shop,        // 商店界面
-    Backpacker,  // 背包界面
+    Scene_Loading,   // Scene Loading 
 
     Role_Operation,  // 角色操作界面
 }

@@ -29,7 +29,7 @@ public class UIMainPlane : UIBasePlane
 
     public void ShopOnClick()
     {
-        UIManager.GetInstance().Open(UIPlaneType.Shop, null);
+        //UIManager.GetInstance().Open(UIPlaneType.Shop, null);
     }
 
 }
