@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using PathFinding;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using PathFinding;
 
-public class FindPath
+public class PathFind
 {
     private AStar _aStar;
     List<Node> list = new List<Node>();
 
-    public FindPath(AStar aStar)
+    public PathFind()
     {
-        _aStar = aStar;
+        _aStar = new AStar();
     }
 
     public void Update()

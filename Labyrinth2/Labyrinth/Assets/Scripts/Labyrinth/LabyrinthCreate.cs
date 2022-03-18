@@ -13,13 +13,7 @@ public class LabyrinthCreate
 
     public LabyrinthCreate()
     {
-        Init();
-    }
-
-    public void Init()
-    {
         _labyrinthTexture = new LabyrinthTexture();
-
         GetTileMap();
         Create();
     }
@@ -52,5 +46,4 @@ public class LabyrinthCreate
         tile.sprite = _labyrinthTexture.SpriteList[node.Flag];
         _tileMap.RefreshTile(position);
     }
-
 }

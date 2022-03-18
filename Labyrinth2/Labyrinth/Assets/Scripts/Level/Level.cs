@@ -5,33 +5,27 @@ using UnityEngine;
 
 public class Level
 {
-
     private IMap _mapData;
+    private MapController _mapController;
     private LabyrinthCreate _labyrinthCreate;
-    private MapController mapController;
-    private AStar _aStar;
-    private FindPath _findPath;
+    private PathFind _pathFind;
 
     public Level()
     {
-        _mapData = new MapData("labyrinth2");
-        mapController = new MapController(_mapData);
+        string mapFile = "labyrinth2";
+        _mapData = new MapData(mapFile);
+        _mapController = new MapController(_mapData);
         _labyrinthCreate = new LabyrinthCreate();
-        _aStar = new AStar();
-        _findPath = new FindPath(_aStar);
+        _pathFind = new PathFind();
     }
 
     public void Update()
     {
-
-        if (null != _findPath)
+        if (null != _pathFind)
         {
-            _findPath.Update();
+            _pathFind.Update();
         }
 
         RoleController.GetInstance().LateUpdate();
-
     }
-
-
 }
