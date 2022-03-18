@@ -22,6 +22,7 @@ public class GameRoot : MonoBehaviour
         {
             _level.Update();
         }
+        UIManager.GetInstance().Update();
     }
 
     private void LoadConfigCallBack()

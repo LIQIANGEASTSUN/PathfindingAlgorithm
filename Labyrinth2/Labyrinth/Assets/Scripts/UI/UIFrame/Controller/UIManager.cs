@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager
+public class UIManager : SingletonObject<UIManager>
 {
-    public static UIManager Instance;
-
     private int _instanceID = 0;
     private UIInfoController _uiInfoController;
     private UIConfigController _uiConfigController;
@@ -12,16 +10,7 @@ public class UIManager
     private Transform _root;
     private Dictionary<string, Transform> _layerDic;
 
-    public static UIManager GetInstance()
-    {
-        if (null == Instance)
-        {
-            Instance = new UIManager();
-        }
-        return Instance;
-    }
-
-    private UIManager()
+    public UIManager()
     {
         _uiInfoController = new UIInfoController();
         _uiConfigController = new UIConfigController();
