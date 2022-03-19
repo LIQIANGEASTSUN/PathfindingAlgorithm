@@ -6,6 +6,8 @@ public class GameServer : SingletonObject<GameServer>
 {
 
     private IMapProxy _mapProxy;
+    private ILevelProxy _levelProxy;
+
 
     public IMapProxy MapProxy
     {
@@ -19,5 +21,17 @@ public class GameServer : SingletonObject<GameServer>
         _mapProxy = mapProxy;
     }
 
+    public ILevelProxy LevelProxy
+    {
+        get
+        {
+            return _levelProxy;
+        }
+    }
+
+    public void SetLevelProxy(ILevelProxy levelProxy)
+    {
+        _levelProxy = levelProxy;
+    }
 
 }

@@ -7,9 +7,14 @@ public class Level
 {
     private int _levelId;
     private IMap _mapData;
-    private MapController _mapController;
+
     private LabyrinthCreate _labyrinthCreate;
     private PathFind _pathFind;
+
+    #region Proxy
+    private MapController _mapController;
+    private LevelController _levelController;
+    #endregion
 
     public Level(int levelId)
     {
@@ -17,14 +22,17 @@ public class Level
 
         string mapConfig = TableDatas.GetData("level", _levelId.ToString(), "MapConfig");
         _mapData = new MapData(mapConfig);
-        _labyrinthCreate = new LabyrinthCreate(_levelId);
-        _pathFind = new PathFind();
-
-        _mapController = new MapController(_mapData);
 
         #region GameServer Register
+        _mapController = new MapController(_mapData);
         GameServer.GetInstance().SetMapProxy(_mapController);
+
+        _levelController = new LevelController(this);
+        GameServer.GetInstance().SetLevelProxy(_levelController);
         #endregion
+
+        _labyrinthCreate = new LabyrinthCreate();
+        _pathFind = new PathFind();
 
         Init();
     }
@@ -44,6 +52,14 @@ public class Level
         }
 
         RoleController.GetInstance().LateUpdate();
+    }
+
+    public int LevelId
+    {
+        get
+        {
+            return _levelId;
+        }
     }
 
     public void Release()
