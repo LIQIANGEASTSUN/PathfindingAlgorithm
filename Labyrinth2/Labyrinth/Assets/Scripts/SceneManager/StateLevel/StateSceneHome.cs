@@ -21,7 +21,7 @@ public class StateSceneHome : StateSceneBase
         base.OnEnter();
         UIManager.GetInstance().Open(UIPlaneType.Main_View, null);
         UIManager.GetInstance().Open(UIPlaneType.Level_Info_View, null);
-        _changeToLevel = true;
+        //_changeToLevel = true;
     }
 
     public override void OnExit()

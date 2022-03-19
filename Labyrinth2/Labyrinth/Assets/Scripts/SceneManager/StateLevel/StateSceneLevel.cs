@@ -16,9 +16,8 @@ public class StateSceneLevel : StateSceneBase
     public override void OnEnter()
     {
         base.OnEnter();
-        UIManager.GetInstance().Open(UIPlaneType.Role_Operation_View, null);
         _level = new Level(1001);
-
+        UIManager.GetInstance().Open(UIPlaneType.Role_Operation_View, null);
     }
 
     public override void OnExecute()
