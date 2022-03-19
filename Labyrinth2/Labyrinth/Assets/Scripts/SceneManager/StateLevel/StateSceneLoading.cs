@@ -22,7 +22,7 @@ public class StateSceneLoading : StateSceneBase
         base.OnEnter();
         RegisterEvent();
 
-        UIManager.GetInstance().Open(UIPlaneType.Scene_Loading, null);
+        UIManager.GetInstance().Open(UIPlaneType.Scene_Loading_View, null);
         ConfigLoad.Instance.Load(LoadConfigCallBack);
     }
 
@@ -36,7 +36,7 @@ public class StateSceneLoading : StateSceneBase
         base.OnExit();
         UnRegisterEvent();
 
-        UIManager.GetInstance().Close(UIPlaneType.Scene_Loading);
+        UIManager.GetInstance().Close(UIPlaneType.Scene_Loading_View);
     }
 
     private void LoadConfigCallBack()

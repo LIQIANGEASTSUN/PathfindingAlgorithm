@@ -16,8 +16,8 @@ public class StateSceneHome : StateSceneBase
     public override void OnEnter()
     {
         base.OnEnter();
-
-        Debug.LogError("HomeEnter");
+        UIManager.GetInstance().Open(UIPlaneType.Main_View, null);
+        UIManager.GetInstance().Open(UIPlaneType.Level_Info_View, null);
     }
 
 }

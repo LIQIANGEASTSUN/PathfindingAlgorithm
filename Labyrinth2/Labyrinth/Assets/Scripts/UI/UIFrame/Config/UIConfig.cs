@@ -61,7 +61,11 @@ public class UIConfig
 
 public enum UIPlaneType
 {
-    Scene_Loading,   // Scene Loading 
+    Scene_Loading_View,   // Scene Loading 
 
-    Role_Operation,  // 角色操作界面
+    Main_View,       // 家园主界面
+
+    Level_Info_View, // 关卡信息界面
+
+    Role_Operation_View,  // 角色操作界面
 }

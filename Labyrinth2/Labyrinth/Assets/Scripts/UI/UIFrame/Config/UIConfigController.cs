@@ -45,8 +45,10 @@ public class UIConfigController
     // 注册面板信息
     private void RegisterPlaneInfo()
     {
-        AddPlaneInfo(UIPlaneType.Role_Operation, new UIRoleOperationPlane(), "UIRoleOperationView", "MainLayer");
-        AddPlaneInfo(UIPlaneType.Scene_Loading, new UISceneLoadingPanel(), "UILoadingView", "MainLayer");
+        AddPlaneInfo(UIPlaneType.Scene_Loading_View, new UISceneLoadingPanel(), "UILoadingView", "MainLayer");
+        AddPlaneInfo(UIPlaneType.Main_View, new UIMainPlane(), "UIMainView", "MainLayer");
+        AddPlaneInfo(UIPlaneType.Level_Info_View, new UILevelInfoPlane(), "UILevelInfoView", "MainLayer");
+        AddPlaneInfo(UIPlaneType.Role_Operation_View, new UIRoleOperationPlane(), "UIRoleOperationView", "MainLayer");
     }
 
     // 注册互斥面板

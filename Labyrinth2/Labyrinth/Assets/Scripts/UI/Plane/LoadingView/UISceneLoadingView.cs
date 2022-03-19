@@ -22,6 +22,7 @@ public class UISceneLoadingView : IUIView
 
         _startBtn = _tr.Find("StartBtn").GetComponent<Button>();
         _startBtn.onClick.AddListener(StartClick);
+        _startBtn.gameObject.SetActive(false);
     }
 
     private void StartClick()
