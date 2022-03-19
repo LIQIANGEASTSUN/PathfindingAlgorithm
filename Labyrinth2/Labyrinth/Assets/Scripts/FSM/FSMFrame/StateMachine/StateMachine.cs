@@ -13,11 +13,7 @@ public class StateMachine
 
     public StateMachine()
     {
-        // 初始化状态、并存储
-        //_stateDic[StateEnum.EAT] = new StateEat();
-        //_stateDic[StateEnum.RESET] = new StateReset();
-        //_stateDic[StateEnum.BASKETBALL] = new StateBasketball();
-        //_stateDic[StateEnum.HOMEWORK] = new StateHomeWork();
+
     }
 
     public void AddState(StateBase stateBase)
