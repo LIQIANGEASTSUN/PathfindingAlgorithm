@@ -15,7 +15,7 @@ public class PathFind
 
     public void Init()
     {
-
+        RegisterEvent();
     }
 
     public void Update()
@@ -25,7 +25,7 @@ public class PathFind
 
     public void Find()
     {
-        Node resultNode = _aStar.SearchPath(2, 0, 12, 9);
+        Node resultNode = _aStar.SearchPath(2, 0, 7, 12);
         while (null != resultNode)
         {
             list.Add(resultNode);
@@ -73,5 +73,17 @@ public class PathFind
     public void Release()
     {
         Clear();
+        UnRegisterEvent();
     }
+
+    private void RegisterEvent()
+    {
+        GameNotifycation.GetInstance().AddEventListener(ENUM_MSG_TYPE.MSG_PATH_FIND, Find);
+    }
+
+    private void UnRegisterEvent()
+    {
+        GameNotifycation.GetInstance().RemoveEventListener(ENUM_MSG_TYPE.MSG_PATH_FIND, Find);
+    }
+
 }
