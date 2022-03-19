@@ -27,8 +27,8 @@ public class ConfigLoad : MonoBehaviour
     private void RegisterConfigs()
     {
         configList = new List<string>();
-        configList.Add("labyrinth1.csv");
-        configList.Add("labyrinth2.csv");
+        configList.Add("labyrinth1001.csv");
+        configList.Add("level.csv");
 
         behaviorCfgList = new List<string>() { "behavior_tree_config.bytes" };
         totleConfigNum = configList.Count + behaviorCfgList.Count;

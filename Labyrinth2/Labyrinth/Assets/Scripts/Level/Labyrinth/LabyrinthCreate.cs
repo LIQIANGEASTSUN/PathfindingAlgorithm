@@ -8,12 +8,13 @@ using PathFinding;
 
 public class LabyrinthCreate
 {
+    private int _levelId;
     private Tilemap _tileMap;
     private LabyrinthTexture _labyrinthTexture;
 
-    public LabyrinthCreate()
+    public LabyrinthCreate(int levelId)
     {
-
+        _levelId = levelId;
     }
 
     public void Init()
@@ -25,8 +26,13 @@ public class LabyrinthCreate
 
     private void GetTileMap()
     {
-        GameObject go = GameObject.Find("labyrinthLevel0");
-        _tileMap = go.GetComponentInChildren<Tilemap>();
+        string tileMapPrefab = TableDatas.GetData("level", _levelId.ToString(), "TileMapPrefab");
+        GameObject go = ResourcesManager.GetInstance().Load<GameObject>(tileMapPrefab);
+        GameObject tileMapGo = GameObject.Instantiate(go);
+        tileMapGo.transform.localScale = Vector3.one;
+        tileMapGo.transform.position = Vector3.zero;
+        tileMapGo.transform.rotation = Quaternion.identity;
+        _tileMap = tileMapGo.GetComponentInChildren<Tilemap>();
     }
 
     private void Create()
