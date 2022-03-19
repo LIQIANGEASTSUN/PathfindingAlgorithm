@@ -66,7 +66,7 @@ public class UILevelInfoView : IUIView
 
     private void ItemClick(LevelData levelData)
     {
-        Debug.LogError("itemClick");
+        GameNotifycation.GetInstance().Notify<int>(ENUM_MSG_TYPE.MSG_GO_TO_LEVEL, levelData._levelId);
     }
 
     public void Release()
@@ -89,6 +89,7 @@ public class UILevelInfoView : IUIView
 public class LevelItem
 {
     private Transform _tr;
+    private Button _btn;
     private LevelData _levelData;
     private Action<LevelData> _clickCallBack;
 
@@ -106,6 +107,9 @@ public class LevelItem
         _tr.SetAsLastSibling();
         _tr.gameObject.SetActive(true);
 
+        _btn = _tr.GetComponent<Button>();
+        _btn.onClick.AddListener(Click);
+
         _levelText = _tr.Find("Text").GetComponent<Text>();
         _levelText.text = levelData._levelId.ToString();
     }
@@ -113,6 +117,11 @@ public class LevelItem
     public void SetClickCallBack(Action<LevelData> callBack)
     {
         _clickCallBack = callBack;
+    }
+
+    private void Click()
+    {
+        _clickCallBack?.Invoke(_levelData);
     }
 
     public void Release()

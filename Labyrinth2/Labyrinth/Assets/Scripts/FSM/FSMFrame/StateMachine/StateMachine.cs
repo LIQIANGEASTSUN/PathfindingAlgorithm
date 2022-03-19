@@ -42,8 +42,15 @@ public class StateMachine
             CurrentState.OnExit();
         }
 
+        System.Object transitionObj = null;
+        if (null != CurrentState)
+        {
+            transitionObj = CurrentState.TransitionObj;
+        }
+
         // 令当前状态等于转换的新状态
         CurrentState = _stateDic[stateEnum];
+        CurrentState.TransitionData(transitionObj);
         // 转换的新状态执行 进入方法
         CurrentState.OnEnter();
         CurrentState.OnExecute();

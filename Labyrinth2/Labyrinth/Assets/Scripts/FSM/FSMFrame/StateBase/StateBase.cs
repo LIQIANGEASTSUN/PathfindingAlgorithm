@@ -6,8 +6,13 @@ public abstract class StateBase
     // 当前类型
     protected StateEnum _state;
     protected List<Transition> _transitionList = new List<Transition>();
+    protected System.Object _transitionObj = null;
 
     public StateBase(){
+    }
+
+    public virtual void TransitionData(System.Object obj)
+    {
     }
 
     // 进入该状态
@@ -29,4 +34,10 @@ public abstract class StateBase
     {
         get { return _transitionList; }
     }
+
+    public System.Object TransitionObj
+    {
+        get { return _transitionObj; }
+    }
+
 }
