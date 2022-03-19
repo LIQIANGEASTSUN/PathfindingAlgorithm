@@ -88,19 +88,8 @@ public class MapData : IMap
             int newRow = row + arr[0];
             int newCol = col + arr[1];
             int value = ReadCall(row + arr[0], col + arr[1]);
-            if (node.Value == -1)
+            if ((node.Value & value) == 0)
             {
-                if (value == 0)
-                {
-                    node.Flag |= (1 << i);
-                }
-            }
-            else
-            {
-                if (value == -1 || node.Value == value)
-                {
-                    continue;
-                }
                 node.Flag |= (1 << i);
             }
         }

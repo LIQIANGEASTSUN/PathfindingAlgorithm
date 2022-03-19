@@ -33,6 +33,9 @@ public class LabyrinthCreate
         tileMapGo.transform.position = Vector3.zero;
         tileMapGo.transform.rotation = Quaternion.identity;
         _tileMap = tileMapGo.GetComponentInChildren<Tilemap>();
+
+        TilemapRenderer tileMapRenderer = _tileMap.GetComponentInChildren<TilemapRenderer>();
+        tileMapRenderer.enabled = true;
     }
 
     private void Create()
