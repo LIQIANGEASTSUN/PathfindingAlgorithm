@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using PathFinding;
+using System;
 
 public class RoleMoveController
 {
     private RoleController _roleController;
-    private float _moveSpeed = 1.5f;
+    private float _moveSpeed = 3f;
     private Node _currentNode;
     private Vector2 _currentNodePosition;
+    private Action<Node> _changeNodeCallBack;
     private const float _useRockerDirMin = 0.05f;
 
     private Vector2[] _axisArr = new Vector2[] {
@@ -21,9 +23,14 @@ public class RoleMoveController
         _roleController = roleController;
     }
 
+    public void ChangeNodeCallBack(Action<Node> callBack)
+    {
+        _changeNodeCallBack = callBack;
+    }
+
     public void Move(Vector3 dir)
     {
-        CurrentNode();
+        CurrentPositionToNode();
         if (UseRockerDir())
         {
             if (!TransitionRockerDir(dir, ref dir))
@@ -102,31 +109,42 @@ public class RoleMoveController
             return false;
         }
         int bit = 1 << (int)axis;
-        return (_currentNode.Flag & bit) == 0;
+        return (CurrentNode.Flag & bit) == 0;
     }
 
     /// <summary>
     /// 角色当前所在节点
     /// </summary>
-    private Node CurrentNode()
+    private void CurrentPositionToNode()
     {
-        if (null != _currentNode)
+        if (null != CurrentNode)
         {
             Vector2 offset = Offset();
             float offsetX = Mathf.Abs(offset.x);
             float offsetY = Mathf.Abs(offset.y);
             if (offsetX > 0.5f || offsetY >= 0.5f)
             {
-                _currentNode = null;
+                CurrentNode = null;
             }
         }
-        if (null == _currentNode)
+        if (null == CurrentNode)
         {
-            _currentNode = GameServer.GetInstance().MapProxy.PositionToNode(_roleController.Position.x, _roleController.Position.y);
-            _currentNodePosition = GameServer.GetInstance().MapProxy.NodeToPosition(_currentNode);
+            CurrentNode = GameServer.GetInstance().MapProxy.PositionToNode(_roleController.Position.x, _roleController.Position.y);
+            _currentNodePosition = GameServer.GetInstance().MapProxy.NodeToPosition(CurrentNode);
+            _changeNodeCallBack?.Invoke(CurrentNode);
         }
+    }
 
-        return _currentNode;
+    private Node CurrentNode
+    {
+        get
+        {
+            return _currentNode;
+        }
+        set
+        {
+            _currentNode = value;
+        }
     }
 
     /// <summary>
@@ -188,7 +206,7 @@ public class RoleMoveController
     /// </summary>
     private Vector2 Offset()
     {
-        Vector2 pos = GameServer.GetInstance().MapProxy.NodeToPosition(_currentNode);
+        Vector2 pos = GameServer.GetInstance().MapProxy.NodeToPosition(CurrentNode);
         return new Vector2(_roleController.Position.x - pos.x, _roleController.Position.y - pos.y);
     }
 }

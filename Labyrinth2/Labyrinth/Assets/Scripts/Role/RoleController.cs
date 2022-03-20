@@ -24,6 +24,7 @@ public class RoleController : SingletonObject<RoleController>
     public void Init()
     {
         _roleMoveController = new RoleMoveController(this);
+        _roleMoveController.ChangeNodeCallBack(MoveChangeNodeCallBack);
         LoadRole();
     }
 
@@ -36,9 +37,11 @@ public class RoleController : SingletonObject<RoleController>
         GameObject go = ResourcesManager.GetInstance().Load<GameObject>("Role");
         go = GameObject.Instantiate(go);
         _roleTr = go.transform;
-        _roleTr.position = new Vector3(1, -1, 0);
         _roleTr.localScale = Vector3.one;
         _roleTr.rotation = Quaternion.identity;
+
+        Node entryNode = GameServer.GetInstance().MapProxy.EntryNode();
+        SetPosition(GameServer.GetInstance().MapProxy.NodeToPosition(entryNode));
     }
 
     public void Release()
@@ -49,6 +52,15 @@ public class RoleController : SingletonObject<RoleController>
     public void Move(Vector3 dir)
     {
         _roleMoveController.Move(dir);
+    }
+
+    private void MoveChangeNodeCallBack(Node currentNode)
+    {
+        Node exitNode = GameServer.GetInstance().MapProxy.ExitNode();
+        if (exitNode.Row == currentNode.Row && exitNode.Col == currentNode.Col)
+        {
+            Debug.LogError("Success");
+        }
     }
 
     public void Rotate(Quaternion quaternion)

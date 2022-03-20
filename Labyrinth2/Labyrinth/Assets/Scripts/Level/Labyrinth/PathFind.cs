@@ -25,7 +25,9 @@ public class PathFind
 
     public void Find()
     {
-        Node resultNode = _aStar.SearchPath(2, 0, 7, 12);
+        Node entry = GameServer.GetInstance().MapProxy.EntryNode();
+        Node exit = GameServer.GetInstance().MapProxy.ExitNode();
+        Node resultNode = _aStar.SearchPath(entry.Row, entry.Col, exit.Row, exit.Col);
         while (null != resultNode)
         {
             list.Add(resultNode);
