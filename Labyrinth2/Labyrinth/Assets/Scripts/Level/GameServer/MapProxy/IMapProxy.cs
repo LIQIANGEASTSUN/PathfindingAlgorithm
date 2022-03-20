@@ -6,6 +6,8 @@ using UnityEngine;
 public interface IMapProxy
 {
 
+    void Init();
+
     IMap IMap();
 
     /// <summary>
@@ -22,5 +24,9 @@ public interface IMapProxy
     /// 获取 Node 的第 index 个邻居
     /// </summary>
     Node NodeNeighbor(Node node, int index);
+
+    Node EntryNode();
+
+    Node ExitNode();
 
 }

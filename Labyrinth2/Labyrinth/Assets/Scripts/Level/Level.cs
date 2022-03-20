@@ -67,6 +67,8 @@ public class Level
         _mapData.Release();
         _labyrinthCreate.Release();
         _pathFind.Release();
+        _mapController.Release();
+        _levelController.Release();
     }
 
 }

@@ -14,4 +14,9 @@ public class LevelController : ILevelProxy
     {
         return _level.LevelId;
     }
+
+    public void Release()
+    {
+
+    }
 }
