@@ -21,7 +21,7 @@ public class StateSceneHome : StateSceneBase
     {
         base.OnEnter();
         UIManager.GetInstance().Open(UIPlaneType.Main_View, null);
-        UIManager.GetInstance().Open(UIPlaneType.Level_Info_View, null);
+        UIManager.GetInstance().Open(UIPlaneType.Level_Select_View, null);
         RegisterEvent();
     }
 
@@ -29,7 +29,7 @@ public class StateSceneHome : StateSceneBase
     {
         base.OnExit();
         UIManager.GetInstance().Close(UIPlaneType.Main_View);
-        UIManager.GetInstance().Close(UIPlaneType.Level_Info_View);
+        UIManager.GetInstance().Close(UIPlaneType.Level_Select_View);
         UnRegisterEvent();
     }
 

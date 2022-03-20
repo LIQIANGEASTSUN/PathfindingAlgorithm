@@ -59,7 +59,7 @@ public class RoleController : SingletonObject<RoleController>
         Node exitNode = GameServer.GetInstance().MapProxy.ExitNode();
         if (exitNode.Row == currentNode.Row && exitNode.Col == currentNode.Col)
         {
-            Debug.LogError("Success");
+            GameNotifycation.GetInstance().Notify(ENUM_MSG_TYPE.MSG_MOVE_TO_EXIT);
         }
     }
 

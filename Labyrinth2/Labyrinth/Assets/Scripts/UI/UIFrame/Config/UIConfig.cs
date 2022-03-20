@@ -63,9 +63,11 @@ public enum UIPlaneType
 {
     Scene_Loading_View,   // Scene Loading 
 
-    Main_View,       // 家园主界面
+    Main_View,            // 家园主界面
 
-    Level_Info_View, // 关卡信息界面
+    Level_Select_View,    // 关卡信息界面
 
+    Level_View,           // 关卡界面
+    
     Role_Operation_View,  // 角色操作界面
 }

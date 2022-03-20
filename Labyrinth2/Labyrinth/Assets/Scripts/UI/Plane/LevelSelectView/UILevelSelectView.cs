@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class UILevelInfoView : IUIView
+public class UILevelSelectView : IUIView
 {
     private Transform _tr;
     private IUIController _uiController;
-    private UILevelInfoPlane _uiLevelInfoPlane;
+    private UILevelSelectPlane _uiLevelInfoPlane;
     private Transform _gridTr;
     private Transform _itemCloneTr;
 
@@ -21,7 +21,7 @@ public class UILevelInfoView : IUIView
     {
         _tr = tr;
         _uiController = controller;
-        _uiLevelInfoPlane = controller as UILevelInfoPlane;
+        _uiLevelInfoPlane = controller as UILevelSelectPlane;
 
         _gridTr = tr.Find("Panel/Grid");
         _itemCloneTr = _gridTr.Find("Item");

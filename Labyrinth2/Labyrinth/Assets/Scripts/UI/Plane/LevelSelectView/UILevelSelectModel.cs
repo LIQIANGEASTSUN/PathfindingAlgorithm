@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UILevelInfoModel : IUIModel
+public class UILevelSelectModel : IUIModel
 {
     private IUIDataBase _data;
     private const string _tableName = "level";

@@ -47,7 +47,8 @@ public class UIConfigController
     {
         AddPlaneInfo(UIPlaneType.Scene_Loading_View, new UISceneLoadingPanel(), "UILoadingView", "MainLayer");
         AddPlaneInfo(UIPlaneType.Main_View, new UIMainPlane(), "UIMainView", "MainLayer");
-        AddPlaneInfo(UIPlaneType.Level_Info_View, new UILevelInfoPlane(), "UILevelInfoView", "MainLayer");
+        AddPlaneInfo(UIPlaneType.Level_Select_View, new UILevelSelectPlane(), "UILevelSelectView", "MainLayer");
+        AddPlaneInfo(UIPlaneType.Level_View, new UILevelPlane(), "UILevelView", "MainLayer");
         AddPlaneInfo(UIPlaneType.Role_Operation_View, new UIRoleOperationPlane(), "UIRoleOperationView", "MainLayer");
     }
 

@@ -18,6 +18,7 @@ public class StateSceneLevel : StateSceneBase
     {
         base.OnEnter();
         _level = new Level(_go_to_levelId);
+        UIManager.GetInstance().Open(UIPlaneType.Level_View, null);
         UIManager.GetInstance().Open(UIPlaneType.Role_Operation_View, null);
     }
 

@@ -10,23 +10,23 @@ public enum LevelPageEnum
     Both = 3,
 }
 
-public class UILevelInfoPlane : UIBasePlane
+public class UILevelSelectPlane : UIBasePlane
 {
-    private UILevelInfoView _uiLevelInfoView;
-    private UILevelInfoModel _uiLevelInfoModel;
+    private UILevelSelectView _uiLevelInfoView;
+    private UILevelSelectModel _uiLevelInfoModel;
 
     public override void Init(UIPlaneType type)
     {
         base.Init(type);
-        View = new UILevelInfoView();
-        Model = new UILevelInfoModel();
+        View = new UILevelSelectView();
+        Model = new UILevelSelectModel();
     }
 
     public override void OnEnter(IUIDataBase data)
     {
         base.OnEnter(data);
-        _uiLevelInfoView = View as UILevelInfoView;
-        _uiLevelInfoModel = Model as UILevelInfoModel;
+        _uiLevelInfoView = View as UILevelSelectView;
+        _uiLevelInfoModel = Model as UILevelSelectModel;
         _uiLevelInfoModel.LevelData();
         _uiLevelInfoModel.SetPage(0);
 
