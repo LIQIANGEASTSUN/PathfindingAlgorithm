@@ -42,6 +42,8 @@ public class Level
         _mapData.Init();
         _labyrinthCreate.Init();
         _pathFind.Init();
+        _mapController.Init();
+        RoleController.GetInstance().Init();
     }
 
     public void Update()
@@ -69,6 +71,7 @@ public class Level
         _pathFind.Release();
         _mapController.Release();
         _levelController.Release();
+        RoleController.GetInstance().Release();
     }
 
 }

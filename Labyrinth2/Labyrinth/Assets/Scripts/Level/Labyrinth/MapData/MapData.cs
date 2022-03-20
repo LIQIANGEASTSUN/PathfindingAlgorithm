@@ -6,7 +6,7 @@ using System;
 
 public class MapData : IMap
 {
-    public string _tableName = "labyrinth2";
+    public string _tableName;
     private MapSize _mapSize;
     private int _totalRow;
     private int _totalCol;
