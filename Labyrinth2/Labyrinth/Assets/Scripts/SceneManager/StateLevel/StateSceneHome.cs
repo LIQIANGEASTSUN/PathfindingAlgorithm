@@ -36,7 +36,6 @@ public class StateSceneHome : StateSceneBase
     private void SetTransitionData()
     {
         _transitionObj = _go_to_levelId;
-        int a = 0;
     }
 
     private bool ChangeToLevel()
