@@ -30,6 +30,7 @@ namespace PathFinding
             }
         }
 
+        // 判断水平、垂直方向(水平向右、水平向左、竖直向上、竖直向下)的强制邻居
         private static bool CheckHVForceNeighbour(IMap _map, Node node, Position dir, int sign)
         {
             Position obstacleDir = new Position(Math.Abs(dir.Y) * sign, Math.Abs(dir.X) * sign);
@@ -54,6 +55,7 @@ namespace PathFinding
             return false;
         }
 
+        // 判断斜向(左上、左下、右上、右下)的强制邻居
         private static bool CheckDiagonalForceNeighbour(IMap _map, Node node, Position dir, int sign)
         {
             Position prePos = new Position(node.Row, node.Col) - dir;
