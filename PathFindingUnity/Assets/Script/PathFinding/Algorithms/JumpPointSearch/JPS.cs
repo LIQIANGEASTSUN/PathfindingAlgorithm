@@ -1,7 +1,6 @@
 ﻿using DataStruct.Heap;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace PathFinding
 {
@@ -58,7 +57,7 @@ namespace PathFinding
                 node.NodeState = NodeState.InColsedTable;
                 closedList.Add(node);
 
-                Check(node);
+                AddTestCheck(node);
 
                 // 如果 node 是终点 则路径查找成功，并退出
                 if (node.Row == desitinationNode.Row && node.Col == desitinationNode.Col)
@@ -236,12 +235,36 @@ namespace PathFinding
 
         private void InsertToOpenHeap(Node jumpNode, Node currentNode, Node desitination)
         {
-            jumpNode.Parent = currentNode;
-            jumpNode.G = currentNode.G + Distance(currentNode, jumpNode);
-            jumpNode.H = Offset(jumpNode, desitination);
-            jumpNode.NodeState = NodeState.InOpenTable;
-            openHeap.Insert(jumpNode);
-            InsertOpen(jumpNode);
+            // 设置 neighborNode.G 值 = 从 起点 到 neighborNode 的总 G
+            float G = currentNode.G + Distance(currentNode, jumpNode);
+            // 使用 曼哈顿 方法计算 H 值，即(neighborNode 到 终点的 Row、Col 偏移量绝对值之和)
+            float H = Offset(jumpNode, desitination);
+            float F = H + G;
+            // 在 open 表中
+            if (jumpNode.NodeState == NodeState.InOpenTable)
+            {
+                // 比较 jumpNode 记录的 F 值是否比 从 currentNode 到 neighborNode 的 F 值更大
+                // 如果 jumpNode.F 更大，则更新 jumpNode.F 并设置 neighborNode.Parent = currentNode;
+                if (jumpNode.F > F)
+                {
+                    jumpNode.G = G;
+                    jumpNode.H = H;
+                    // 设置父节点
+                    jumpNode.Parent = currentNode;
+                    // 改变了 G 值，小根堆需要重排序
+                    openHeap.HeapCreate();
+                }
+            }
+            else
+            {
+                jumpNode.G = G;
+                jumpNode.H = H;
+                // 设置父节点
+                jumpNode.Parent = currentNode;
+                jumpNode.NodeState = NodeState.InOpenTable;
+                openHeap.Insert(jumpNode);
+                AddTestInsertOpen(jumpNode);
+            }
         }
 
         /// <summary>
@@ -331,14 +354,15 @@ namespace PathFinding
 
         private bool InvalidNode(Node node)
         {
-            if (null == node || node.NodeState == NodeState.InColsedTable || node.NodeState == NodeState.InOpenTable)
+            if (null == node || node.NodeState == NodeState.InColsedTable)
             {
                 return false;
             }
             return true;
         }
 
-        private void Check(Node node)
+        // 测试时使用
+        private void AddTestCheck(Node node)
         {
             //string name = string.Format("open:{0}_{1}", node.Row, node.Col);
             //Debug.LogError(name);
@@ -346,7 +370,8 @@ namespace PathFinding
             JPSTest.checkNodeList.Add(kv);
         }
 
-        private void InsertOpen(Node node)
+        // 测试时使用
+        private void AddTestInsertOpen(Node node)
         {
             //string name = string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
             //Debug.LogError(name);

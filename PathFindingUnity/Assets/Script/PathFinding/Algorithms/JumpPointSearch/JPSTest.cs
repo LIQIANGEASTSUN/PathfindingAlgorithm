@@ -45,9 +45,6 @@ public class JPSTest : MonoBehaviour
         // 顺次执行 _stackPos.Peek(); 将 路点从 栈中取出即是从 开始点到结束点的路径
     }
 
-
-
-
     #region DebugUse
     private float _intervalTime = 0;
     private GameObject personGo;
