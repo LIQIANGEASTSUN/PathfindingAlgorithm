@@ -48,7 +48,6 @@ namespace PathFinding
             if (null == obstacleNode || obstacleNode.NodeType == NodeType.Null || obstacleNode.NodeType == NodeType.Obstacle)
             {
                 Position pos = _map.NodeToPosition(neighbourNode);
-                UnityEngine.Debug.LogError("ForceNode:" + (new UnityEngine.Vector2Int(node.Row, node.Col)) + "   " + (new UnityEngine.Vector2Int(neighbourNode.Row, neighbourNode.Col)));
                 node.ForceNeighbourList.Add(pos);
                 return true;
             }
@@ -87,7 +86,6 @@ namespace PathFinding
             if (null == obstacleNode || obstacleNode.NodeType == NodeType.Null || obstacleNode.NodeType == NodeType.Obstacle)
             {
                 Position pos = _map.NodeToPosition(neighbourNode);
-                UnityEngine.Debug.LogError("ForceNode:" + (new UnityEngine.Vector2Int(node.Row, node.Col)) + "   " + (new UnityEngine.Vector2Int(neighbourNode.Row, neighbourNode.Col)));
                 node.ForceNeighbourList.Add(pos);
                 return true;
             }
