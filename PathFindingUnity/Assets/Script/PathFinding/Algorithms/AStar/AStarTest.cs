@@ -4,17 +4,46 @@ using UnityEngine;
 
 public class AStarTest : MonoBehaviour
 {
-    // 地图，此例子使用的是矩形网格地图
-    private MapQuad _mapQuad;
+    public MapType mapType = MapType.Quad;
+    private IMap imap;
+
     // 算法
     private AStar _aStar;
 
     private void Start()
     {
+        CreateMap();
         // 获取地图数据
-        _mapQuad = new MapQuad("Terrain6", 0, 0, 20, 10);
         // 初始化 算法，并将地图数据传递进去
-        _aStar = new AStar(_mapQuad);
+        _aStar = new AStar(imap);
+    }
+
+    private void CreateMap()
+    {
+        if (mapType == MapType.Quad)
+        {
+            CreateMapQuad();
+        }
+        else if (mapType == MapType.Hex)
+        {
+            CreateHexMap();
+        }
+    }
+
+    private void CreateMapQuad()
+    {
+        // 地图，此例子使用的是矩形网格地图
+        imap = new MapQuad("Terrain6", 0, 0, 20, 10);
+    }
+
+    private void CreateHexMap()
+    {
+        float minX = 0;
+        float minY = 0;
+        float maxX = 20;
+        float maxY = 20;
+        float radius = 1;
+        imap = new MapHex(minX, minY, maxX, maxY, radius);
     }
 
     private Stack<Position> _stackPos = new Stack<Position>();
@@ -39,7 +68,7 @@ public class AStarTest : MonoBehaviour
         _stackPos.Clear();
         while (null != pathNode)
         {
-            Position pos = _mapQuad.NodeToPosition(pathNode);
+            Position pos = imap.NodeToPosition(pathNode);
             // 数据入栈
             _stackPos.Push(pos);
             pathNode = pathNode.Parent;
@@ -56,13 +85,12 @@ public class AStarTest : MonoBehaviour
         }
     }
 
-
-
-
     #region Debug
     private void Update()
     {
         DebugUse();
+
+        imap.Update();
     }
 
     private GameObject personGo;
@@ -79,7 +107,7 @@ public class AStarTest : MonoBehaviour
         {
             _init = true;
             // 将地图数据路点创建出来，为了看到路点
-            new MapToolsDrawNode(_mapQuad);
+            new MapToolsDrawNode(imap);
             CreatePerson();
         }
 
@@ -93,7 +121,7 @@ public class AStarTest : MonoBehaviour
             Node node = kv.Value;
             checkNodeList.RemoveAt(0);
 
-            Position pos = _mapQuad.NodeToPosition(node);
+            Position pos = imap.NodeToPosition(node);
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
             go.transform.position = (kv.Key == 1) ? new Vector3(pos.X + 0.1f, 1f, pos.Y + 0.1f) : new Vector3(pos.X - 0.1f, 1f, pos.Y - 0.1f);
             go.transform.localScale = Vector3.one * 0.3f;

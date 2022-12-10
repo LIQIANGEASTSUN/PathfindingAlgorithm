@@ -8,7 +8,7 @@ namespace PathFinding
     public class JPS
     {
         // 地图数据
-        private IMap _map;
+        private IMap map;
         // 小根堆保存开放节点，目的在于提高获取最小F值点效率
         private Heap<Node> openHeap;
         // closed 表
@@ -19,7 +19,7 @@ namespace PathFinding
             openHeap = new Heap<Node>();
             openHeap.SetHeapType(false);
             closedList = new List<Node>();
-            _map = map;
+            this.map = map;
         }
 
         public Node SearchPath(Position from, Position desitination)
@@ -37,9 +37,9 @@ namespace PathFinding
             closedList.Clear();
 
             // 起点
-            Node originNode = _map.PositionToNode(from.X, from.Y);
+            Node originNode = map.PositionToNode(from.X, from.Y);
             // 终点
-            Node desitinationNode = _map.PositionToNode(desitination.X, desitination.Y);
+            Node desitinationNode = map.PositionToNode(desitination.X, desitination.Y);
             if (originNode.Row == desitinationNode.Row && originNode.Col == desitinationNode.Col)
             {
                 return null;
@@ -78,7 +78,7 @@ namespace PathFinding
                 // 搜索上下左右四个方向
                 for (int i = 1; i < node.neighborCount; i += 2)
                 {
-                    Node temp = _map.NodeNeighbor(node, i);
+                    Node temp = map.NodeNeighbor(node, i);
                     SearchHV(origin, desitination, node, temp);
                 }
             }
@@ -89,12 +89,12 @@ namespace PathFinding
 
                 if (horizontalDir != 0)
                 {
-                    Node temp = _map.GetNode(node.Row + horizontalDir, node.Col);
+                    Node temp = map.GetNode(node.Row + horizontalDir, node.Col);
                     SearchHV(origin, desitination, node, temp);
                 }
                 if (verticalDir != 0)
                 {
-                    Node temp = _map.GetNode(node.Row, node.Col + verticalDir);
+                    Node temp = map.GetNode(node.Row, node.Col + verticalDir);
                     SearchHV(origin, desitination, node, temp);
                 }
             }
@@ -103,7 +103,7 @@ namespace PathFinding
             {
                 for (int i = 0; i < node.neighborCount; i += 2)
                 {
-                    Node temp = _map.NodeNeighbor(node, i);
+                    Node temp = map.NodeNeighbor(node, i);
                     SearchDiagonal(origin, desitination, node, temp);
                 }
             }
@@ -113,14 +113,14 @@ namespace PathFinding
                 int verticalDir = Dir(node.Col, node.Parent.Col);
                 if (horizontalDir != 0 && verticalDir != 0)
                 {
-                    Node temp = _map.GetNode(node.Row + horizontalDir, node.Col + verticalDir);
+                    Node temp = map.GetNode(node.Row + horizontalDir, node.Col + verticalDir);
                     SearchDiagonal(origin, desitination, node, temp);
                 }
                 
                 for (int i = 0; i < node.ForceNeighbourList.Count; ++i)
                 {
                     Position pos = node.ForceNeighbourList[i];
-                    Node forceNeighbour = _map.PositionToNode(pos.X, pos.Y);
+                    Node forceNeighbour = map.PositionToNode(pos.X, pos.Y);
                     SearchDiagonal(origin, desitination, node, forceNeighbour);
                 }
             }
@@ -168,7 +168,7 @@ namespace PathFinding
             }
 
             Position dir = new Position(Dir(node.Row, preNode.Row), Dir(node.Col, preNode.Col));
-            return JPSTool.HasForceNeighbour(_map, node, dir);
+            return JPSTool.HasForceNeighbour(map, node, dir);
         }
 
         private void SearchHV(Node origin, Node desitination, Node currentNode, Node temp)
@@ -229,7 +229,7 @@ namespace PathFinding
                 }
 
                 preNode = temp;
-                temp = _map.GetNode(temp.Row + horizontalDir, temp.Col + verticalDir);
+                temp = map.GetNode(temp.Row + horizontalDir, temp.Col + verticalDir);
             }
         }
 
@@ -276,7 +276,7 @@ namespace PathFinding
             while(rowDir != 0)
             {
                 i += rowDir;
-                Node temp = _map.GetNode(i, node.Col);
+                Node temp = map.GetNode(i, node.Col);
                 if (null == temp || temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
                 {
                     break;
@@ -292,7 +292,7 @@ namespace PathFinding
             while (colDir != 0)
             {
                 i += colDir;
-                Node temp = _map.GetNode(node.Row, i);
+                Node temp = map.GetNode(node.Row, i);
                 if (null == temp || temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
                 {
                     break;

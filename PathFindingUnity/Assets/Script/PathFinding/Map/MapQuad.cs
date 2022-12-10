@@ -32,10 +32,13 @@ namespace PathFinding
 
         public MapQuad(string mapFile, float minX, float minY, float maxX, float maxY)
         {
+            MapType = MapType.Quad;
             _mapTerrainData = new MapTerrainData(mapFile);
             _mapSize = new MapSize(minX, minY, maxX, maxY);
             CreateGrid();
         }
+
+        public MapType MapType { get; set; }
 
         // 创建网格
         private void CreateGrid()
@@ -53,16 +56,26 @@ namespace PathFinding
             {
                 for (int j = 0; j < _col; ++j)
                 {
-                    float cost = 0;
-                    int nodeType = _mapTerrainData.GetNodeData(i, j, ref cost);
-
-                    int index = RCToIndex(i, j);
-                    Node node = new Node(i, j, _neighborCount);
-                    node.NodeType = (NodeType)nodeType;
-                    node.Cost = cost;
-                    _grid[index] = node;
+                    CreateNode(i, j);
                 }
             }
+        }
+
+        private void CreateNode(int row, int col)
+        {
+            float cost = 0;
+            int nodeType = _mapTerrainData.GetNodeData(row, col, ref cost);
+
+            int index = RCToIndex(row, col);
+            Node node = new Node(row, col, _neighborCount);
+            node.NodeType = (NodeType)nodeType;
+            node.Cost = cost;
+
+            float x = _mapSize._minX + (node.Col + 0.5f) * _width;
+            float y = _mapSize._maxY - (node.Row + 0.5f) * _length;
+            node.Position = new Position(x, y);
+
+            _grid[index] = node;
         }
 
         // 地图所有节点
@@ -111,15 +124,13 @@ namespace PathFinding
         /// </summary>
         public Position NodeToPosition(Node node)
         {
-            float x = _mapSize._minX + (node.Col + 0.5f) * _width;
-            float y = _mapSize._maxY - (node.Row + 0.5f) * _length;
-            return new Position(x, y);
+            return node.Position;
         }
 
         /// <summary>
         /// 获取 Node 的第 index 个邻居
         /// </summary>
-        public Node NodeNeighbor(Node node, int index, ref float distance)
+        public Node NodeNeighborWithDistance(Node node, int index, ref float distance)
         {
             int row = node.Row + neighborArr[index, 0];
             int col = node.Col + neighborArr[index, 1];
@@ -152,6 +163,11 @@ namespace PathFinding
         {
             int index = row * _col + col;
             return index;
+        }
+
+        public void Update()
+        {
+
         }
     }
 }

@@ -64,7 +64,7 @@ namespace PathFinding
             for (int i = 0; i < currentNode.neighborCount; ++i)
             {
                 float distance = 0;
-                Node neighborNode = _map.NodeNeighbor(currentNode, i, ref distance);
+                Node neighborNode = _map.NodeNeighborWithDistance(currentNode, i, ref distance);
                 InsertToOpenHeap(neighborNode, currentNode, desitinationNode, distance);
             }
         }

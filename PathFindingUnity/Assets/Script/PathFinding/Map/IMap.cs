@@ -1,8 +1,24 @@
 ﻿
 namespace PathFinding
 {
+    // 地图类型
+    public enum MapType
+    {
+        /// <summary>
+        /// 矩形地图
+        /// </summary>
+        Quad = 1,
+        /// <summary>
+        /// 六边形地图
+        /// </summary>
+        Hex = 2,
+    }
+
     public interface IMap
     {
+        // 地图类型
+        MapType MapType { get; set; }
+
         Node[] Grid();
 
         MapSize MapSize();
@@ -20,9 +36,11 @@ namespace PathFinding
         /// <summary>
         /// 获取 Node 的第 index 个邻居
         /// </summary>
-        Node NodeNeighbor(Node node, int index, ref float distance);
+        Node NodeNeighborWithDistance(Node node, int index, ref float distance);
         Node NodeNeighbor(Node node, int index);
         Node GetNode(int row, int col);
+
+        void Update();
     }
 
     public struct MapSize

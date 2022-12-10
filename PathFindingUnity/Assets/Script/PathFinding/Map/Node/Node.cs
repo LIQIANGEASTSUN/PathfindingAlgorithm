@@ -96,6 +96,7 @@ namespace PathFinding
         private NodeType _nodeType;
         private NodeState _nodeState;
         private List<Position> _forceNeighbourList = new List<Position>();
+        private Position position;
 
         public Node(int row, int col, int neighborCount)
         {
@@ -173,6 +174,13 @@ namespace PathFinding
         {
             get { return _forceNeighbourList; }
         }
+
+        public Position Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+
         public int CompareTo(Node node)
         {
             return F.CompareTo(node.F);

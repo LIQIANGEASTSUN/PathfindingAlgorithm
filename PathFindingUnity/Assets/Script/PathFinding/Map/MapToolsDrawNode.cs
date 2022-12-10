@@ -6,16 +6,16 @@ using UnityEngine;
 /// </summary>
 public class MapToolsDrawNode
 {
-    public MapToolsDrawNode(MapQuad mapQuad)
+    public MapToolsDrawNode(IMap map)
     {
-        CreateNode(mapQuad);
+        //CreateNode(map);
     }
 
-    public void CreateNode(MapQuad mapQuad)
+    public void CreateNode(IMap map)
     {
         GameObject parent = new GameObject("NodeParent");
         parent.transform.position = Vector3.zero;
-        Node[] nodeArr = mapQuad.Grid();
+        Node[] nodeArr = map.Grid();
         for (int i = 0; i < nodeArr.Length; ++i)
         {
             Node node = nodeArr[i];
@@ -23,11 +23,11 @@ public class MapToolsDrawNode
             {
                 continue;
             }
-            Position pos = mapQuad.NodeToPosition(node);
+            Position pos = map.NodeToPosition(node);
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.name = string.Format("{0}_{1}", node.Row, node.Col);
             go.transform.position = new Vector3(pos.X, 0, pos.Y);
-            go.transform.localScale = new Vector3(mapQuad.NodeWidth(), 1, mapQuad.NodeLength()) * 0.9f;
+            go.transform.localScale = Vector3.one * 0.5f; //new Vector3(mapQuad.NodeWidth(), 1, mapQuad.NodeLength()) * 0.9f;
             go.transform.SetParent(parent.transform);
 
             go.GetComponent<Renderer>().material.color = NodeColor(node.NodeType);
