@@ -20,14 +20,24 @@ namespace PathFinding
         private MapSize _mapSize;
 
         private const int _neighborCount = 6;
-        // 每个节点 8 个邻居的相对二维坐标
-        private int[,] neighborArr = new int[,] {
+        // 奇数列节点 6 个邻居的相对二维坐标
+        private int[,] oddColneighborArr = new int[,] {
             {  1,  0},   // 上
             {  1,  1},   // 右上
             {  0,  1},   // 右下
             { -1,  0},   // 下
             {  0, -1},   // 左下
             {  1, -1},   // 左上
+        };
+
+        // 偶数列节点 6 个邻居的相对二维坐标
+        private int[,] evenColneighborArr = new int[,] {
+            {  1,  0},   // 上
+            {  0,  1},   // 右上
+            { -1,  1},   // 右下
+            { -1,  0},   // 下
+            { -1, -1},   // 左下
+            {  0, -1},   // 左上
         };
 
         public MapHex(float minX, float minY, float maxX, float maxY, float radius)
@@ -67,13 +77,11 @@ namespace PathFinding
                 }
             }
 
-            HexNode hexNode = (HexNode)GetNode(4, 5);
-            CreateGo(hexNode);
-            for (int i = 0; i < _neighborCount; ++i)
-            {
-                HexNode node = (HexNode)NodeNeighbor(hexNode, i);
-                CreateGo(node);
-            }
+            //TestDrawNode(4, 5);
+            //TestDrawNode(10, 12);
+            //TestDrawNode(15, 3);
+            //TestDrawNode(17, 14);
+
         }
         private void CreateNode(int row, int col)
         {
@@ -85,7 +93,15 @@ namespace PathFinding
             hexCell.Cost = cost;
 
             float x = (0.5f + 0.75f * col) * outerRadius;
-            float z = (float)(0.5f + row + (col % 2) * 0.5) * innerRadius;
+            float z = 0;
+            if (col % 2 == 0)  // 偶数列
+            {
+                z = (float)(0.5f + row) * innerRadius;
+            }
+            else   // 奇数列
+            {
+                z = (float)(0.5f + row + (col % 2) * 0.5) * innerRadius;
+            }
             hexCell.Position = new Position(x, z);
 
             hexCell.corners = new Vector3[6] {
@@ -100,14 +116,26 @@ namespace PathFinding
             _grid[index] = hexCell;
         }
 
-        private void CreateGo(HexNode hexCell)
+        private void TestDrawNode(int row, int col)
+        {
+            HexNode hexNode = (HexNode)GetNode(row, col);
+            CreateGo(hexNode, -1);
+            for (int i = 0; i < _neighborCount; ++i)
+            {
+                HexNode node = (HexNode)NodeNeighbor(hexNode, i);
+                CreateGo(node, i);
+            }
+        }
+
+        private void CreateGo(HexNode hexCell, int index)
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             go.transform.localScale = Vector3.one * 0.3f;
 
             Vector3 center = new Vector3(hexCell.Position.X, 0, hexCell.Position.Y);
+            center.y = 1;
             go.transform.position = center;
-            go.name = string.Format("{0}_{1}", hexCell.Row, hexCell.Col);
+            go.name = string.Format("{0}_{1}_{2}", hexCell.Row, hexCell.Col, index);
         }
 
         // 地图所有节点
@@ -174,23 +202,43 @@ namespace PathFinding
         /// </summary>
         public Node NodeNeighborWithDistance(Node node, int index, ref float distance)
         {
-            int row = node.Row + neighborArr[index, 0];
-            int col = node.Col + neighborArr[index, 1];
+            int[] dir = NodeNeighbourDir(node, index);
+            int row = node.Row + dir[0];
+            int col = node.Col + dir[1];
             Node temp = GetNode(row, col);
             if (null != temp)
             {
-                distance = (float)Math.Sqrt(Math.Abs(neighborArr[index, 0]) + Math.Abs(neighborArr[index, 1]));
+                distance = (float)Math.Sqrt(Math.Abs(dir[0]) + Math.Abs(dir[1]));
             }
             return temp;
         }
 
         public Node NodeNeighbor(Node node, int index)
         {
-            int row = node.Row + neighborArr[index, 0];
-            int col = node.Col + neighborArr[index, 1];
+            int[] dir = NodeNeighbourDir(node, index);
+            int row = node.Row + dir[0];
+            int col = node.Col + dir[1];
             Node temp = GetNode(row, col);
             return temp;
         }
+
+        public int[] NodeNeighbourDir(Node node, int index)
+        {
+            int[] dir = new int[2];
+            if (node.Col % 2 == 0)
+            {
+                dir[0] = evenColneighborArr[index, 0];
+                dir[1] = evenColneighborArr[index, 1];
+            }
+            else
+            {
+                dir[0] = oddColneighborArr[index, 0];
+                dir[1] = oddColneighborArr[index, 1];
+            }
+
+            return dir;
+        }
+
         public Node GetNode(int row, int col)
         {
             if (row < 0 || row >= _row || col < 0 || col >= _col)
