@@ -37,6 +37,13 @@ namespace PathFinding
             Position p = new Position(left.X + right.X, left.Y + right.Y);
             return p;
         }
+
+        public static Position operator *(Position left, float value)
+        {
+            Position p = new Position(left.X * value, left.Y * value);
+            return p;
+        }
+
         public static float Dot(Position left, Position right)
         {
             return left.X * right.X + left.Y * right.Y;

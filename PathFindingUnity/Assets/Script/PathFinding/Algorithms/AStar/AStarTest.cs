@@ -123,7 +123,7 @@ public class AStarTest : MonoBehaviour
 
             Position pos = imap.NodeToPosition(node);
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            go.transform.position = (kv.Key == 1) ? new Vector3(pos.X + 0.1f, 1f, pos.Y + 0.1f) : new Vector3(pos.X - 0.1f, 1f, pos.Y - 0.1f);
+            go.transform.position = (kv.Key == 1) ? new Vector3(pos.X + 0.1f, 0f, pos.Y + 0.1f) : new Vector3(pos.X - 0.1f, 0f, pos.Y - 0.1f);
             go.transform.localScale = Vector3.one * 0.3f;
             go.name = (kv.Key == 1) ? string.Format("open:{0}_{1}", node.Row, node.Col) : string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
             go.GetComponent<Renderer>().material.color = (kv.Key == 1) ? Color.green : Color.blue;
@@ -138,7 +138,7 @@ public class AStarTest : MonoBehaviour
         if (_stackPos.Count > 0)
         {
             Position position = _stackPos.Peek();
-            Vector3 destinationPos = new Vector3(position.X, 0.3f, position.Y);
+            Vector3 destinationPos = new Vector3(position.X, 0.13f, position.Y);
             Vector3 dir = destinationPos - personGo.transform.position;
             personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
             if (Vector3.Distance(personGo.transform.position, destinationPos) <= 0.05f)
@@ -152,15 +152,15 @@ public class AStarTest : MonoBehaviour
                 _intervalTime = 0.06f;
                 GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 go.transform.localScale = Vector3.one * 0.2f;
-                go.transform.position = new Vector3(personGo.transform.position.x, 0.6f, personGo.transform.position.z);
+                go.transform.position = new Vector3(personGo.transform.position.x, 0.1f, personGo.transform.position.z);
                 go.GetComponent<Renderer>().material.color = Color.red;
                 pathGoList.Add(go);
             }
         }
     }
 
-    private Vector3 persionPos = new Vector3(10.5f, 0.3f, 4.2f);
-    private Vector3 desitinationPos = new Vector3(4.5f, 0.3f, 4.2f);
+    private Vector3 persionPos = new Vector3(10.5f, 0.1f, 4.2f);
+    private Vector3 desitinationPos = new Vector3(4.5f, 0.1f, 4.2f);
     private void CreatePerson()
     {
         personGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);

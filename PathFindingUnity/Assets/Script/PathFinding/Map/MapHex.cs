@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -23,7 +22,7 @@ namespace PathFinding
         public float innerRadius = 1;
 
         // 六边形六个顶点相对于中心的坐标
-        private Vector3[] corners = new Vector3[6];
+        private Position[] corners = new Position[6];
 
         // 行
         private int maxRow;
@@ -75,13 +74,13 @@ namespace PathFinding
 
         private void SetCorners()
         {
-            corners = new Vector3[6] {
-                new Vector3(outerRadius * 0.25f, 0, innerRadius * 0.5f),
-                new Vector3(outerRadius * 0.5f, 0, 0),
-                new Vector3(outerRadius * 0.25f, 0, -innerRadius * 0.5f),
-                new Vector3(-outerRadius * 0.25f, 0, -innerRadius * 0.5f),
-                new Vector3(-outerRadius * 0.5f, 0, 0),
-                new Vector3(-outerRadius * 0.25f, 0, innerRadius * 0.5f)
+            corners = new Position[6] {
+                new Position(outerRadius * 0.25f, innerRadius * 0.5f),
+                new Position(outerRadius * 0.5f, 0),
+                new Position(outerRadius * 0.25f, -innerRadius * 0.5f),
+                new Position(-outerRadius * 0.25f, -innerRadius * 0.5f),
+                new Position(-outerRadius * 0.5f, 0),
+                new Position(-outerRadius * 0.25f, innerRadius * 0.5f)
             };
         }
 
@@ -145,11 +144,32 @@ namespace PathFinding
                 return null;
             }
 
-            float value = (x / outerRadius) / 0.75f;
-            int col = Mathf.RoundToInt(value);
+            bool result = false;
+            int row = 0;
+            int col = 0;
 
-            value = y / innerRadius - (col % 2) * 0.5f;
-            int row = Mathf.RoundToInt(value);
+            float value = (x / outerRadius) / 0.75f;
+            int mideleCol = Mathf.RoundToInt(value);
+
+            Position position = new Position(x, y);
+
+            for (col = mideleCol - 1; col <= mideleCol + 1; ++col)
+            {
+                value = y / innerRadius - (col % 2) * 0.5f;
+                row = Mathf.RoundToInt(value);
+
+                Node node = GetNode(row, col);
+                if (NodeContainPosition((HexNode)node, position))
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            if (!result)
+            {
+                return null;
+            }
 
             int index = RCToIndex(row, col);
             return _grid[index];
@@ -222,6 +242,37 @@ namespace PathFinding
             return index;
         }
 
+        private bool NodeContainPosition(HexNode hexNode, Position position)
+        {
+            if (null == hexNode)
+            {
+                return false;
+            }
+
+            Position center = hexNode.Position;
+            for (int i = 0; i < corners.Length; ++i)
+            {
+                Position vectex1 = center + corners[i];
+
+                int secondIndex = (i + 1) % corners.Length;
+                Position vectex2 = center + corners[secondIndex];
+
+                Position vectexOffset = vectex2 - vectex1;
+                Vector3 vectexVector = new Vector3(vectexOffset.X, 0, vectexOffset.Y).normalized;
+
+                Position offset = position - vectex1;
+                Vector3 offsetVector = new Vector3(offset.X, 0, offset.Y).normalized;
+
+                Vector3 cross = Vector3.Cross(vectexVector, offsetVector);
+                if (cross.y < 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public void Update()
         {
             foreach (var kv in _grid)
@@ -232,20 +283,17 @@ namespace PathFinding
 
         private void DrawHexCell(HexNode hexCell)
         {
+            Position center = hexCell.Position;
             for (int i = 0; i < corners.Length; ++i)
             {
-                Position position = hexCell.Position;
-                Vector3 center = new Vector3(position.X, 0, position.Y);
-
-                Vector3 pos = corners[i] * 0.95f;
-                pos += center;
-                pos.y = 1;
+                Position pos = center + corners[i];
 
                 int secondIndex = (i + 1) % corners.Length;
-                Vector3 pos2 = corners[secondIndex] * 0.95f + center;
-                pos2.y = 1;
+                Position pos2 = center + corners[secondIndex];
 
-                Debug.DrawRay(pos, (pos2 - pos), Color.red);
+                Vector3 p1 = new Vector3(pos.X, 0, pos.Y);
+                Vector3 p2 = new Vector3(pos2.X, 0, pos2.Y);
+                Debug.DrawRay(p1, p2 - p1, Color.red);
             }
         }
     }
