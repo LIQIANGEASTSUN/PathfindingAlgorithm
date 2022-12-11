@@ -43,6 +43,7 @@ namespace PathFinding
         void Update();
     }
 
+    // 地图尺寸：行、列
     public struct MapSize
     {
         public float _minX;
@@ -60,7 +61,7 @@ namespace PathFinding
 
         public bool Contians(float x, float y)
         {
-            return _minX < x && x < _maxX && _minY < y && y < _maxY;
+            return _minX <= x && x <= _maxX && _minY <= y && y <= _maxY;
         }
     }
 }

@@ -5,21 +5,36 @@ using System;
 
 namespace PathFinding
 {
+    // 正六边形格子地图
+    // 横向六边形
+    // 长边对应的 X 轴，短边对应的 Z 轴
+    //   ****
+    // *      *   -> X 轴
+    //   ****
     public class MapHex : IMap
     {
-        public Dictionary<int, HexNode> _grid = new Dictionary<int, HexNode>();
-
+        // 六边形外径比例
         public const float OUTER_RADIUS = 1;
+        // 六边形内径比例
         public const float INNER_RADIUS = 0.866f;
+        // 六边形外径
         public float outerRadius = 1;
+        // 六边形内径
         public float innerRadius = 1;
 
-        private int _row;
-        private int _col;
+        // 六边形六个顶点相对于中心的坐标
+        private Vector3[] corners = new Vector3[6];
 
+        // 行
+        private int maxRow;
+        // 列
+        private int maxCol;
+
+        // 地图尺寸
         private MapSize _mapSize;
 
-        private const int _neighborCount = 6;
+        public Dictionary<int, HexNode> _grid = new Dictionary<int, HexNode>();
+
         // 奇数列节点 6 个邻居的相对二维坐标
         private int[,] oddColneighborArr = new int[,] {
             {  1,  0},   // 上
@@ -47,17 +62,27 @@ namespace PathFinding
 
             outerRadius = OUTER_RADIUS * radius;
             innerRadius = INNER_RADIUS * radius;
+            SetCorners();
 
             float rowHeight = maxY - minY;
-            _row = Mathf.CeilToInt(rowHeight / innerRadius);
+            maxRow = Mathf.CeilToInt(rowHeight / innerRadius);
 
             float colWidth = maxX - minX;
-            float value = colWidth / outerRadius;
-            value = value - 0.5f;
-            _col = 1 + (int)Math.Round(value / 0.75f);
+            maxCol = (int)Math.Round((colWidth / outerRadius) / 0.75f) + 1;
 
-            UnityEngine.Debug.LogError(_row + "    " + _col);
             CreateGrid();
+        }
+
+        private void SetCorners()
+        {
+            corners = new Vector3[6] {
+                new Vector3(outerRadius * 0.25f, 0, innerRadius * 0.5f),
+                new Vector3(outerRadius * 0.5f, 0, 0),
+                new Vector3(outerRadius * 0.25f, 0, -innerRadius * 0.5f),
+                new Vector3(-outerRadius * 0.25f, 0, -innerRadius * 0.5f),
+                new Vector3(-outerRadius * 0.5f, 0, 0),
+                new Vector3(-outerRadius * 0.25f, 0, innerRadius * 0.5f)
+            };
         }
 
         public MapType MapType { get; set; }
@@ -67,75 +92,28 @@ namespace PathFinding
         // 创建网格
         public void CreateGrid()
         {
-            _grid = new Dictionary<int, HexNode>();
-
-            for (int i = 0; i < _row; ++i)
+            for (int i = 0; i < maxRow; ++i)
             {
-                for (int j = 0; j < _col; ++j)
+                for (int j = 0; j < maxCol; ++j)
                 {
                     CreateNode(i, j);
                 }
             }
-
-            //TestDrawNode(4, 5);
-            //TestDrawNode(10, 12);
-            //TestDrawNode(15, 3);
-            //TestDrawNode(17, 14);
-
         }
+
         private void CreateNode(int row, int col)
         {
             int index = RCToIndex(row, col);
-            float cost = 1;
-            int nodeType = (int)NodeType.Smooth; // _mapTerrainData.GetNodeData(i, j, ref cost);
+            int nodeType = (int)NodeType.Smooth;
             HexNode hexCell = new HexNode(row, col);
             hexCell.NodeType = (NodeType)nodeType;
-            hexCell.Cost = cost;
+            hexCell.Cost = 1;
 
-            float x = (0.5f + 0.75f * col) * outerRadius;
-            float z = 0;
-            if (col % 2 == 0)  // 偶数列
-            {
-                z = (float)(0.5f + row) * innerRadius;
-            }
-            else   // 奇数列
-            {
-                z = (float)(0.5f + row + (col % 2) * 0.5) * innerRadius;
-            }
+            float x = (0.75f * col) * outerRadius;
+            float z = (float)(row + (col % 2) * 0.5) * innerRadius;
             hexCell.Position = new Position(x, z);
 
-            hexCell.corners = new Vector3[6] {
-                new Vector3(outerRadius * 0.25f, 0, innerRadius * 0.5f),
-                new Vector3(outerRadius * 0.5f, 0, 0),
-                new Vector3(outerRadius * 0.25f, 0, -innerRadius * 0.5f),
-                new Vector3(-outerRadius * 0.25f, 0, -innerRadius * 0.5f),
-                new Vector3(-outerRadius * 0.5f, 0, 0),
-                new Vector3(-outerRadius * 0.25f, 0, innerRadius * 0.5f)
-            };
-
             _grid[index] = hexCell;
-        }
-
-        private void TestDrawNode(int row, int col)
-        {
-            HexNode hexNode = (HexNode)GetNode(row, col);
-            CreateGo(hexNode, -1);
-            for (int i = 0; i < _neighborCount; ++i)
-            {
-                HexNode node = (HexNode)NodeNeighbor(hexNode, i);
-                CreateGo(node, i);
-            }
-        }
-
-        private void CreateGo(HexNode hexCell, int index)
-        {
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            go.transform.localScale = Vector3.one * 0.3f;
-
-            Vector3 center = new Vector3(hexCell.Position.X, 0, hexCell.Position.Y);
-            center.y = 1;
-            go.transform.position = center;
-            go.name = string.Format("{0}_{1}_{2}", hexCell.Row, hexCell.Col, index);
         }
 
         // 地图所有节点
@@ -157,18 +135,6 @@ namespace PathFinding
             return _mapSize;
         }
 
-        // 地块 外径 长
-        public float NodeOuterRadius()
-        {
-            return outerRadius;
-        }
-
-        // 地块 内径 长
-        public float NodeInnerRadius()
-        {
-            return innerRadius;
-        }
-
         /// <summary>
         /// 根据坐标获取 Node
         /// </summary>
@@ -179,10 +145,10 @@ namespace PathFinding
                 return null;
             }
 
-            float value = ((x / outerRadius) - 0.5f) / 0.75f;
+            float value = (x / outerRadius) / 0.75f;
             int col = Mathf.RoundToInt(value);
 
-            value = (y / innerRadius) - 0.5f - (col % 2) * 0.5f;
+            value = y / innerRadius - (col % 2) * 0.5f;
             int row = Mathf.RoundToInt(value);
 
             int index = RCToIndex(row, col);
@@ -241,7 +207,7 @@ namespace PathFinding
 
         public Node GetNode(int row, int col)
         {
-            if (row < 0 || row >= _row || col < 0 || col >= _col)
+            if (row < 0 || row >= maxRow || col < 0 || col >= maxCol)
             {
                 return null;
             }
@@ -252,7 +218,7 @@ namespace PathFinding
 
         private int RCToIndex(int row, int col)
         {
-            int index = row * _col + col;
+            int index = row * maxCol + col;
             return index;
         }
 
@@ -266,28 +232,21 @@ namespace PathFinding
 
         private void DrawHexCell(HexNode hexCell)
         {
-            //if (hexCell.Row != 0 || hexCell.Col != 0)
-            //{
-            //    return;
-            //}
-
-            for (int i = 0; i < hexCell.corners.Length; ++i)
+            for (int i = 0; i < corners.Length; ++i)
             {
                 Position position = hexCell.Position;
                 Vector3 center = new Vector3(position.X, 0, position.Y);
 
-                Vector3 pos = hexCell.corners[i];
+                Vector3 pos = corners[i] * 0.95f;
                 pos += center;
                 pos.y = 1;
 
-
-                int secondIndex = (i + 1) % hexCell.corners.Length;
-                Vector3 pos2 = hexCell.corners[secondIndex] + center;
+                int secondIndex = (i + 1) % corners.Length;
+                Vector3 pos2 = corners[secondIndex] * 0.95f + center;
                 pos2.y = 1;
 
                 Debug.DrawRay(pos, (pos2 - pos), Color.red);
             }
         }
     }
-
 }

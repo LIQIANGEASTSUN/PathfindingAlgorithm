@@ -14,8 +14,8 @@ namespace PathFinding
         private float _width;
         private float _length;
 
-        private int _row;
-        private int _col;
+        private int maxRow;
+        private int maxCol;
 
         private const int _neighborCount = 8;
         // 每个节点 8 个邻居的相对二维坐标
@@ -43,18 +43,18 @@ namespace PathFinding
         // 创建网格
         private void CreateGrid()
         {
-            _row = _mapTerrainData.Row;
-            _col = _mapTerrainData.Col;
+            maxRow = _mapTerrainData.Row;
+            maxCol = _mapTerrainData.Col;
 
-            _width = (_mapSize._maxX - _mapSize._minX) / _col;
-            _length = (_mapSize._maxY - _mapSize._minY) / _row;
+            _width = (_mapSize._maxX - _mapSize._minX) / maxCol;
+            _length = (_mapSize._maxY - _mapSize._minY) / maxRow;
 
             // 使用一维数组存放 node
-            _grid = new Node[_row * _col];
+            _grid = new Node[maxRow * maxCol];
 
-            for (int i = 0; i < _row; ++i)
+            for (int i = 0; i < maxRow; ++i)
             {
-                for (int j = 0; j < _col; ++j)
+                for (int j = 0; j < maxCol; ++j)
                 {
                     CreateNode(i, j);
                 }
@@ -150,7 +150,7 @@ namespace PathFinding
         }
         public Node GetNode(int row, int col)
         {
-            if (row < 0 || row >= _row || col < 0 || col >= _col)
+            if (row < 0 || row >= maxRow || col < 0 || col >= maxCol)
             {
                 return null;
             }
@@ -161,7 +161,7 @@ namespace PathFinding
 
         private int RCToIndex(int row, int col)
         {
-            int index = row * _col + col;
+            int index = row * maxCol + col;
             return index;
         }
 
