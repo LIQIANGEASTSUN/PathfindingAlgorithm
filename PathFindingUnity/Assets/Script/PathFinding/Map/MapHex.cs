@@ -30,9 +30,9 @@ namespace PathFinding
         private int maxCol;
 
         // 地图尺寸
-        private MapSize _mapSize;
+        private MapSize mapSize;
 
-        public Dictionary<int, HexNode> _grid = new Dictionary<int, HexNode>();
+        public Dictionary<int, HexNode> gridDic = new Dictionary<int, HexNode>();
 
         // 奇数列节点 6 个邻居的相对二维坐标
         private int[,] oddColneighborArr = new int[,] {
@@ -57,7 +57,7 @@ namespace PathFinding
         public MapHex(float minX, float minY, float maxX, float maxY, float radius)
         {
             MapType = MapType.Hex;
-            _mapSize = new MapSize(minX, minY, maxX, maxY);
+            mapSize = new MapSize(minX, minY, maxX, maxY);
 
             outerRadius = OUTER_RADIUS * radius;
             innerRadius = INNER_RADIUS * radius;
@@ -108,19 +108,20 @@ namespace PathFinding
             hexCell.NodeType = (NodeType)nodeType;
             hexCell.Cost = 1;
 
-            float x = (0.75f * col) * outerRadius;
-            float z = (float)(row + (col % 2) * 0.5) * innerRadius;
+            float x = mapSize._minX + (0.75f * col) * outerRadius;
+            float z = mapSize._minY + (float)(row + (col % 2) * 0.5) * innerRadius;
+
             hexCell.Position = new Position(x, z);
 
-            _grid[index] = hexCell;
+            gridDic[index] = hexCell;
         }
 
         // 地图所有节点
         public Node[] Grid()
         {
-            Node[] nodeArr = new Node[_grid.Count];
+            Node[] nodeArr = new Node[gridDic.Count];
             int index = 0;
-            foreach (var kv in _grid)
+            foreach (var kv in gridDic)
             {
                 nodeArr[index] = kv.Value;
                 ++index;
@@ -131,27 +132,27 @@ namespace PathFinding
         // 地图尺寸
         public MapSize MapSize()
         {
-            return _mapSize;
+            return mapSize;
         }
 
-        /// <summary>
-        /// 根据坐标获取 Node
-        /// </summary>
-        public Node PositionToNode(float x, float y)
+        public bool PositionToRowCol(float x, float y, ref int row, ref int col)
         {
-            if (!_mapSize.Contians(x, y))
+            row = 0;
+            col = 0;
+            if (!mapSize.Contians(x, y))
             {
-                return null;
+                return false;
             }
 
+            Position position = new Position(x, y);
             bool result = false;
-            int row = 0;
-            int col = 0;
+
+            x = x - mapSize._minX;
+            y = y - mapSize._minY;
 
             float value = (x / outerRadius) / 0.75f;
             int mideleCol = Mathf.RoundToInt(value);
 
-            Position position = new Position(x, y);
 
             for (col = mideleCol - 1; col <= mideleCol + 1; ++col)
             {
@@ -166,13 +167,24 @@ namespace PathFinding
                 }
             }
 
-            if (!result)
+            return result;
+        }
+
+        /// <summary>
+        /// 根据坐标获取 Node
+        /// </summary>
+        public Node PositionToNode(float x, float y)
+        {
+            int row = 0;
+            int col = 0;
+
+            if (!PositionToRowCol(x, y, ref row, ref col))
             {
                 return null;
             }
 
             int index = RCToIndex(row, col);
-            return _grid[index];
+            return gridDic[index];
         }
 
         /// <summary>
@@ -233,7 +245,9 @@ namespace PathFinding
             }
 
             int index = RCToIndex(row, col);
-            return _grid[index];
+            HexNode node = null;
+            gridDic.TryGetValue(index, out node);
+            return node;
         }
 
         private int RCToIndex(int row, int col)
@@ -275,7 +289,7 @@ namespace PathFinding
 
         public void Update()
         {
-            foreach (var kv in _grid)
+            foreach (var kv in gridDic)
             {
                 DrawHexCell(kv.Value);
             }

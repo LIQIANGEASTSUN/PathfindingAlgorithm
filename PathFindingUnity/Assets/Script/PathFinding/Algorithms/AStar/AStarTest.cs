@@ -38,10 +38,10 @@ public class AStarTest : MonoBehaviour
 
     private void CreateHexMap()
     {
-        float minX = 0;
-        float minY = 0;
-        float maxX = 20;
-        float maxY = 20;
+        float minX = 10;
+        float minY = 10;
+        float maxX = 30;
+        float maxY = 30;
         float radius = 1;
         imap = new MapHex(minX, minY, maxX, maxY, radius);
     }
