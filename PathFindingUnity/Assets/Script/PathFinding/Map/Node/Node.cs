@@ -99,7 +99,7 @@ namespace PathFinding
         private float _cost;
         private NodeType _nodeType;
         private NodeState _nodeState;
-        private List<Position> _forceNeighbourList = new List<Position>();
+        private List<Node> _forceNeighbourList = new List<Node>();
         private Position position;
 
         public Node(int row, int col, int neighborCount)
@@ -174,7 +174,7 @@ namespace PathFinding
             ForceNeighbourList.Clear();
         }
 
-        public List<Position> ForceNeighbourList
+        public List<Node> ForceNeighbourList
         {
             get { return _forceNeighbourList; }
         }

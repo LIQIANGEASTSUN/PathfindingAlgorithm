@@ -47,8 +47,7 @@ namespace PathFinding
 
             if (null == obstacleNode || obstacleNode.NodeType == NodeType.Null || obstacleNode.NodeType == NodeType.Obstacle)
             {
-                Position pos = _map.NodeToPosition(neighbourNode);
-                node.ForceNeighbourList.Add(pos);
+                node.ForceNeighbourList.Add(neighbourNode);
                 return true;
             }
 
@@ -85,8 +84,7 @@ namespace PathFinding
 
             if (null == obstacleNode || obstacleNode.NodeType == NodeType.Null || obstacleNode.NodeType == NodeType.Obstacle)
             {
-                Position pos = _map.NodeToPosition(neighbourNode);
-                node.ForceNeighbourList.Add(pos);
+                node.ForceNeighbourList.Add(neighbourNode);
                 return true;
             }
 

@@ -1,7 +1,6 @@
 ﻿using DataStruct.Heap;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace PathFinding
 {
@@ -30,6 +29,11 @@ namespace PathFinding
 
         public Node SearchPath(Position from, Position desitination)
         {
+            if (from.X == desitination.X && from.Y == desitination.Y)
+            {
+                return null;
+            }
+
             // 重置上次访问过的节点
             foreach (var node in closedList)
             {
@@ -42,15 +46,9 @@ namespace PathFinding
             openHeap.MakeEmpty();
             closedList.Clear();
 
-            // 起点
             originNode = map.PositionToNode(from.X, from.Y);
-            // 终点
             desitinationNode = map.PositionToNode(desitination.X, desitination.Y);
-            if (null == originNode || null == desitinationNode)
-            {
-                return null;
-            }
-            if (originNode.Row == desitinationNode.Row && originNode.Col == desitinationNode.Col)
+            if ((null == originNode || null == desitinationNode))
             {
                 return null;
             }
@@ -58,7 +56,6 @@ namespace PathFinding
             originNode.NodeState = NodeState.InOpenTable;
             // 将起点加入到 open 表
             openHeap.Insert(originNode);
-
             while (openHeap.Count() > 0)
             {
                 // 取出 open 表中 F 值最小的节点
@@ -68,13 +65,11 @@ namespace PathFinding
                 closedList.Add(node);
 
                 AddTestCheck(node);
-
                 // 如果 node 是终点 则路径查找成功，并退出
                 if (node.Row == desitinationNode.Row && node.Col == desitinationNode.Col)
                 {
                     return node;
                 }
-
                 CheckNode(node);
             }
 
@@ -85,78 +80,41 @@ namespace PathFinding
         {
             if (null == node.Parent)
             {
-                // 搜索上下左右四个方向
+                // 搜索 上下左右 四 个方向
                 for (int i = 1; i < node.neighborCount; i += 2)
                 {
                     Node temp = map.NodeNeighbor(node, i);
-                    SearchHV(node, temp);
+                    Search(node, temp);
                 }
-
+                // 搜索斜向 四 个方向
                 for (int i = 0; i < node.neighborCount; i += 2)
                 {
                     Node temp = map.NodeNeighbor(node, i);
-                    SearchDiagonal(node, temp);
+                    Search(node, temp);
                 }
                 return;
             }
 
             int horizontalDir = Dir(node.Row, node.Parent.Row);
             int verticalDir = Dir(node.Col, node.Parent.Col);
-
             if (horizontalDir != 0)
             {
-                Node temp = map.GetNode(node.Row + horizontalDir, node.Col);
-                SearchHV(node, temp);
+                Search(node, node.Row + horizontalDir, node.Col);
             }
             if (verticalDir != 0)
             {
-                Node temp = map.GetNode(node.Row, node.Col + verticalDir);
-                SearchHV(node, temp);
+                Search(node, node.Row, node.Col + verticalDir);
             }
 
             if (horizontalDir != 0 && verticalDir != 0)
             {
-                Node temp = map.GetNode(node.Row + horizontalDir, node.Col + verticalDir);
-                SearchDiagonal(node, temp);
+                Search(node, node.Row + horizontalDir, node.Col + verticalDir);
             }
 
-            for (int i = 0; i < node.ForceNeighbourList.Count; ++i)
+            foreach(var forceNeighbour in node.ForceNeighbourList)
             {
-                Position pos = node.ForceNeighbourList[i];
-                Node forceNeighbour = map.PositionToNode(pos.X, pos.Y);
-                SearchDiagonal(node, forceNeighbour);
+                Search(node, forceNeighbour);
             }
-        }
-
-        /// <summary>
-        /// 节点是否跳跃点
-        /// </summary>
-        private Node IsJumpPoint(Node preNode, Node node, int rowDir, int colDir)
-        {
-            if (!InvalidNode(node) || node.NodeType == NodeType.Null || node.NodeType == NodeType.Obstacle)
-            {
-                return null;
-            }
-
-            //一： 如果 node 是起点/终点,则 node 是跳点
-            if (IsSameNode(node, originNode) || IsSameNode(node, desitinationNode))
-            {
-                return node;
-            }
-
-            //二： 如果 node 至少有一个强迫邻居,则 node 是跳点
-            if (HasForceNeighbour(preNode, node))
-            {
-                return node;
-            }
-
-            // 如果父节点在斜方向上(意味着这是斜向搜索),节点 node 的水平或者垂直方向上有满足条件 一、二的点
-            if (rowDir!= 0 && colDir != 0)
-            {
-                return JumpSearchHV(node, rowDir, colDir);
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -173,12 +131,13 @@ namespace PathFinding
             return JPSTool.HasForceNeighbour(map, node, dir);
         }
 
-        /// <summary>
-        /// 横向、竖向 搜索
-        /// </summary>
-        /// <param name="currentNode"></param>
-        /// <param name="temp"></param>
-        private void SearchHV(Node currentNode, Node temp)
+        private void Search(Node currentNode, int row, int col)
+        {
+            Node temp = map.GetNode(row, col);
+            Search(currentNode, temp);
+        }
+
+        private void Search(Node currentNode, Node temp)
         {
             if (!InvalidNode(temp) || temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
             {
@@ -187,44 +146,11 @@ namespace PathFinding
 
             int horizontalDir = Dir(temp.Row, currentNode.Row);
             int verticalDir = Dir(temp.Col, currentNode.Col);
-            Node jumpNode = IsJumpPoint(currentNode, temp, horizontalDir, verticalDir);
-            if (null != jumpNode)
-            {
-                if (!InvalidNode(jumpNode))
-                {
-                    return;
-                }
-                InsertToOpenHeap(jumpNode, currentNode);
-            }
-
-            jumpNode = JumpSearchHV(temp, horizontalDir, verticalDir);
-            if (null != jumpNode)
-            {
-                if (!InvalidNode(jumpNode))
-                {
-                    return;
-                }
-                InsertToOpenHeap(jumpNode, currentNode);
-            }
-        }
-
-        /// <summary>
-        /// 斜向搜索
-        /// </summary>
-        /// <param name="currentNode"></param>
-        /// <param name="temp"></param>
-        private void SearchDiagonal(Node currentNode, Node temp)
-        {
-            if (null == temp)
-            {
-                return;
-            }
-            int horizontalDir = Dir(temp.Row, currentNode.Row);
-            int verticalDir = Dir(temp.Col, currentNode.Col);
             Node preNode = currentNode;
             while (true)
             {
-                if (null == temp || temp.NodeState == NodeState.InColsedTable || temp.NodeState == NodeState.InOpenTable)
+                if (null == temp || temp.NodeState == NodeState.InColsedTable || temp.NodeState == NodeState.InOpenTable
+                    || temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
                 {
                     break;
                 }
@@ -232,11 +158,6 @@ namespace PathFinding
                 if (null != IsJumpPoint(preNode, temp, horizontalDir, verticalDir))
                 {
                     InsertToOpenHeap(temp, currentNode);
-                    break;
-                }
-
-                if (temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
-                {
                     break;
                 }
 
@@ -280,41 +201,71 @@ namespace PathFinding
         }
 
         /// <summary>
+        /// 节点是否跳跃点
+        /// </summary>
+        private Node IsJumpPoint(Node preNode, Node node, int rowDir, int colDir)
+        {
+            if (!InvalidNode(node) || node.NodeType == NodeType.Null || node.NodeType == NodeType.Obstacle)
+            {
+                return null;
+            }
+
+            //一： 如果 node 是起点/终点,则 node 是跳点
+            if (IsSameNode(node, originNode) || IsSameNode(node, desitinationNode))
+            {
+                return node;
+            }
+
+            //二： 如果 node 至少有一个强迫邻居,则 node 是跳点
+            if (HasForceNeighbour(preNode, node))
+            {
+                return node;
+            }
+
+            if (rowDir == 0 || colDir == 0)
+            {
+                return null;
+            }
+
+            // 如果父节点在斜方向上(意味着这是斜向搜索)
+            // 节点 node 的水平或者垂直方向上有满足条件 一、二的点,则节点也是跳跃点
+            Node jumpNode = JumpSearchHV(node, rowDir, 0);
+            if (null != jumpNode)
+            {
+                return jumpNode;
+            }
+            jumpNode = JumpSearchHV(node, 0, colDir);
+            return jumpNode;
+        }
+
+        /// <summary>
         /// 横向、竖向 跳跃搜索
+        /// rowDir 和 colDir 必须有且只有一个为 0
         /// </summary>
         private Node JumpSearchHV(Node node, int rowDir, int colDir)
         {
-            int i = node.Row;
-            while(rowDir != 0)
+            if (rowDir != 0 && colDir != 0)
             {
-                i += rowDir;
-                Node temp = map.GetNode(i, node.Col);
+                return null;
+            }
+            int row = node.Row;
+            int col = node.Col;
+            while (true)
+            {
+                row += rowDir;
+                col += colDir;
+                Node temp = map.GetNode(row, col);
                 if (null == temp || temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
                 {
                     break;
                 }
 
-                if (null != IsJumpPoint(node, temp, rowDir, 0))
+                if (null != IsJumpPoint(node, temp, rowDir, colDir))
                 {
                     return temp;
                 }
             }
 
-            i = node.Col;
-            while (colDir != 0)
-            {
-                i += colDir;
-                Node temp = map.GetNode(node.Row, i);
-                if (null == temp || temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
-                {
-                    break;
-                }
-
-                if (null != IsJumpPoint(node, temp, 0, colDir))
-                {
-                    return temp;
-                }
-            }
             return null;
         }
 
