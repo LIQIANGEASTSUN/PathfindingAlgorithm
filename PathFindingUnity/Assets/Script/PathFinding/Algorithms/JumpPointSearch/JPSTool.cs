@@ -36,32 +36,34 @@ namespace PathFinding
                 return false;
             }
 
-            Position dir = new Position(Dir(node.Row, preNode.Row), Dir(node.Col, preNode.Col));
+            int dirX = Dir(node.Row, preNode.Row);
+            int dirY = Dir(node.Col, preNode.Col);
             node.ForceNeighbourList.Clear();
             // 横、纵 方向
-            if (dir.X == 0 || dir.Y == 0)
+            if (dirX == 0 || dirY == 0)
             {
-                bool result1 = CheckHVForceNeighbour(_map, node, dir, 1);
-                bool result2 = CheckHVForceNeighbour(_map, node, dir, -1);
+                bool result1 = CheckHVForceNeighbour(_map, node, dirX, dirY, 1);
+                bool result2 = CheckHVForceNeighbour(_map, node, dirX, dirY, -1);
                 return result1 || result2;
             }
             else // 对角/斜向
             {
-                bool result1 = CheckDiagonalForceNeighbour(_map, node, dir, 1);
-                bool result2 = CheckDiagonalForceNeighbour(_map, node, dir, -1);
+                bool result1 = CheckDiagonalForceNeighbour(_map, node, dirX, dirY, 1);
+                bool result2 = CheckDiagonalForceNeighbour(_map, node, dirX, dirY, -1);
                 return result1 || result2;
             }
         }
 
         // 判断水平、垂直方向(水平向右、水平向左、竖直向上、竖直向下)的强制邻居
-        private static bool CheckHVForceNeighbour(IMap _map, Node node, Position dir, int sign)
+        private static bool CheckHVForceNeighbour(IMap _map, Node node, float dirX, float dirY, int sign)
         {
-            Position obstacleDir = new Position(Math.Abs(dir.Y) * sign, Math.Abs(dir.X) * sign);
-            Position obstacleNodePos = new Position(node.Row, node.Col) + obstacleDir;
-            Position neighbourPos = obstacleNodePos + dir;
+            float obstacleNodePosX = node.Row + Math.Abs(dirY) * sign;
+            float obstacleNodePosY = node.Col + Math.Abs(dirX) * sign;
+            float neighbourPosX = obstacleNodePosX + dirX;
+            float neighbourPosY = obstacleNodePosY + dirY;
 
-            Node obstacleNode = _map.GetNode((int)obstacleNodePos.X, (int)obstacleNodePos.Y);
-            Node neighbourNode = _map.GetNode((int)neighbourPos.X, (int)neighbourPos.Y);
+            Node obstacleNode = _map.GetNode((int)obstacleNodePosX, (int)obstacleNodePosY);
+            Node neighbourNode = _map.GetNode((int)neighbourPosX, (int)neighbourPosY);
 
             if (null == neighbourNode || neighbourNode.NodeType == NodeType.Null || neighbourNode.NodeType == NodeType.Obstacle)
             {
@@ -78,27 +80,30 @@ namespace PathFinding
         }
 
         // 判断斜向(左上、左下、右上、右下)的强制邻居
-        private static bool CheckDiagonalForceNeighbour(IMap _map, Node node, Position dir, int sign)
+        private static bool CheckDiagonalForceNeighbour(IMap _map, Node node, float dirX, float dirY, int sign)
         {
-            Position prePos = new Position(node.Row, node.Col) - dir;
-            Position obstacleDir;
-            Position neighbourDir;
+            float obstacleDirX = 0;
+            float obstacleDirY = 0;
+            float neighbourDirX = 0;
+            float neighbourDirY = 0;
             if (sign == 1)
             {
-                obstacleDir = new Position(dir.X, 0);
-                neighbourDir = new Position(dir.X, 0);
+                obstacleDirX = dirX;
+                neighbourDirX = dirX;
             }
             else
             {
-                obstacleDir = new Position(0, dir.Y);
-                neighbourDir = new Position(0, dir.Y);
+                obstacleDirY = dirY;
+                neighbourDirY = dirY;
             }
 
-            Position obstacleNodePos = prePos + obstacleDir;
-            Position neighbourPos = obstacleNodePos + neighbourDir;
+            float obstacleNodePosX = (node.Row - dirX) + obstacleDirX;
+            float obstacleNodePosY = (node.Col - dirY) + obstacleDirY;
+            float neighbourPosX = obstacleNodePosX + neighbourDirX;
+            float neighbourPosY = obstacleNodePosY + neighbourDirY;
 
-            Node obstacleNode = _map.GetNode((int)obstacleNodePos.X, (int)obstacleNodePos.Y);
-            Node neighbourNode = _map.GetNode((int)neighbourPos.X, (int)neighbourPos.Y);
+            Node obstacleNode = _map.GetNode((int)obstacleNodePosX, (int)obstacleNodePosY);
+            Node neighbourNode = _map.GetNode((int)neighbourPosX, (int)neighbourPosY);
 
             if (null == neighbourNode || neighbourNode.NodeType == NodeType.Null || neighbourNode.NodeType == NodeType.Obstacle)
             {
