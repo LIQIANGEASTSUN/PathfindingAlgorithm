@@ -1,6 +1,7 @@
 ﻿using DataStruct.Heap;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PathFinding
 {
@@ -90,48 +91,40 @@ namespace PathFinding
                     Node temp = map.NodeNeighbor(node, i);
                     SearchHV(node, temp);
                 }
-            }
-            else
-            {
-                int horizontalDir = Dir(node.Row, node.Parent.Row);
-                int verticalDir = Dir(node.Col, node.Parent.Col);
 
-                if (horizontalDir != 0)
-                {
-                    Node temp = map.GetNode(node.Row + horizontalDir, node.Col);
-                    SearchHV(node, temp);
-                }
-                if (verticalDir != 0)
-                {
-                    Node temp = map.GetNode(node.Row, node.Col + verticalDir);
-                    SearchHV(node, temp);
-                }
-            }
-
-            if (null == node.Parent)
-            {
                 for (int i = 0; i < node.neighborCount; i += 2)
                 {
                     Node temp = map.NodeNeighbor(node, i);
                     SearchDiagonal(node, temp);
                 }
+                return;
             }
-            else
+
+            int horizontalDir = Dir(node.Row, node.Parent.Row);
+            int verticalDir = Dir(node.Col, node.Parent.Col);
+
+            if (horizontalDir != 0)
             {
-                int horizontalDir = Dir(node.Row, node.Parent.Row);
-                int verticalDir = Dir(node.Col, node.Parent.Col);
-                if (horizontalDir != 0 && verticalDir != 0)
-                {
-                    Node temp = map.GetNode(node.Row + horizontalDir, node.Col + verticalDir);
-                    SearchDiagonal(node, temp);
-                }
-                
-                for (int i = 0; i < node.ForceNeighbourList.Count; ++i)
-                {
-                    Position pos = node.ForceNeighbourList[i];
-                    Node forceNeighbour = map.PositionToNode(pos.X, pos.Y);
-                    SearchDiagonal(node, forceNeighbour);
-                }
+                Node temp = map.GetNode(node.Row + horizontalDir, node.Col);
+                SearchHV(node, temp);
+            }
+            if (verticalDir != 0)
+            {
+                Node temp = map.GetNode(node.Row, node.Col + verticalDir);
+                SearchHV(node, temp);
+            }
+
+            if (horizontalDir != 0 && verticalDir != 0)
+            {
+                Node temp = map.GetNode(node.Row + horizontalDir, node.Col + verticalDir);
+                SearchDiagonal(node, temp);
+            }
+
+            for (int i = 0; i < node.ForceNeighbourList.Count; ++i)
+            {
+                Position pos = node.ForceNeighbourList[i];
+                Node forceNeighbour = map.PositionToNode(pos.X, pos.Y);
+                SearchDiagonal(node, forceNeighbour);
             }
         }
 
@@ -169,7 +162,7 @@ namespace PathFinding
         /// <summary>
         /// 节点是否有强制邻居
         /// </summary>
-        public bool HasForceNeighbour(Node preNode, Node node)
+        private bool HasForceNeighbour(Node preNode, Node node)
         {
             if (null == preNode || null == node)
             {
@@ -180,6 +173,11 @@ namespace PathFinding
             return JPSTool.HasForceNeighbour(map, node, dir);
         }
 
+        /// <summary>
+        /// 横向、竖向 搜索
+        /// </summary>
+        /// <param name="currentNode"></param>
+        /// <param name="temp"></param>
         private void SearchHV(Node currentNode, Node temp)
         {
             if (!InvalidNode(temp) || temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
