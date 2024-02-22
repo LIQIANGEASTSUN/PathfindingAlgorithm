@@ -19,6 +19,10 @@ namespace DataStruct.Heap
         private bool _isBigHeap = true;
         public Heap() {    }
 
+        public Heap(bool isBigHeap) {
+            SetHeapType(isBigHeap);
+        }
+
         public void SetHeapType(bool isBigHeap)
         {
             _isBigHeap = isBigHeap;

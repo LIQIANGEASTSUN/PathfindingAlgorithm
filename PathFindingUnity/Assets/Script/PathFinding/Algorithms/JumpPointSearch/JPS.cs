@@ -10,20 +10,15 @@ namespace PathFinding
         // 地图数据
         private IMap map;
         // 小根堆保存开放节点，目的在于提高获取最小F值点效率
-        private Heap<Node> openHeap;
+        private Heap<Node> openHeap = new Heap<Node>(false);
         // closed 表
-        private List<Node> closedList;
-
+        private List<Node> closedList = new List<Node>();
         // 起点
         private Node originNode = null;
         // 终点
         private Node desitinationNode = null;
-
         public JPS(IMap map)
         {
-            openHeap = new Heap<Node>();
-            openHeap.SetHeapType(false);
-            closedList = new List<Node>();
             this.map = map;
         }
 
@@ -66,7 +61,7 @@ namespace PathFinding
 
                 AddTestCheck(node);
                 // 如果 node 是终点 则路径查找成功，并退出
-                if (node.Row == desitinationNode.Row && node.Col == desitinationNode.Col)
+                if (IsSameNode(node, desitinationNode))
                 {
                     return node;
                 }
@@ -95,8 +90,8 @@ namespace PathFinding
                 return;
             }
 
-            int horizontalDir = Dir(node.Row, node.Parent.Row);
-            int verticalDir = Dir(node.Col, node.Parent.Col);
+            int horizontalDir = JPSTool.Dir(node.Row, node.Parent.Row);
+            int verticalDir = JPSTool.Dir(node.Col, node.Parent.Col);
             if (horizontalDir != 0)
             {
                 Search(node, node.Row + horizontalDir, node.Col);
@@ -117,20 +112,6 @@ namespace PathFinding
             }
         }
 
-        /// <summary>
-        /// 节点是否有强制邻居
-        /// </summary>
-        private bool HasForceNeighbour(Node preNode, Node node)
-        {
-            if (null == preNode || null == node)
-            {
-                return false;
-            }
-
-            Position dir = new Position(Dir(node.Row, preNode.Row), Dir(node.Col, preNode.Col));
-            return JPSTool.HasForceNeighbour(map, node, dir);
-        }
-
         private void Search(Node currentNode, int row, int col)
         {
             Node temp = map.GetNode(row, col);
@@ -139,18 +120,17 @@ namespace PathFinding
 
         private void Search(Node currentNode, Node temp)
         {
-            if (!InvalidNode(temp) || temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
+            if (!InvalidNode(temp))
             {
                 return;
             }
 
-            int horizontalDir = Dir(temp.Row, currentNode.Row);
-            int verticalDir = Dir(temp.Col, currentNode.Col);
+            int horizontalDir = JPSTool.Dir(temp.Row, currentNode.Row);
+            int verticalDir = JPSTool.Dir(temp.Col, currentNode.Col);
             Node preNode = currentNode;
             while (true)
             {
-                if (null == temp || temp.NodeState == NodeState.InColsedTable || temp.NodeState == NodeState.InOpenTable
-                    || temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
+                if (!InvalidNode(temp) || temp.NodeState == NodeState.InOpenTable)
                 {
                     break;
                 }
@@ -205,7 +185,7 @@ namespace PathFinding
         /// </summary>
         private Node IsJumpPoint(Node preNode, Node node, int rowDir, int colDir)
         {
-            if (!InvalidNode(node) || node.NodeType == NodeType.Null || node.NodeType == NodeType.Obstacle)
+            if (!InvalidNode(node))
             {
                 return null;
             }
@@ -217,7 +197,7 @@ namespace PathFinding
             }
 
             //二： 如果 node 至少有一个强迫邻居,则 node 是跳点
-            if (HasForceNeighbour(preNode, node))
+            if (JPSTool.HasForceNeighbour(map, preNode, node))
             {
                 return node;
             }
@@ -255,7 +235,7 @@ namespace PathFinding
                 row += rowDir;
                 col += colDir;
                 Node temp = map.GetNode(row, col);
-                if (null == temp || temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
+                if (!InvalidNode(temp))
                 {
                     break;
                 }
@@ -265,7 +245,6 @@ namespace PathFinding
                     return temp;
                 }
             }
-
             return null;
         }
 
@@ -293,26 +272,9 @@ namespace PathFinding
             return (float)Math.Sqrt(r * r + c * c);
         }
 
-        /// <summary>
-        /// 搜索方向
-        /// </summary>
-        private int Dir(int v1, int v2)
-        {
-            int value = v1 - v2;
-            if (value > 0)
-            {
-                return 1;
-            }
-            else if (value == 0)
-            {
-                return 0;
-            }
-            return -1;
-        }
-
         private bool InvalidNode(Node node)
         {
-            if (null == node || node.NodeState == NodeState.InColsedTable)
+            if (null == node || node.NodeState == NodeState.InColsedTable || node.NodeType == NodeType.Null || node.NodeType == NodeType.Obstacle)
             {
                 return false;
             }

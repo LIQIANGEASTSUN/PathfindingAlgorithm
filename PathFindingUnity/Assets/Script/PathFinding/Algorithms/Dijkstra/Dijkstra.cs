@@ -12,13 +12,11 @@ namespace PathFinding
     {
         // 地图数据
         private IMap _map;
-        private Heap<Node> _openHeap;
+        private Heap<Node> _openHeap = new Heap<Node>(false);
         private List<Node> _closeList = new List<Node>();
 
         public Dijkstra(IMap map)
         {
-            _openHeap = new Heap<Node>();
-            _openHeap.SetHeapType(false);
             _map = map;
         }
 

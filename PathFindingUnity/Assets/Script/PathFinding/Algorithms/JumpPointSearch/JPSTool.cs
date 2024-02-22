@@ -5,15 +5,38 @@ namespace PathFinding
     public class JPSTool
     {
         /// <summary>
+        /// 搜索方向
+        /// </summary>
+        public static int Dir(int v1, int v2)
+        {
+            int value = v1 - v2;
+            if (value > 0)
+            {
+                return 1;
+            }
+            else if (value == 0)
+            {
+                return 0;
+            }
+            return -1;
+        }
+
+        /// <summary>
         /// 节点是否有强制邻居
         /// </summary>
-        public static bool HasForceNeighbour(IMap _map, Node node, Position dir)
+        public static bool HasForceNeighbour(IMap _map, Node preNode, Node node)
         {
-            if (null == node || node.NodeType == NodeType.Null || node.NodeType == NodeType.Obstacle)
+            if (null == preNode || null == node)
             {
                 return false;
             }
 
+            if (node.NodeType == NodeType.Null || node.NodeType == NodeType.Obstacle)
+            {
+                return false;
+            }
+
+            Position dir = new Position(Dir(node.Row, preNode.Row), Dir(node.Col, preNode.Col));
             node.ForceNeighbourList.Clear();
             // 横、纵 方向
             if (dir.X == 0 || dir.Y == 0)

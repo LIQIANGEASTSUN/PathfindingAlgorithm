@@ -11,16 +11,12 @@ namespace PathFinding
         private IMap _map;
 
         // 小根堆保存开放节点，目的在于提高获取最小F值点效率
-        private Heap<Node> openHeap;
+        private Heap<Node> openHeap = new Heap<Node>(false);
         // closed 表
-        private List<Node> closedList;
+        private List<Node> closedList = new List<Node>();
 
         public AStar(IMap map)
         {
-            openHeap = new Heap<Node>();
-            openHeap.SetHeapType(false);
-            closedList = new List<Node>();
-
             _map = map;
         }
 
