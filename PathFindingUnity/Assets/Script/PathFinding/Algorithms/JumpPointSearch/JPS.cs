@@ -14,6 +14,11 @@ namespace PathFinding
         // closed 表
         private List<Node> closedList;
 
+        // 起点
+        private Node originNode = null;
+        // 终点
+        private Node desitinationNode = null;
+
         public JPS(IMap map)
         {
             openHeap = new Heap<Node>();
@@ -37,9 +42,13 @@ namespace PathFinding
             closedList.Clear();
 
             // 起点
-            Node originNode = map.PositionToNode(from.X, from.Y);
+            originNode = map.PositionToNode(from.X, from.Y);
             // 终点
-            Node desitinationNode = map.PositionToNode(desitination.X, desitination.Y);
+            desitinationNode = map.PositionToNode(desitination.X, desitination.Y);
+            if (null == originNode || null == desitinationNode)
+            {
+                return null;
+            }
             if (originNode.Row == desitinationNode.Row && originNode.Col == desitinationNode.Col)
             {
                 return null;
@@ -65,13 +74,13 @@ namespace PathFinding
                     return node;
                 }
 
-                CheckNode(originNode, desitinationNode, node);
+                CheckNode(node);
             }
 
             return null;
         }
 
-        private void CheckNode(Node origin, Node desitination, Node node)
+        private void CheckNode(Node node)
         {
             if (null == node.Parent)
             {
@@ -79,7 +88,7 @@ namespace PathFinding
                 for (int i = 1; i < node.neighborCount; i += 2)
                 {
                     Node temp = map.NodeNeighbor(node, i);
-                    SearchHV(origin, desitination, node, temp);
+                    SearchHV(node, temp);
                 }
             }
             else
@@ -90,12 +99,12 @@ namespace PathFinding
                 if (horizontalDir != 0)
                 {
                     Node temp = map.GetNode(node.Row + horizontalDir, node.Col);
-                    SearchHV(origin, desitination, node, temp);
+                    SearchHV(node, temp);
                 }
                 if (verticalDir != 0)
                 {
                     Node temp = map.GetNode(node.Row, node.Col + verticalDir);
-                    SearchHV(origin, desitination, node, temp);
+                    SearchHV(node, temp);
                 }
             }
 
@@ -104,7 +113,7 @@ namespace PathFinding
                 for (int i = 0; i < node.neighborCount; i += 2)
                 {
                     Node temp = map.NodeNeighbor(node, i);
-                    SearchDiagonal(origin, desitination, node, temp);
+                    SearchDiagonal(node, temp);
                 }
             }
             else
@@ -114,22 +123,22 @@ namespace PathFinding
                 if (horizontalDir != 0 && verticalDir != 0)
                 {
                     Node temp = map.GetNode(node.Row + horizontalDir, node.Col + verticalDir);
-                    SearchDiagonal(origin, desitination, node, temp);
+                    SearchDiagonal(node, temp);
                 }
                 
                 for (int i = 0; i < node.ForceNeighbourList.Count; ++i)
                 {
                     Position pos = node.ForceNeighbourList[i];
                     Node forceNeighbour = map.PositionToNode(pos.X, pos.Y);
-                    SearchDiagonal(origin, desitination, node, forceNeighbour);
+                    SearchDiagonal(node, forceNeighbour);
                 }
             }
         }
 
         /// <summary>
-        /// 节点是否使跳跃点
+        /// 节点是否跳跃点
         /// </summary>
-        private Node IsJumpPoint(Node origin, Node desitination, Node preNode, Node node, int rowDir, int colDir)
+        private Node IsJumpPoint(Node preNode, Node node, int rowDir, int colDir)
         {
             if (!InvalidNode(node) || node.NodeType == NodeType.Null || node.NodeType == NodeType.Obstacle)
             {
@@ -137,7 +146,7 @@ namespace PathFinding
             }
 
             //一： 如果 node 是起点/终点,则 node 是跳点
-            if (IsSameNode(node, origin) || IsSameNode(node, desitination))
+            if (IsSameNode(node, originNode) || IsSameNode(node, desitinationNode))
             {
                 return node;
             }
@@ -151,7 +160,7 @@ namespace PathFinding
             // 如果父节点在斜方向上(意味着这是斜向搜索),节点 node 的水平或者垂直方向上有满足条件 一、二的点
             if (rowDir!= 0 && colDir != 0)
             {
-                return JumpSearchHV( origin, desitination, node, rowDir, colDir);
+                return JumpSearchHV(node, rowDir, colDir);
             }
 
             return null;
@@ -171,7 +180,7 @@ namespace PathFinding
             return JPSTool.HasForceNeighbour(map, node, dir);
         }
 
-        private void SearchHV(Node origin, Node desitination, Node currentNode, Node temp)
+        private void SearchHV(Node currentNode, Node temp)
         {
             if (!InvalidNode(temp) || temp.NodeType == NodeType.Null || temp.NodeType == NodeType.Obstacle)
             {
@@ -180,28 +189,33 @@ namespace PathFinding
 
             int horizontalDir = Dir(temp.Row, currentNode.Row);
             int verticalDir = Dir(temp.Col, currentNode.Col);
-            Node jumpNode = IsJumpPoint(origin, desitination, currentNode, temp, horizontalDir, verticalDir);
+            Node jumpNode = IsJumpPoint(currentNode, temp, horizontalDir, verticalDir);
             if (null != jumpNode)
             {
                 if (!InvalidNode(jumpNode))
                 {
                     return;
                 }
-                InsertToOpenHeap(jumpNode, currentNode, desitination);
+                InsertToOpenHeap(jumpNode, currentNode);
             }
 
-            jumpNode = JumpSearchHV(origin, desitination, temp, horizontalDir, verticalDir);
+            jumpNode = JumpSearchHV(temp, horizontalDir, verticalDir);
             if (null != jumpNode)
             {
                 if (!InvalidNode(jumpNode))
                 {
                     return;
                 }
-                InsertToOpenHeap(jumpNode, currentNode, desitination);
+                InsertToOpenHeap(jumpNode, currentNode);
             }
         }
 
-        private void SearchDiagonal(Node origin, Node desitination, Node currentNode, Node temp)
+        /// <summary>
+        /// 斜向搜索
+        /// </summary>
+        /// <param name="currentNode"></param>
+        /// <param name="temp"></param>
+        private void SearchDiagonal(Node currentNode, Node temp)
         {
             if (null == temp)
             {
@@ -217,9 +231,9 @@ namespace PathFinding
                     break;
                 }
 
-                if (null != IsJumpPoint(origin, desitination, preNode, temp, horizontalDir, verticalDir))
+                if (null != IsJumpPoint(preNode, temp, horizontalDir, verticalDir))
                 {
-                    InsertToOpenHeap(temp, currentNode, desitination);
+                    InsertToOpenHeap(temp, currentNode);
                     break;
                 }
 
@@ -233,12 +247,12 @@ namespace PathFinding
             }
         }
 
-        private void InsertToOpenHeap(Node jumpNode, Node currentNode, Node desitination)
+        private void InsertToOpenHeap(Node jumpNode, Node currentNode)
         {
             // 设置 neighborNode.G 值 = 从 起点 到 neighborNode 的总 G
             float G = currentNode.G + Distance(currentNode, jumpNode);
             // 使用 曼哈顿 方法计算 H 值，即(neighborNode 到 终点的 Row、Col 偏移量绝对值之和)
-            float H = Offset(jumpNode, desitination);
+            float H = Offset(jumpNode, desitinationNode);
             float F = H + G;
             // 在 open 表中
             if (jumpNode.NodeState == NodeState.InOpenTable)
@@ -270,7 +284,7 @@ namespace PathFinding
         /// <summary>
         /// 横向、竖向 跳跃搜索
         /// </summary>
-        private Node JumpSearchHV(Node origin, Node desitination, Node node, int rowDir, int colDir)
+        private Node JumpSearchHV(Node node, int rowDir, int colDir)
         {
             int i = node.Row;
             while(rowDir != 0)
@@ -282,7 +296,7 @@ namespace PathFinding
                     break;
                 }
 
-                if (null != IsJumpPoint(origin, desitination, node, temp, rowDir, 0))
+                if (null != IsJumpPoint(node, temp, rowDir, 0))
                 {
                     return temp;
                 }
@@ -298,7 +312,7 @@ namespace PathFinding
                     break;
                 }
 
-                if (null != IsJumpPoint(origin, desitination, node, temp, 0, colDir))
+                if (null != IsJumpPoint(node, temp, 0, colDir))
                 {
                     return temp;
                 }
@@ -316,11 +330,6 @@ namespace PathFinding
                 return false;
             }
             return left.Row == right.Row && left.Col == right.Col;
-        }
-
-        private bool IsNeighbour(Node n1, Node n2)
-        {
-            return Math.Abs(n1.Row - n2.Row) <= 1 && Math.Abs(n1.Col - n2.Col) <= 1;
         }
 
         private int Offset(Node n1, Node n2)
