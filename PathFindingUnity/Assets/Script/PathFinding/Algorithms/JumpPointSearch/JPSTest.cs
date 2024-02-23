@@ -114,6 +114,11 @@ public class JPSTest : MonoBehaviour
         {
             StartSearchPath();
         }
+
+        if (GUI.Button(new Rect(300, 10, 300, 50), "JPS+ 预处理地图"))
+        {
+            _jps.Preprocess();
+        }
     }
 
     private Vector3 persionPos = new Vector3(2.5f, 0.3f, 3.85f);

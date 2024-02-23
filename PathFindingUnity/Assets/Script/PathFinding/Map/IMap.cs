@@ -40,6 +40,14 @@ namespace PathFinding
         Node NodeNeighbor(Node node, int index);
         Node GetNode(int row, int col);
 
+        /// <summary>
+        /// 获取 给的行列是节点的第几个邻居
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        int GetNodeNeighborIndex(Node node, int dirRow, int dirCol);
+
         void Update();
     }
 

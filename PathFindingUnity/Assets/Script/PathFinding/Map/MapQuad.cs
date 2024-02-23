@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PathFinding
 {
@@ -21,11 +17,11 @@ namespace PathFinding
         // 每个节点 8 个邻居的相对二维坐标
         private int[,] neighborArr = new int[,] {
             { -1, -1},
-            { -1,  0}, 
+            { -1,  0},
             { -1,  1},
-            {  0,  1}, 
+            {  0,  1},
             {  1,  1},
-            {  1,  0}, 
+            {  1,  0},
             {  1, -1},
             {  0, -1}
         };
@@ -141,6 +137,7 @@ namespace PathFinding
             }
             return temp;
         }
+
         public Node NodeNeighbor(Node node, int index)
         {
             int row = node.Row + neighborArr[index, 0];
@@ -148,6 +145,21 @@ namespace PathFinding
             Node temp = GetNode(row, col);
             return temp;
         }
+
+        public int GetNodeNeighborIndex(Node node, int dirRow, int dirCol)
+        {
+            int index = 0;
+            for (int i = 0; i < neighborArr.Length; ++i)
+            {
+                if (dirRow == neighborArr[i, 0] && dirCol == neighborArr[i, 1])
+                {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        }
+
         public Node GetNode(int row, int col)
         {
             if (row < 0 || row >= maxRow || col < 0 || col >= maxCol)

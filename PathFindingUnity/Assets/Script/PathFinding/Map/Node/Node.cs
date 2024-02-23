@@ -3,50 +3,6 @@ using System.Collections.Generic;
 
 namespace PathFinding
 {
-
-    public struct Position
-    {
-        private float _x;
-        private float _y;
-
-        public Position(float x, float y)
-        {
-            _x = x;
-            _y = y;
-        }
-
-        public float X
-        {
-            get { return _x; }
-        }
-
-        public float Y
-        {
-            get { return _y; }
-        }
-        public static Position operator- (Position left, Position right)
-        {
-            Position p = new Position(left.X - right.X, left.Y - right.Y);
-            return p;
-        }
-        public static Position operator+ (Position left, Position right)
-        {
-            Position p = new Position(left.X + right.X, left.Y + right.Y);
-            return p;
-        }
-
-        public static Position operator *(Position left, float value)
-        {
-            Position p = new Position(left.X * value, left.Y * value);
-            return p;
-        }
-
-        public static float Dot(Position left, Position right)
-        {
-            return left.X * right.X + left.Y * right.Y;
-        }
-    }
-
     public enum NodeType
     {
         /// <summary>
@@ -100,13 +56,16 @@ namespace PathFinding
         private NodeType _nodeType;
         private NodeState _nodeState;
         private List<Node> _forceNeighbourList = new List<Node>();
-        private Position position;
+        private Position _position;
+        // Jps+ 预处理地块信息
+        private int[] _jpsPlus = null;
 
         public Node(int row, int col, int neighborCount)
         {
             _row = row;
             _col = col;
             _neighborCount = neighborCount;
+            _jpsPlus = new int[neighborCount];
         }
 
         public float F
@@ -165,6 +124,11 @@ namespace PathFinding
             get { return _neighborCount; }
         }
 
+        public int[] JpsPlus
+        {
+            get { return _jpsPlus; }
+        }
+
         public void Clear()
         {
             Parent = null;
@@ -181,8 +145,8 @@ namespace PathFinding
 
         public Position Position
         {
-            get { return position; }
-            set { position = value; }
+            get { return _position; }
+            set { _position = value; }
         }
 
         public int CompareTo(Node node)

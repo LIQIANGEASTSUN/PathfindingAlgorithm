@@ -220,6 +220,29 @@ namespace PathFinding
             return temp;
         }
 
+        public int GetNodeNeighborIndex(Node node, int dirRow, int dirCol)
+        {
+            int index = 0;
+            int[,] neighbors = null;
+            if (node.Col % 2 == 0)
+            {
+                neighbors = evenColneighborArr;
+            }
+            else
+            {
+                neighbors = oddColneighborArr;
+            }
+            for (int i = 0; i < neighbors.Length; ++i)
+            {
+                if (dirRow == neighbors[i, 0] && dirCol == neighbors[i, 1])
+                {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        }
+
         public int[] NodeNeighbourDir(Node node, int index)
         {
             int[] dir = new int[2];
