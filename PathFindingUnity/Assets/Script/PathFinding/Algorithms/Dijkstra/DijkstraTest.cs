@@ -49,7 +49,8 @@ public class DijkstraTest : MonoBehaviour
 
     private void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 10, 200, 50), "Start"))
+        GUI.skin.button.fontSize = 40;
+        if (GUI.Button(new Rect(10, 10, 200, 80), "Start"))
         {
             StartSearchPath();
         }

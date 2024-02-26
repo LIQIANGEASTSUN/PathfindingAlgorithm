@@ -34,6 +34,11 @@ namespace PathFinding
             jpsPlusPreproccess.Preprocess();
         }
 
+        public bool IsPreprocess
+        {
+            get { return jpsPlusPreproccess.IsPreprocess; }
+        }
+
         public Node SearchPath(Position from, Position desitination)
         {
             if (from.X == desitination.X && from.Y == desitination.Y)
@@ -134,12 +139,6 @@ namespace PathFinding
 
         private void Search(Node currentNode, Node temp)
         {
-            if (jpsPlusPreproccess.IsPreprocess)
-            {
-                SearchPlus(currentNode, temp);
-                return;
-            }
-
             if (!jpsTool.InvalidNode(temp))
             {
                 return;
@@ -147,6 +146,19 @@ namespace PathFinding
 
             int horizontalDir = jpsTool.Dir(temp.Row, currentNode.Row);
             int verticalDir = jpsTool.Dir(temp.Col, currentNode.Col);
+            if (jpsPlusPreproccess.IsPreprocess)
+            {
+                // 如果地图进行了预处理，并且 step >= 0 直接使用预处理数据
+                // 如果 step < 0 则说明此方向上有边界或者障碍点，对这个点进行搜索
+                int index = map.GetNodeNeighborIndex(currentNode, horizontalDir, verticalDir);
+                int step = currentNode.JpsPlus[index];
+                if (step >= 0)
+                {
+                    SearchPlus(currentNode, temp, step);
+                    return;
+                }
+            }
+
             Node preNode = currentNode;
             while (true)
             {
@@ -171,23 +183,20 @@ namespace PathFinding
         /// </summary>
         /// <param name="currentNode"></param>
         /// <param name="temp"></param>
-        private void SearchPlus(Node currentNode, Node temp)
+        private void SearchPlus(Node currentNode, Node temp, int step)
         {
             if (!jpsTool.InvalidNode(temp) || temp.NodeState == NodeState.InOpenTable)
             {
                 return;
             }
 
-            int horizontalDir = jpsTool.Dir(temp.Row, currentNode.Row);
-            int verticalDir = jpsTool.Dir(temp.Col, currentNode.Col);
-
-            int index = map.GetNodeNeighborIndex(currentNode, horizontalDir, verticalDir);
-            int step = currentNode.JpsPlus[index];
             if (step <= 0)
             {
                 return;
             }
 
+            int horizontalDir = jpsTool.Dir(temp.Row, currentNode.Row);
+            int verticalDir = jpsTool.Dir(temp.Col, currentNode.Col);
             int row = currentNode.Row + horizontalDir * step;
             int col = currentNode.Col + verticalDir * step;
             temp = map.GetNode(row, col);

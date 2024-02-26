@@ -1,12 +1,30 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
 
 namespace PathFinding
 {
     /// <summary>
     /// Jps+ 地图预处理
+    /// 用 8 个数值，分别记录节点八个方向上:跳点、墙（障碍、边界）的距离，如下所示
+    ///    2、3、0
+    ///   -3、N、5
+    ///   -4、0、3
+    /// 预处理
+    /// 第一步：对每个节点的八个方向进行跳点的可达性判断，并记录好跳点直线可达性
+    /// 水平、垂直方向 距离 n 步 是跳点，则此方向记录 abs(n)，如果没有跳点记录 0
+    /// 斜向 距离 (n, n) 的节点是跳点，则此方向记录 abs(n)，如果没有跳点记录 0
+    /// 
+    /// 第二步：对节点的八个方向上，记录值还是 0 的方向上移动1步后碰到障碍（或边界）则记为0，
+    /// 如果移动 n+1 步后会碰到障碍（或边界）的数据记为负数距离 -n
+    /// 
+    /// 
+    /// 
+    /// 做好了地图的预处理之后，我们就可以使用JPS+算法了。
+    /// 大致思路与JPS算法相同，不过这次有了预处理的数据，我们可以更快的进行直线搜索和斜向搜索。
+
+    /// 在某个搜索方向上有：
+    /// 1.对于正数距离 n（意味着距离跳点 n 格），我们可以直接将n步远的节点作为跳点添加进openlist
+    /// 2.对于0距离（意味着一步都不可移动），我们无需在该方向搜索；
+    /// 3.对于负数距离 -n（意味着距离边界或障碍 n 格），我们直接将n步远的节点进行一次跳点判断（有可能满足跳点的三个条件，不过得益于预处理的数据，这步也可以很快完成）。
     /// </summary>
     public class JPSPlusPreproccess
     {
@@ -89,7 +107,6 @@ namespace PathFinding
                     int step = (offsetX != 0) ? Math.Abs(offsetX) : Math.Abs(offsetY);
                     currentNode.JpsPlus[index] = step;
 
-                    UnityEngine.Debug.LogError(currentNode.Row + "   " + currentNode.Col + "   index:" + index + "   step:" + step);
                     hasJump = true;
                     break;
                 }

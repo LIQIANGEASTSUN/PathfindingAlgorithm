@@ -149,7 +149,7 @@ namespace PathFinding
 
             int dirX = Dir(node.Row, preNode.Row);
             int dirY = Dir(node.Col, preNode.Col);
-            node.ForceNeighbourList.Clear();
+            //node.ForceNeighbourList.Clear();
             // 横、纵 方向
             if (dirX == 0 || dirY == 0)
             {

@@ -1,0 +1,12 @@
+https://blog.csdn.net/GJQI12/article/details/108345526?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-1-108345526-blog-118766080.235^v43^pc_blog_bottom_relevance_base4&spm=1001.2101.3001.4242.2&utm_relevant_index=4
+
+
+
+
+做好了地图的预处理之后，我们就可以使用JPS+算法了。
+大致思路与JPS算法相同，不过这次有了预处理的数据，我们可以更快的进行直线搜索和斜向搜索。
+
+在某个搜索方向上有：
+1.对于正数距离 n（意味着距离跳点 n 格），我们可以直接将n步远的节点作为跳点添加进openlist
+2.对于0距离（意味着一步都不可移动），我们无需在该方向搜索；
+3.对于负数距离 -n（意味着距离边界或障碍 n 格），我们直接将n步远的节点进行一次跳点判断（有可能满足跳点的第三条件，不过得益于预处理的数据，这步也可以很快完成）。
