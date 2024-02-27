@@ -116,13 +116,14 @@ public class JPSTest : MonoBehaviour
             StartSearchPath();
         }
 
-        if (!_jps.IsPreprocess)
-        {
-            if (GUI.Button(new Rect(300, 10, 400, 80), "JPS+ 预处理地图"))
-            {
-                _jps.Preprocess();
-            }
-        }
+        // JPS+ 还没有完成，不能使用
+        //if (!_jps.IsPreprocess)
+        //{
+        //    if (GUI.Button(new Rect(300, 10, 400, 80), "JPS+ 预处理地图"))
+        //    {
+        //        _jps.Preprocess();
+        //    }
+        //}
     }
 
     private Vector3 persionPos = new Vector3(2.5f, 0.3f, 3.85f);

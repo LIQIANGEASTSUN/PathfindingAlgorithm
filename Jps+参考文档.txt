@@ -1,6 +1,9 @@
 https://blog.csdn.net/GJQI12/article/details/108345526?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-1-108345526-blog-118766080.235^v43^pc_blog_bottom_relevance_base4&spm=1001.2101.3001.4242.2&utm_relevant_index=4
 
 
+这个讲解的还算不错
+Goal Bounding
+https://zhuanlan.zhihu.com/p/449513225
 
 
 做好了地图的预处理之后，我们就可以使用JPS+算法了。
