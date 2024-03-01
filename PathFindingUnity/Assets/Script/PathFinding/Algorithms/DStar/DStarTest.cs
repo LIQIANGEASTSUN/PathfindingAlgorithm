@@ -1,22 +1,24 @@
-﻿using PathFinding;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using PathFinding;
 
-public class DijkstraTest : MonoBehaviour
+public class DStarTest : MonoBehaviour
 {
     //  地图，此例子使用的是矩形网格地图
     private MapQuad _mapQuad;
-    private Dijkstra dijkstra;
-    
+    private DStar dStar;
+
     private void Start()
     {
         // 获取地图数据
         _mapQuad = new MapQuad("Terrain6", 0, 0, 20, 10);
         // 初始化 算法，并将地图数据传递进去
-        dijkstra = new Dijkstra(_mapQuad);
+        dStar = new DStar(_mapQuad);
+
+        Node.compareUseK = true;
     }
 
-    private Stack<Position> _stackPos = new Stack<Position>();
+    private Queue<Position> _queuePos = new Queue<Position>();
     private void StartSearchPath()
     {
         for (int i = pathGoList.Count - 1; i >= 0; --i)
@@ -31,16 +33,16 @@ public class DijkstraTest : MonoBehaviour
 
         // 搜索路径，如果返回结果为 null，则说明没有找到路径，否则说明已找到路径，且 pathNode 为终点节点
         // 顺着 pathNode 一直向上查找 parentNode，最终将到达开始点
-        Node pathNode = dijkstra.SearchPath(from, to);
+        Node pathNode = dStar.SearchPath(from, to);
 
         //需要通过 pathNode 逆序向上查找 parentNode
         //所以使用 栈：FILO 先进后出,存放路径点
-        _stackPos.Clear();
+        _queuePos.Clear();
         while (null != pathNode)
         {
             Position pos = _mapQuad.NodeToPosition(pathNode);
             // 数据入栈
-            _stackPos.Push(pos);
+            _queuePos.Enqueue(pos);
             pathNode = pathNode.Parent;
         }
 
@@ -94,15 +96,15 @@ public class DijkstraTest : MonoBehaviour
             return;
         }
 
-        if (_stackPos.Count > 0)
+        if (_queuePos.Count > 0)
         {
-            Position position = _stackPos.Peek();
+            Position position = _queuePos.Peek();
             Vector3 destinationPos = new Vector3(position.X, 0.3f, position.Y);
             Vector3 dir = destinationPos - personGo.transform.position;
             personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
             if (Vector3.Distance(personGo.transform.position, destinationPos) <= 0.05f)
             {
-                _stackPos.Pop();
+                _queuePos.Dequeue();
             }
 
             _intervalTime -= Time.deltaTime;

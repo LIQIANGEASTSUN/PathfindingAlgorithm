@@ -38,7 +38,7 @@ namespace PathFinding
 
     public enum NodeState
     {
-        Null = 0,
+        New = 0,
         InOpenTable = 1,
         InColsedTable = 2,
         Known = 3,
@@ -59,6 +59,8 @@ namespace PathFinding
         private Position _position;
         // Jps+ 预处理地块信息
         private int[] _jpsPlus = null;
+
+        public static bool compareUseK = false;
 
         public Node(int row, int col, int neighborCount)
         {
@@ -89,6 +91,13 @@ namespace PathFinding
         {
             get { return _cost; }
             set { _cost = value; }
+        }
+
+        private float _k;
+        public float K
+        {
+            get { return _k; }
+            set { _k = value; }
         }
 
         public int Row
@@ -134,7 +143,7 @@ namespace PathFinding
             Parent = null;
             H = 0;
             G = 0;
-            NodeState = NodeState.Null;
+            NodeState = NodeState.New;
             ForceNeighbourList.Clear();
         }
 
@@ -151,7 +160,12 @@ namespace PathFinding
 
         public int CompareTo(Node node)
         {
+            if (compareUseK)
+            {
+                return K.CompareTo(node.K);
+            }
             return F.CompareTo(node.F);
         }
+
     }
 }
