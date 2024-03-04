@@ -16,9 +16,12 @@ public class DStarTest : MonoBehaviour
         dStar = new DStar(_mapQuad);
 
         Node.compareUseK = true;
+
+        CreatePerson();
+        new MapToolsDrawNode(_mapQuad);
     }
 
-    private Queue<Position> _queuePos = new Queue<Position>();
+    private Queue<Node> _queuePos = new Queue<Node>();
     private void StartSearchPath()
     {
         for (int i = pathGoList.Count - 1; i >= 0; --i)
@@ -40,10 +43,23 @@ public class DStarTest : MonoBehaviour
         _queuePos.Clear();
         while (null != pathNode)
         {
-            Position pos = _mapQuad.NodeToPosition(pathNode);
             // 数据入栈
-            _queuePos.Enqueue(pos);
+            _queuePos.Enqueue(pathNode);
             pathNode = pathNode.Parent;
+        }
+
+        List<int[]> list = new List<int[]>()
+        {
+            new int[]{11, 10},
+            new int[]{12, 10},
+            new int[]{13, 10},
+        };
+        // 将一些可行走节点改成障碍物
+        foreach(var data in list)
+        {
+            Node node = _mapQuad.GetNode(data[0], data[1]);
+            node.NodeType = NodeType.Obstacle;
+            dStar.MODIFY_COST(node, 100000);
         }
 
         // 顺次执行 _stackPos.Peek(); 将 路点从 栈中取出即是从 开始点到结束点的路径
@@ -64,23 +80,21 @@ public class DStarTest : MonoBehaviour
     private float speed = 3;
     public static List<Node> insertOpenList = new List<Node>();
     private List<GameObject> pathGoList = new List<GameObject>();
-    private float _intervalTime = 0.1f;
-    private float _insertTime = 0.02f;
-    private bool _isInit = false;
     private void Update()
     {
-        if (!_isInit)
+        if (CreateOpenList())
         {
-            _isInit = true;
-            CreatePerson();
-            new MapToolsDrawNode(_mapQuad);
+            return;
         }
 
-        _insertTime -= Time.deltaTime;
-        if (insertOpenList.Count > 0 && _insertTime <= 0)
-        {
-            _insertTime = 0.02f;
+        Move();
+    }
 
+    // 创建加入到 OpenList 的节点
+    private bool CreateOpenList()
+    {
+        while (insertOpenList.Count > 0)
+        {
             Node node = insertOpenList[0];
             insertOpenList.RemoveAt(0);
 
@@ -90,32 +104,66 @@ public class DStarTest : MonoBehaviour
             go.transform.position = new Vector3(pos.X + 0.1f, 0.6f, pos.Y + 0.1f);
             go.GetComponent<Renderer>().material.color = Color.blue;
             pathGoList.Add(go);
+            return true;
         }
-        if (insertOpenList.Count > 0)
+        return insertOpenList.Count > 0;
+    }
+
+    // 创建走过的节点
+    private void CreatePathPos()
+    {
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        go.transform.localScale = Vector3.one * 0.2f;
+        go.transform.position = new Vector3(personGo.transform.position.x, 0.6f, personGo.transform.position.z);
+        go.GetComponent<Renderer>().material.color = Color.red;
+        pathGoList.Add(go);
+    }
+
+    /// <summary>
+    /// 开始按照路径行走
+    /// </summary>
+    private void Move()
+    {
+        if (_queuePos.Count <= 0)
         {
             return;
         }
 
-        if (_queuePos.Count > 0)
-        {
-            Position position = _queuePos.Peek();
-            Vector3 destinationPos = new Vector3(position.X, 0.3f, position.Y);
-            Vector3 dir = destinationPos - personGo.transform.position;
-            personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
-            if (Vector3.Distance(personGo.transform.position, destinationPos) <= 0.05f)
-            {
-                _queuePos.Dequeue();
-            }
+        Node node = _queuePos.Peek();
+        Position position = _mapQuad.NodeToPosition(node);
+        Vector3 destinationPos = new Vector3(position.X, 0.3f, position.Y);
+        Vector3 dir = destinationPos - personGo.transform.position;
+        personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
 
-            _intervalTime -= Time.deltaTime;
-            if (_intervalTime <= 0)
+        // 判断是否到达一个节点
+        if (Vector3.Distance(personGo.transform.position, destinationPos) > 0.05f)
+        {
+            return;
+        }
+        CreatePathPos();
+
+        // 到达节点了，将节点移除
+        node = _queuePos.Dequeue();
+        if (_queuePos.Count <= 0)
+        {
+            return;
+        }
+
+        Node next = _queuePos.Peek();
+        // 如果下一个可行走的节点变成障碍物了，则在节点 node 周围重新计算新路径
+        if (next.NodeType != NodeType.Obstacle)
+        {
+            return;
+        }
+
+        bool result = dStar.ReSearch(node, next);
+        if (result)
+        {
+            _queuePos.Clear();
+            while (null != node)
             {
-                _intervalTime = 0.1f;
-                GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                go.transform.localScale = Vector3.one * 0.2f;
-                go.transform.position = new Vector3(personGo.transform.position.x, 0.6f, personGo.transform.position.z);
-                go.GetComponent<Renderer>().material.color = Color.red;
-                pathGoList.Add(go);
+                _queuePos.Enqueue(node);
+                node = node.Parent;
             }
         }
     }

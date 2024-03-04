@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PathFinding
 {
@@ -50,8 +51,8 @@ namespace PathFinding
         private int _col;
         private int _neighborCount;
         private Node _parent;
-        private float _h;
-        private float _g;
+        private float _h = 0;
+        private float _g = 0;
         private float _cost;
         private NodeType _nodeType;
         private NodeState _nodeState;
@@ -93,11 +94,11 @@ namespace PathFinding
             set { _cost = value; }
         }
 
-        private float _k;
+        private float _k = 0;
         public float K
         {
             get { return _k; }
-            set { _k = value; }
+            set {  _k = value; }
         }
 
         public int Row
@@ -165,6 +166,29 @@ namespace PathFinding
                 return K.CompareTo(node.K);
             }
             return F.CompareTo(node.F);
+        }
+
+        public static bool operator == (Node a, Node b)
+        {
+            // If both are null, or both are same instance, return true.
+            if (System.Object.ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+            // If one is null, but not both, return false.
+            if ((object)a == null || (object)b == null)
+            {
+                return false;
+            }
+
+            // Return true if the fields match:
+            return a.Row == b.Row && a.Col == b.Col;
+        }
+
+        public static bool operator != (Node a, Node b)
+        {
+            return !(a == b);
         }
 
     }
