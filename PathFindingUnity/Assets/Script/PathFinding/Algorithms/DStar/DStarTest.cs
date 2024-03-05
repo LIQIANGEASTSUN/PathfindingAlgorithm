@@ -5,7 +5,7 @@ using PathFinding;
 public class DStarTest : MonoBehaviour
 {
     //  地图，此例子使用的是矩形网格地图
-    private MapQuad _mapQuad;
+    private IMap _imap;
     private DStar dStar;
 
     // 寻路找到的路径节点
@@ -14,24 +14,20 @@ public class DStarTest : MonoBehaviour
     private void Start()
     {
         // 获取地图数据
-        _mapQuad = new MapQuad("Terrain6", 0, 0, 20, 10);
+        _imap = new MapQuad("Terrain6", 0, 0, 20, 10);
         // 初始化 算法，并将地图数据传递进去
-        dStar = new DStar(_mapQuad);
+        dStar = new DStar(_imap);
 
         // D* 寻路，小跟堆需要使用 节点的 K 值排序
         Node.compareUseK = true;
-        new MapToolsDrawNode(_mapQuad);
+        new MapToolsDrawNode(_imap);
 
         CreatePerson();
     }
 
     private void StartSearchPath()
     {
-        for (int i = pathGoList.Count - 1; i >= 0; --i)
-        {
-            GameObject.Destroy(pathGoList[i]);
-        }
-        pathGoList.Clear();
+        DestroyGO();
 
         // 获取开始位置、终点位置
         Position from = new Position(personGo.transform.position.x, personGo.transform.position.z);
@@ -60,7 +56,7 @@ public class DStarTest : MonoBehaviour
         // 将一些可行走节点改成障碍物
         foreach (var data in list)
         {
-            Node node = _mapQuad.GetNode(data[0], data[1]);
+            Node node = _imap.GetNode(data[0], data[1]);
             node.NodeType = NodeType.Obstacle;
         }
     }
@@ -75,7 +71,7 @@ public class DStarTest : MonoBehaviour
             return;
         }
 
-        Position position = _mapQuad.NodeToPosition(pathNode);
+        Position position = _imap.NodeToPosition(pathNode);
         Vector3 destinationPos = new Vector3(position.X, 0.3f, position.Y);
         Vector3 dir = destinationPos - personGo.transform.position;
         personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
@@ -143,7 +139,7 @@ public class DStarTest : MonoBehaviour
         Node node = insertOpenList[0];
         insertOpenList.RemoveAt(0);
 
-        Position pos = _mapQuad.NodeToPosition(node);
+        Position pos = _imap.NodeToPosition(node);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         go.transform.localScale = Vector3.one * 0.2f;
         go.transform.position = new Vector3(pos.X + 0.1f, 0.6f, pos.Y + 0.1f);
@@ -163,13 +159,24 @@ public class DStarTest : MonoBehaviour
         pathGoList.Add(go);
     }
 
+    private void DestroyGO()
+    {
+        for (int i = pathGoList.Count - 1; i >= 0; --i)
+        {
+            GameObject.Destroy(pathGoList[i]);
+        }
+        pathGoList.Clear();
+    }
+
     private void CreatePerson()
     {
+        // 角色出发点
         personGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         personGo.name = "Person";
         personGo.transform.position = new Vector3(10.5f, 0.3f, 4.2f);
         personGo.GetComponent<Renderer>().material.color = Color.green;
 
+        // 目标终点
         destination = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         destination.name = "Destination";
         destination.transform.position = new Vector3(4.5f, 0.3f, 4.2f);

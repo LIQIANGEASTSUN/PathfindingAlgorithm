@@ -11,7 +11,7 @@ public class AStarTest : MonoBehaviour
     /// <summary>
     /// 地图
     /// </summary>
-    private IMap imap;
+    private IMap _imap;
     /// <summary>
     /// 移动速度
     /// </summary>
@@ -27,10 +27,10 @@ public class AStarTest : MonoBehaviour
         CreateMap();
         // 获取地图数据
         // 初始化 算法，并将地图数据传递进去
-        _aStar = new AStar(imap);
+        _aStar = new AStar(_imap);
 
         // 将地图数据路点创建出来，为了看到路点
-        new MapToolsDrawNode(imap);
+        new MapToolsDrawNode(_imap);
         CreatePerson();
     }
 
@@ -55,7 +55,7 @@ public class AStarTest : MonoBehaviour
     private void CreateMapQuad()
     {
         // 地图，此例子使用的是矩形网格地图
-        imap = new MapQuad("Terrain6", 0, 0, 20, 10);
+        _imap = new MapQuad("Terrain6", 0, 0, 20, 10);
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public class AStarTest : MonoBehaviour
         float maxX = 30;
         float maxY = 30;
         float radius = 1;
-        imap = new MapHex(minX, minY, maxX, maxY, radius);
+        _imap = new MapHex(minX, minY, maxX, maxY, radius);
     }
 
     private Stack<Position> _stackPos = new Stack<Position>();
@@ -77,11 +77,7 @@ public class AStarTest : MonoBehaviour
     /// </summary>
     private void StartSearchPath()
     {
-        for (int i = pathGoList.Count - 1; i >= 0; --i)
-        {
-            GameObject.Destroy(pathGoList[i]);
-        }
-        pathGoList.Clear();
+        DestroyGO();
 
         // 获取开始位置、终点位置
         Position from = new Position(personGo.transform.position.x, personGo.transform.position.z);
@@ -96,7 +92,7 @@ public class AStarTest : MonoBehaviour
         _stackPos.Clear();
         while (null != pathNode)
         {
-            Position pos = imap.NodeToPosition(pathNode);
+            Position pos = _imap.NodeToPosition(pathNode);
             // 数据入栈
             _stackPos.Push(pos);
             pathNode = pathNode.Parent;
@@ -116,7 +112,7 @@ public class AStarTest : MonoBehaviour
     #region Debug
     private void Update()
     {
-        imap.Update();
+        _imap.Update();
         if (CreateCheckGameObject())
         {
             return;
@@ -167,7 +163,7 @@ public class AStarTest : MonoBehaviour
         Node node = kv.Value;
         checkNodeList.RemoveAt(0);
 
-        Position pos = imap.NodeToPosition(node);
+        Position pos = _imap.NodeToPosition(node);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         go.transform.position = (kv.Key == 1) ? new Vector3(pos.X + 0.1f, 0f, pos.Y + 0.1f) : new Vector3(pos.X - 0.1f, 0f, pos.Y - 0.1f);
         go.transform.localScale = Vector3.one * 0.3f;
@@ -176,6 +172,15 @@ public class AStarTest : MonoBehaviour
         pathGoList.Add(go);
 
         return true;
+    }
+
+    private void DestroyGO()
+    {
+        for (int i = pathGoList.Count - 1; i >= 0; --i)
+        {
+            GameObject.Destroy(pathGoList[i]);
+        }
+        pathGoList.Clear();
     }
 
     private GameObject personGo;
@@ -192,18 +197,18 @@ public class AStarTest : MonoBehaviour
         pathGoList.Add(go);
     }
 
-    private Vector3 persionPos = new Vector3(10.5f, 0.1f, 4.2f);
-    private Vector3 desitinationPos = new Vector3(4.5f, 0.1f, 4.2f);
     private void CreatePerson()
     {
+        // 角色出发点
         personGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         personGo.name = "Person";
-        personGo.transform.position = persionPos;
+        personGo.transform.position = new Vector3(10.5f, 0.1f, 4.2f);
         personGo.GetComponent<Renderer>().material.color = Color.green;
 
+        // 目标终点
         destination = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         destination.name = "Destination";
-        destination.transform.position = desitinationPos;
+        destination.transform.position = new Vector3(4.5f, 0.1f, 4.2f);
         destination.GetComponent<Renderer>().material.color = Color.black;
     }
     #endregion

@@ -5,25 +5,27 @@ using UnityEngine;
 public class DijkstraTest : MonoBehaviour
 {
     //  地图，此例子使用的是矩形网格地图
-    private MapQuad _mapQuad;
+    private IMap _imap;
     private Dijkstra dijkstra;
     
     private void Start()
     {
         // 获取地图数据
-        _mapQuad = new MapQuad("Terrain6", 0, 0, 20, 10);
+        _imap = new MapQuad("Terrain6", 0, 0, 20, 10);
         // 初始化 算法，并将地图数据传递进去
-        dijkstra = new Dijkstra(_mapQuad);
+        dijkstra = new Dijkstra(_imap);
+
+        CreatePerson();
+        new MapToolsDrawNode(_imap);
     }
 
     private Stack<Position> _stackPos = new Stack<Position>();
+    /// <summary>
+    /// 搜索路径
+    /// </summary>
     private void StartSearchPath()
     {
-        for (int i = pathGoList.Count - 1; i >= 0; --i)
-        {
-            GameObject.Destroy(pathGoList[i]);
-        }
-        pathGoList.Clear();
+        DestroyGO();
 
         // 获取开始位置、终点位置
         Position from = new Position(personGo.transform.position.x, personGo.transform.position.z);
@@ -38,13 +40,34 @@ public class DijkstraTest : MonoBehaviour
         _stackPos.Clear();
         while (null != pathNode)
         {
-            Position pos = _mapQuad.NodeToPosition(pathNode);
+            Position pos = _imap.NodeToPosition(pathNode);
             // 数据入栈
             _stackPos.Push(pos);
             pathNode = pathNode.Parent;
         }
 
         // 顺次执行 _stackPos.Peek(); 将 路点从 栈中取出即是从 开始点到结束点的路径
+    }
+
+    private void Move()
+    {
+        if (_stackPos.Count <= 0)
+        {
+            return;
+        }
+
+        Position position = _stackPos.Peek();
+        Vector3 destinationPos = new Vector3(position.X, 0.3f, position.Y);
+        Vector3 dir = destinationPos - personGo.transform.position;
+        personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
+        if (Vector3.Distance(personGo.transform.position, destinationPos) > 0.05f)
+        {
+            return;
+        }
+
+        // 到达一个节点，将路径点移除
+        _stackPos.Pop();
+        CreatePathPos();
     }
 
     private void OnGUI()
@@ -57,74 +80,75 @@ public class DijkstraTest : MonoBehaviour
     }
 
     #region Debug
-    private GameObject personGo;
-    private GameObject destination;
+
     private float speed = 3;
     public static List<Node> insertOpenList = new List<Node>();
     private List<GameObject> pathGoList = new List<GameObject>();
-    private float _intervalTime = 0.1f;
-    private float _insertTime = 0.02f;
-    private bool _isInit = false;
     private void Update()
     {
-        if (!_isInit)
-        {
-            _isInit = true;
-            CreatePerson();
-            new MapToolsDrawNode(_mapQuad);
-        }
-
-        _insertTime -= Time.deltaTime;
-        if (insertOpenList.Count > 0 && _insertTime <= 0)
-        {
-            _insertTime = 0.02f;
-
-            Node node = insertOpenList[0];
-            insertOpenList.RemoveAt(0);
-
-            Position pos = _mapQuad.NodeToPosition(node);
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            go.transform.localScale = Vector3.one * 0.2f;
-            go.transform.position = new Vector3(pos.X + 0.1f, 0.6f, pos.Y + 0.1f);
-            go.GetComponent<Renderer>().material.color = Color.blue;
-            pathGoList.Add(go);
-        }
-        if (insertOpenList.Count > 0)
+        if (CreateOpenList())
         {
             return;
         }
 
-        if (_stackPos.Count > 0)
-        {
-            Position position = _stackPos.Peek();
-            Vector3 destinationPos = new Vector3(position.X, 0.3f, position.Y);
-            Vector3 dir = destinationPos - personGo.transform.position;
-            personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
-            if (Vector3.Distance(personGo.transform.position, destinationPos) <= 0.05f)
-            {
-                _stackPos.Pop();
-            }
-
-            _intervalTime -= Time.deltaTime;
-            if (_intervalTime <= 0)
-            {
-                _intervalTime = 0.1f;
-                GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                go.transform.localScale = Vector3.one * 0.2f;
-                go.transform.position = new Vector3(personGo.transform.position.x, 0.6f, personGo.transform.position.z);
-                go.GetComponent<Renderer>().material.color = Color.red;
-                pathGoList.Add(go);
-            }
-        }
+        Move();
     }
 
+    private void DestroyGO()
+    {
+        for (int i = pathGoList.Count - 1; i >= 0; --i)
+        {
+            GameObject.Destroy(pathGoList[i]);
+        }
+        pathGoList.Clear();
+    }
+
+    /// <summary>
+    /// 创建走过的节点
+    /// </summary>
+    private void CreatePathPos()
+    {
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        go.transform.localScale = Vector3.one * 0.2f;
+        go.transform.position = new Vector3(personGo.transform.position.x, 0.6f, personGo.transform.position.z);
+        go.GetComponent<Renderer>().material.color = Color.red;
+        pathGoList.Add(go);
+    }
+
+    /// <summary>
+    /// 创建加入到 OpenList 表的节点
+    /// </summary>
+    /// <returns></returns>
+    private bool CreateOpenList()
+    {
+        if (insertOpenList.Count <= 0)
+        {
+            return false;
+        }
+        Node node = insertOpenList[0];
+        insertOpenList.RemoveAt(0);
+
+        Position pos = _imap.NodeToPosition(node);
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        go.transform.localScale = Vector3.one * 0.2f;
+        go.transform.position = new Vector3(pos.X + 0.1f, 0.6f, pos.Y + 0.1f);
+        go.GetComponent<Renderer>().material.color = Color.blue;
+        pathGoList.Add(go);
+
+        return true;
+    }
+
+    private GameObject personGo;
+    private GameObject destination;
     private void CreatePerson()
     {
+        // 角色出发点
         personGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         personGo.name = "Person";
         personGo.transform.position = new Vector3(10.5f, 0.3f, 4.2f);
         personGo.GetComponent<Renderer>().material.color = Color.green;
 
+        // 目标终点
         destination = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         destination.name = "Destination";
         destination.transform.position = new Vector3(4.5f, 0.3f, 4.2f);
