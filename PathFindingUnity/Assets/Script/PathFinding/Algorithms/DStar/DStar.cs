@@ -54,7 +54,7 @@ namespace PathFinding
 
         public bool ReSearch(Node node, Node next)
         {
-            //MODIFY_COST(next, 100000);
+            MODIFY_COST(next, node, 100000);
             float kmin = 0;
             do
             {
