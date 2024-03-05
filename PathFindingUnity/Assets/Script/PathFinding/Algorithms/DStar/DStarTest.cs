@@ -55,12 +55,12 @@ public class DStarTest : MonoBehaviour
             new int[]{13, 10},
         };
         // 将一些可行走节点改成障碍物
-        foreach(var data in list)
-        {
-            Node node = _mapQuad.GetNode(data[0], data[1]);
-            node.NodeType = NodeType.Obstacle;
-            dStar.MODIFY_COST(node, 100000);
-        }
+        //foreach(var data in list)
+        //{
+        //    Node node = _mapQuad.GetNode(data[0], data[1]);
+        //    node.NodeType = NodeType.Obstacle;
+        //    dStar.MODIFY_COST(node, 100000);
+        //}
 
         // 顺次执行 _stackPos.Peek(); 将 路点从 栈中取出即是从 开始点到结束点的路径
     }

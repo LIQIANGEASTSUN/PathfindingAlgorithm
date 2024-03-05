@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using DataStruct.Heap;
-using UnityEditor;
 
 namespace PathFinding
 {
@@ -41,51 +38,43 @@ namespace PathFinding
 
             while (_openHeap.Count() > 0)
             {
-                Node node = PROCESS_STATE();
-                node.NodeState = NodeState.InColsedTable;
-                _closeList.Add(node);
-
-                if (node.Row == fromNode.Row && node.Col == fromNode.Col)
+                float k = PROCESS_STATE();
+                if (fromNode.NodeState == NodeState.InColsedTable)
                 {
-                    return node;
+                    break;
+                }
+                if (k <= 0)
+                {
+                    break;
                 }
             }
 
-            return null;
+            return fromNode.NodeState == NodeState.InColsedTable ? fromNode : null;
         }
 
         public bool ReSearch(Node node, Node next)
         {
             //MODIFY_COST(next, 100000);
             float kmin = 0;
-            bool result = true;
             do
             {
-                Node n = PROCESS_STATE();
-                if (null == n)
-                {
-                    result = false;
-                    break;
-                }
-                kmin = n.K;
+                kmin = PROCESS_STATE();
             } while (kmin >= 0 && kmin < node.H);
-
-            if (!result)
-            {
-                return false;
-            }
 
             return true;
         }
 
-        private Node PROCESS_STATE()
+        private float PROCESS_STATE()
         {
             if (_openHeap.Count() <= 0)
             {
-                return null;
+                return -1;
             }
 
             Node X = _openHeap.DelRoot();
+            X.NodeState = NodeState.InColsedTable;
+            _closeList.Add(X);
+
             float k_old = X.K;
             if (k_old < X.H)
             {
@@ -160,7 +149,12 @@ namespace PathFinding
                 }
             }
 
-            return X;
+            if (_openHeap.Count() <= 0)
+            {
+                return -1;
+            }
+            Node node = _openHeap.GetRoot();
+            return node.K;
         }
 
         private bool IsValid(Node node)
@@ -200,22 +194,12 @@ namespace PathFinding
         // 假设人走到节点 Y，准备前往节点 X 的时候，发现节点 X 突然塌陷或者出现障碍物进行 Cost 修正
         // 实际一个节点上障碍物的出现可能导致周边的节点都受到影响，尤其是 n.parent ==X的节点，
         // 所以最好的办法是所有的关联节点都进行修正，并且是双边修正
-        public void MODIFY_COST(Node X, float cost)
+        public void MODIFY_COST(Node X, Node Y, float cost)
         {
             X.H = cost;
-            for (int i = 0; i < X.neighborCount; ++i)
+            if (Y.NodeState == NodeState.InColsedTable)
             {
-                float distance = 0;
-                Node Y = _map.NodeNeighborWithDistance(X, i, ref distance);
-                if (!IsValid(Y))
-                {
-                    continue;
-                }
-
-                if (Y.NodeState == NodeState.InColsedTable)
-                {
-                    INSERT(Y, X.H + Cost(X, Y));
-                }
+                INSERT(Y, X.H + Cost(X, Y));
             }
         }
 
