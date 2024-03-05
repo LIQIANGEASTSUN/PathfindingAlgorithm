@@ -4,10 +4,11 @@ using DataStruct.Heap;
 
 namespace PathFinding
 {
-
+    /// <summary>
+    /// D* 寻路算法
+    /// </summary>
     public class DStar
     {
-
         private IMap _map;
         private Heap<Node> _openHeap = new Heap<Node>(false);
         private List<Node> _closeList = new List<Node>();
@@ -74,7 +75,6 @@ namespace PathFinding
             Node X = _openHeap.DelRoot();
             X.NodeState = NodeState.InColsedTable;
             _closeList.Add(X);
-
             float k_old = X.K;
             if (k_old < X.H)
             {

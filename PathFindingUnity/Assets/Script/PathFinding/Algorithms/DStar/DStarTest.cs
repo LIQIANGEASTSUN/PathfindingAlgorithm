@@ -136,20 +136,21 @@ public class DStarTest : MonoBehaviour
     // 创建加入到 OpenList 的节点
     private bool CreateOpenList()
     {
-        while (insertOpenList.Count > 0)
+        if (insertOpenList.Count <= 0)
         {
-            Node node = insertOpenList[0];
-            insertOpenList.RemoveAt(0);
-
-            Position pos = _mapQuad.NodeToPosition(node);
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            go.transform.localScale = Vector3.one * 0.2f;
-            go.transform.position = new Vector3(pos.X + 0.1f, 0.6f, pos.Y + 0.1f);
-            go.GetComponent<Renderer>().material.color = Color.blue;
-            pathGoList.Add(go);
-            return true;
+            return false;
         }
-        return insertOpenList.Count > 0;
+        Node node = insertOpenList[0];
+        insertOpenList.RemoveAt(0);
+
+        Position pos = _mapQuad.NodeToPosition(node);
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        go.transform.localScale = Vector3.one * 0.2f;
+        go.transform.position = new Vector3(pos.X + 0.1f, 0.6f, pos.Y + 0.1f);
+        go.GetComponent<Renderer>().material.color = Color.blue;
+        pathGoList.Add(go);
+
+        return true;
     }
 
     // 创建走过的节点

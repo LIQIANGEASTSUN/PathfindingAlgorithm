@@ -4,10 +4,22 @@ using UnityEngine;
 
 public class AStarTest : MonoBehaviour
 {
+    /// <summary>
+    /// 地图类型
+    /// </summary>
     public MapType mapType = MapType.Quad;
+    /// <summary>
+    /// 地图
+    /// </summary>
     private IMap imap;
+    /// <summary>
+    /// 移动速度
+    /// </summary>
+    private float speed = 3;
 
-    // 算法
+    /// <summary>
+    /// 算法
+    /// </summary>
     private AStar _aStar;
 
     private void Start()
@@ -16,8 +28,15 @@ public class AStarTest : MonoBehaviour
         // 获取地图数据
         // 初始化 算法，并将地图数据传递进去
         _aStar = new AStar(imap);
+
+        // 将地图数据路点创建出来，为了看到路点
+        new MapToolsDrawNode(imap);
+        CreatePerson();
     }
 
+    /// <summary>
+    /// 创建地图
+    /// </summary>
     private void CreateMap()
     {
         if (mapType == MapType.Quad)
@@ -30,12 +49,18 @@ public class AStarTest : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///  创建正方形格子地图
+    /// </summary>
     private void CreateMapQuad()
     {
         // 地图，此例子使用的是矩形网格地图
         imap = new MapQuad("Terrain6", 0, 0, 20, 10);
     }
 
+    /// <summary>
+    /// 创建六边形格子地图
+    /// </summary>
     private void CreateHexMap()
     {
         float minX = 10;
@@ -47,6 +72,9 @@ public class AStarTest : MonoBehaviour
     }
 
     private Stack<Position> _stackPos = new Stack<Position>();
+    /// <summary>
+    /// 搜索路径
+    /// </summary>
     private void StartSearchPath()
     {
         for (int i = pathGoList.Count - 1; i >= 0; --i)
@@ -73,7 +101,6 @@ public class AStarTest : MonoBehaviour
             _stackPos.Push(pos);
             pathNode = pathNode.Parent;
         }
-
         // 顺次执行 _stackPos.Peek(); 将 路点从 栈中取出即是从 开始点到结束点的路径
     }
 
@@ -89,75 +116,80 @@ public class AStarTest : MonoBehaviour
     #region Debug
     private void Update()
     {
-        DebugUse();
-
         imap.Update();
-    }
-
-    private GameObject personGo;
-    private GameObject destination;
-    private float _intervalTime = 0.3f;
-    private float _insertTime = 0.1f;
-    private float speed = 3;
-    private bool _init = false;
-    private List<GameObject> pathGoList = new List<GameObject>();
-    public static List<KeyValuePair<int, Node>> checkNodeList = new List<KeyValuePair<int, Node>>();
-    private void DebugUse()
-    {
-        if (!_init)
-        {
-            _init = true;
-            // 将地图数据路点创建出来，为了看到路点
-            new MapToolsDrawNode(imap);
-            CreatePerson();
-        }
-
-        _insertTime -= Time.deltaTime;
-        if (checkNodeList.Count > 0 && _insertTime <= 0)
-        {
-            _insertTime = 0.06f;
-
-            KeyValuePair<int, Node> kv = checkNodeList[0];
-
-            Node node = kv.Value;
-            checkNodeList.RemoveAt(0);
-
-            Position pos = imap.NodeToPosition(node);
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            go.transform.position = (kv.Key == 1) ? new Vector3(pos.X + 0.1f, 0f, pos.Y + 0.1f) : new Vector3(pos.X - 0.1f, 0f, pos.Y - 0.1f);
-            go.transform.localScale = Vector3.one * 0.3f;
-            go.name = (kv.Key == 1) ? string.Format("open:{0}_{1}", node.Row, node.Col) : string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
-            go.GetComponent<Renderer>().material.color = (kv.Key == 1) ? Color.green : Color.blue;
-
-            pathGoList.Add(go);
-        }
-        if (checkNodeList.Count > 0)
+        if (CreateCheckGameObject())
         {
             return;
         }
 
-        if (_stackPos.Count > 0)
-        {
-            Position position = _stackPos.Peek();
-            Vector3 destinationPos = new Vector3(position.X, 0.13f, position.Y);
-            Vector3 dir = destinationPos - personGo.transform.position;
-            personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
-            if (Vector3.Distance(personGo.transform.position, destinationPos) <= 0.05f)
-            {
-                _stackPos.Pop();
-            }
+        Move();
+    }
 
-            _intervalTime -= Time.deltaTime;
-            if (_intervalTime <= 0)
-            {
-                _intervalTime = 0.06f;
-                GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                go.transform.localScale = Vector3.one * 0.2f;
-                go.transform.position = new Vector3(personGo.transform.position.x, 0.1f, personGo.transform.position.z);
-                go.GetComponent<Renderer>().material.color = Color.red;
-                pathGoList.Add(go);
-            }
+    /// <summary>
+    /// 依据寻路结果移动
+    /// </summary>
+    private void Move()
+    {
+        if (_stackPos.Count <= 0)
+        {
+            return;
         }
+
+        Position position = _stackPos.Peek();
+        Vector3 destinationPos = new Vector3(position.X, 0.13f, position.Y);
+        Vector3 dir = destinationPos - personGo.transform.position;
+        personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
+        if (Vector3.Distance(personGo.transform.position, destinationPos) >= 0.05f)
+        {
+            return;
+        }
+
+        // 到达一个节点，将路径点移除
+        _stackPos.Pop();
+        CreatePathPos();
+    }
+
+    private List<GameObject> pathGoList = new List<GameObject>();
+    public static List<KeyValuePair<int, Node>> checkNodeList = new List<KeyValuePair<int, Node>>();
+    /// <summary>
+    /// 创建加入到 OpenList 表的节点
+    /// 和从 OpenList 中取出来的节点
+    /// </summary>
+    /// <returns></returns>
+    private bool CreateCheckGameObject()
+    {
+        if (checkNodeList.Count <= 0)
+        {
+            return false;
+        }
+
+        KeyValuePair<int, Node> kv = checkNodeList[0];
+        Node node = kv.Value;
+        checkNodeList.RemoveAt(0);
+
+        Position pos = imap.NodeToPosition(node);
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+        go.transform.position = (kv.Key == 1) ? new Vector3(pos.X + 0.1f, 0f, pos.Y + 0.1f) : new Vector3(pos.X - 0.1f, 0f, pos.Y - 0.1f);
+        go.transform.localScale = Vector3.one * 0.3f;
+        go.name = (kv.Key == 1) ? string.Format("open:{0}_{1}", node.Row, node.Col) : string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
+        go.GetComponent<Renderer>().material.color = (kv.Key == 1) ? Color.green : Color.blue;
+        pathGoList.Add(go);
+
+        return true;
+    }
+
+    private GameObject personGo;
+    private GameObject destination;
+    /// <summary>
+    /// 创建走过的节点
+    /// </summary>
+    private void CreatePathPos()
+    {
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        go.transform.localScale = Vector3.one * 0.2f;
+        go.transform.position = new Vector3(personGo.transform.position.x, 0.6f, personGo.transform.position.z);
+        go.GetComponent<Renderer>().material.color = Color.red;
+        pathGoList.Add(go);
     }
 
     private Vector3 persionPos = new Vector3(10.5f, 0.1f, 4.2f);
