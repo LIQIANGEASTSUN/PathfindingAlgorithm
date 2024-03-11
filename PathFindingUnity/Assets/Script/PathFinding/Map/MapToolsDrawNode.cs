@@ -34,7 +34,7 @@ public class MapToolsDrawNode
         }
     }
 
-    private Color NodeColor(NodeType nodeType)
+    public Color NodeColor(NodeType nodeType)
     {
         if (nodeType == NodeType.Null)
         {

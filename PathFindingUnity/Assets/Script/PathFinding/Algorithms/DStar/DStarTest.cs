@@ -7,6 +7,7 @@ public class DStarTest : MonoBehaviour
     //  地图，此例子使用的是矩形网格地图
     private IMap _imap;
     private DStar dStar;
+    private MapToolsDrawNode _mapToolsDrawNode;
 
     // 寻路找到的路径节点
     private Node pathNode;
@@ -20,7 +21,7 @@ public class DStarTest : MonoBehaviour
 
         // D* 寻路，小跟堆需要使用 节点的 K 值排序
         Node.compareUseK = true;
-        new MapToolsDrawNode(_imap);
+        _mapToolsDrawNode = new MapToolsDrawNode(_imap);
 
         CreatePerson();
     }
@@ -46,18 +47,22 @@ public class DStarTest : MonoBehaviour
         List<int[]> list = new List<int[]>()
         {
             new int[]{11, 10},
-            new int[]{12, 10},
-            new int[]{13, 10},
-            new int[]{4, 10},
-            new int[]{3, 10},
-            new int[]{4, 8},
-            new int[]{3, 8},
+            //new int[]{12, 10},
+            //new int[]{13, 10},
+            //new int[]{4, 10},
+            //new int[]{3, 10},
+            //new int[]{4, 8},
+            //new int[]{3, 8},
         };
         // 将一些可行走节点改成障碍物
         foreach (var data in list)
         {
             Node node = _imap.GetNode(data[0], data[1]);
             node.NodeType = NodeType.Obstacle;
+
+            string name = string.Format("{0}_{1}", data[0], data[1]);
+            GameObject go = GameObject.Find(name);
+            go.GetComponent<Renderer>().material.color = _mapToolsDrawNode.NodeColor(NodeType.Obstacle);
         }
     }
 

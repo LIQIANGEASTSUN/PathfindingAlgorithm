@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using DataStruct.Heap;
 
 namespace PathFinding
@@ -53,8 +54,10 @@ namespace PathFinding
             return fromNode.NodeState == NodeState.InColsedTable ? fromNode : null;
         }
 
+        private bool reSearch = false;
         public bool ReSearch(Node node, Node next)
         {
+            reSearch = true;
             MODIFY_COST(next, node, 100000);
             float kmin = 0;
             do
@@ -168,6 +171,11 @@ namespace PathFinding
 
         private void INSERT(Node x, float cost)
         {
+            if (reSearch)
+            {
+                UnityEngine.Debug.LogError("Insert:" + x.Row + "  " + x.Col);
+            }
+
             // 隐含着将X节点加入到OPEN_QUOPEN(如果不存在的的话)
             if (x.NodeState == NodeState.New)
             {
