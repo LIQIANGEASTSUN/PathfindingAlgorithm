@@ -63,7 +63,11 @@ namespace PathFinding
             do
             {
                 kmin = PROCESS_STATE();
-            } while (kmin >= 0 && kmin < node.H);
+            }
+            while (kmin >= 0 && kmin < node.H);
+            //while (kmin >= 0 && node.K < node.H);
+            // 上面两个 while 经过测试都可以完成再次寻路
+            // 看论文中的两个方案
 
             return true;
         }
@@ -171,10 +175,10 @@ namespace PathFinding
 
         private void INSERT(Node x, float cost)
         {
-            if (reSearch)
-            {
-                UnityEngine.Debug.LogError("Insert:" + x.Row + "  " + x.Col);
-            }
+            //if (reSearch)
+            //{
+            //    UnityEngine.Debug.LogError("Insert:" + x.Row + "  " + x.Col);
+            //}
 
             // 隐含着将X节点加入到OPEN_QUOPEN(如果不存在的的话)
             if (x.NodeState == NodeState.New)
