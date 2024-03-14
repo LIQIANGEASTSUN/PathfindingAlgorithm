@@ -58,7 +58,7 @@ namespace PathFinding
         public bool ReSearch(Node node, Node next)
         {
             reSearch = true;
-            MODIFY_COST(next, node, 100000);
+            MODIFY_COST(node, next, 100000);
             float kmin = 0;
             do
             {
@@ -202,7 +202,7 @@ namespace PathFinding
         // 假设人走到节点 Y，准备前往节点 X 的时候，发现节点 X 突然塌陷或者出现障碍物进行 Cost 修正
         // 实际一个节点上障碍物的出现可能导致周边的节点都受到影响，尤其是 n.parent ==X的节点，
         // 所以最好的办法是所有的关联节点都进行修正，并且是双边修正
-        public void MODIFY_COST(Node X, Node Y, float cost)
+        public void MODIFY_COST(Node Y, Node X, float cost)
         {
             X.H = cost;
             if (Y.NodeState == NodeState.InColsedTable)

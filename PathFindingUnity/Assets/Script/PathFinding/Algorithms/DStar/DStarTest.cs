@@ -47,12 +47,12 @@ public class DStarTest : MonoBehaviour
         List<int[]> list = new List<int[]>()
         {
             new int[]{11, 10},
-            //new int[]{12, 10},
-            //new int[]{13, 10},
-            //new int[]{4, 10},
-            //new int[]{3, 10},
-            //new int[]{4, 8},
-            //new int[]{3, 8},
+            new int[]{12, 10},
+            new int[]{13, 10},
+            new int[]{4, 10},
+            new int[]{3, 10},
+            new int[]{4, 8},
+            new int[]{3, 8},
         };
         // 将一些可行走节点改成障碍物
         foreach (var data in list)

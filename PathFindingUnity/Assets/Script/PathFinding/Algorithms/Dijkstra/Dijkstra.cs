@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DataStruct.Heap;
+using UnityEngine;
 
 namespace PathFinding
 {
@@ -90,6 +91,7 @@ namespace PathFinding
                 // 如果 neighborNode.G 更大，则更新 neighborNode.G 并设置 neighborNode.Parent = currentNode;
                 if (neighborNode.G > (currentNode.G + currentNode.Cost * distance))
                 {
+                    UnityEngine.Debug.LogError("Here:" + neighborNode.Row + "   " + neighborNode.Col);
                     neighborNode.G = currentNode.G + currentNode.Cost * distance;
                     neighborNode.Parent = currentNode;
                     // 改变了 G 值，小根堆需要重排序
