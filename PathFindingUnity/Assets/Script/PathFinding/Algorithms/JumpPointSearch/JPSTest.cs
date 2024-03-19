@@ -10,7 +10,7 @@ public class JPSTest : MonoBehaviour
     private void Start()
     {
         // 获取地图数据
-        imap = new MapQuad("Terrain6", 0, 0, 20, 10);
+        imap = new MapQuad("Terrain7", 0, 0, 20, 10);
         // 初始化 算法，并将地图数据传递进去
         _jps = new JPS(imap);
 
