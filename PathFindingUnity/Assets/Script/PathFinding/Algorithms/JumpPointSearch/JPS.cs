@@ -146,18 +146,18 @@ namespace PathFinding
 
             int horizontalDir = jpsTool.Dir(temp.Row, currentNode.Row);
             int verticalDir = jpsTool.Dir(temp.Col, currentNode.Col);
-            //if (jpsPlusPreproccess.IsPreprocess)
-            //{
-            //    // 如果地图进行了预处理，并且 step >= 0 直接使用预处理数据
-            //    // 如果 step < 0 则说明此方向上有边界或者障碍点，对这个点进行搜索
-            //    int index = map.GetNodeNeighborIndex(currentNode, horizontalDir, verticalDir);
-            //    int step = currentNode.JpsPlus[index];
-            //    if (step >= 0)
-            //    {
-            //        SearchPlus(currentNode, temp, step);
-            //        return;
-            //    }
-            //}
+            if (jpsPlusPreproccess.IsPreprocess)
+            {
+                // 如果地图进行了预处理，并且 step >= 0 直接使用预处理数据
+                // 如果 step < 0 则说明此方向上有边界或者障碍点，对这个点进行搜索
+                int index = map.GetNodeNeighborIndex(currentNode, horizontalDir, verticalDir);
+                int step = currentNode.JpsPlus[index];
+                if (step >= 0)
+                {
+                    SearchPlus(currentNode, temp, step);
+                    return;
+                }
+            }
 
             Node preNode = currentNode;
             while (true)

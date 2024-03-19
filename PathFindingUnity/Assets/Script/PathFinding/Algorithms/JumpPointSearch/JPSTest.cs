@@ -88,13 +88,14 @@ public class JPSTest : MonoBehaviour
         }
 
         // JPS+ 还没有完成，不能使用
-        //if (!_jps.IsPreprocess)
-        //{
-        //    if (GUI.Button(new Rect(300, 10, 400, 80), "JPS+ 预处理地图"))
-        //    {
-        //        _jps.Preprocess();
-        //    }
-        //}
+        if (!_jps.IsPreprocess)
+        {
+            if (GUI.Button(new Rect(300, 10, 400, 80), "JPS+ 预处理地图"))
+            {
+                Debug.LogError("还未完成，功能还不能使用");
+                _jps.Preprocess();
+            }
+        }
     }
 
     /// <summary>
