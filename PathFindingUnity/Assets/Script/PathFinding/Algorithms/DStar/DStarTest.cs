@@ -15,7 +15,7 @@ public class DStarTest : MonoBehaviour
     private void Start()
     {
         // 获取地图数据
-        _imap = new MapQuad("Terrain6", 0, 0, 20, 10);
+        _imap = QuadMapCreate.CreateQuad("Terrain6", 0, 0, 10, 20);
         // 初始化 算法，并将地图数据传递进去
         dStar = new DStar(_imap);
 
@@ -31,8 +31,8 @@ public class DStarTest : MonoBehaviour
         DestroyGO();
 
         // 获取开始位置、终点位置
-        Position from = new Position(personGo.transform.position.x, personGo.transform.position.z);
-        Position to = new Position(destination.transform.position.x, destination.transform.position.z);
+        Position from = new Position(personGo.transform.position.z, personGo.transform.position.x);
+        Position to = new Position(destination.transform.position.z, destination.transform.position.x);
 
         // 搜索路径，如果返回结果为 null，则说明没有找到路径，否则说明已找到路径，且 pathNode 为(from)起点
         // 顺着 pathNode 一直向上查找 parentNode，最终将到达(to)终点 
@@ -46,13 +46,13 @@ public class DStarTest : MonoBehaviour
     {
         List<int[]> list = new List<int[]>()
         {
-            new int[]{11, 10},
-            new int[]{12, 10},
-            new int[]{13, 10},
-            new int[]{4, 10},
-            new int[]{3, 10},
-            new int[]{4, 8},
-            new int[]{3, 8},
+            new int[]{0, 10},
+            new int[]{1, 10},
+            new int[]{2, 10},
+            new int[]{9, 10},
+            new int[]{10,10},
+            new int[]{9, 8},
+            new int[]{10, 8},
         };
         // 将一些可行走节点改成障碍物
         foreach (var data in list)
@@ -77,7 +77,7 @@ public class DStarTest : MonoBehaviour
         }
 
         Position position = _imap.NodeToPosition(pathNode);
-        Vector3 destinationPos = new Vector3(position.X, 0.3f, position.Y);
+        Vector3 destinationPos = new Vector3(position.ColPos, 0.3f, position.RowPos);
         Vector3 dir = destinationPos - personGo.transform.position;
         personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
 
@@ -147,7 +147,7 @@ public class DStarTest : MonoBehaviour
         Position pos = _imap.NodeToPosition(node);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         go.transform.localScale = Vector3.one * 0.2f;
-        go.transform.position = new Vector3(pos.X + 0.1f, 0.6f, pos.Y + 0.1f);
+        go.transform.position = new Vector3(pos.ColPos + 0.1f, 0.6f, pos.RowPos + 0.1f);
         go.GetComponent<Renderer>().material.color = Color.blue;
         pathGoList.Add(go);
 

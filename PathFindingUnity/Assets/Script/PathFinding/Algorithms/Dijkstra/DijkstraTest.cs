@@ -11,7 +11,7 @@ public class DijkstraTest : MonoBehaviour
     private void Start()
     {
         // 获取地图数据
-        _imap = new MapQuad("Terrain6", 0, 0, 20, 10);
+        _imap = QuadMapCreate.CreateQuad("Terrain6", 0, 0, 10, 20);
         // 初始化 算法，并将地图数据传递进去
         dijkstra = new Dijkstra(_imap);
 
@@ -28,8 +28,8 @@ public class DijkstraTest : MonoBehaviour
         DestroyGO();
 
         // 获取开始位置、终点位置
-        Position from = new Position(personGo.transform.position.x, personGo.transform.position.z);
-        Position to = new Position(destination.transform.position.x, destination.transform.position.z);
+        Position from = new Position(personGo.transform.position.z, personGo.transform.position.x);
+        Position to = new Position(destination.transform.position.z, destination.transform.position.x);
 
         // 搜索路径，如果返回结果为 null，则说明没有找到路径，否则说明已找到路径，且 pathNode 为终点节点
         // 顺着 pathNode 一直向上查找 parentNode，最终将到达开始点
@@ -57,7 +57,7 @@ public class DijkstraTest : MonoBehaviour
         }
 
         Position position = _stackPos.Peek();
-        Vector3 destinationPos = new Vector3(position.X, 0.3f, position.Y);
+        Vector3 destinationPos = new Vector3(position.ColPos, 0.3f, position.RowPos);
         Vector3 dir = destinationPos - personGo.transform.position;
         personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
         if (Vector3.Distance(personGo.transform.position, destinationPos) > 0.05f)
@@ -131,7 +131,7 @@ public class DijkstraTest : MonoBehaviour
         Position pos = _imap.NodeToPosition(node);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         go.transform.localScale = Vector3.one * 0.2f;
-        go.transform.position = new Vector3(pos.X + 0.1f, 0.6f, pos.Y + 0.1f);
+        go.transform.position = new Vector3(pos.ColPos + 0.1f, 0.6f, pos.RowPos + 0.1f);
         go.GetComponent<Renderer>().material.color = Color.blue;
         pathGoList.Add(go);
 

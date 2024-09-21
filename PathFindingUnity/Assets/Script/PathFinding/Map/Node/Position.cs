@@ -3,44 +3,48 @@ namespace PathFinding
 {
     public struct Position
     {
-        private float _x;
-        private float _y;
+        // 行坐标
+        private float _rowPos;
+        // 列坐标
+        private float _colPos;
 
-        public Position(float x, float y)
+        public Position(float rowPos, float colPos)
         {
-            _x = x;
-            _y = y;
+            _rowPos = rowPos;
+            _colPos = colPos;
         }
 
-        public float X
+        public float RowPos
         {
-            get { return _x; }
+            get { return _rowPos; }
         }
 
-        public float Y
+        public float ColPos
         {
-            get { return _y; }
+            get { return _colPos; }
         }
+
         public static Position operator -(Position left, Position right)
         {
-            Position p = new Position(left.X - right.X, left.Y - right.Y);
+            Position p = new Position(left.RowPos - right.RowPos, left.ColPos - right.ColPos);
             return p;
         }
+
         public static Position operator +(Position left, Position right)
         {
-            Position p = new Position(left.X + right.X, left.Y + right.Y);
+            Position p = new Position(left.RowPos + right.RowPos, left.ColPos + right.ColPos);
             return p;
         }
 
         public static Position operator *(Position left, float value)
         {
-            Position p = new Position(left.X * value, left.Y * value);
+            Position p = new Position(left.RowPos * value, left.ColPos * value);
             return p;
         }
 
         public static float Dot(Position left, Position right)
         {
-            return left.X * right.X + left.Y * right.Y;
+            return  left.RowPos * right.RowPos + left.ColPos * right.ColPos;
         }
     }
 }

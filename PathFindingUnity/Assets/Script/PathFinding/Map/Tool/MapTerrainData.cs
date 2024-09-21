@@ -8,8 +8,8 @@ namespace PathFinding
     public class MapTerrainData
     {
         private string _fileName;
-        private int _row;
-        private int _col;
+        private int _maxRow;
+        private int _maxCol;
 
         public MapTerrainData(string fileName)
         {
@@ -24,22 +24,22 @@ namespace PathFinding
                 return a - b;
             });
 
-            _row = list.Count;
+            _maxRow = list.Count;
 
             if (list.Count > 0)
             {
-                _col = int.Parse(TableRead.Instance.GetData(_fileName, list[0], "ColCount")); 
+                _maxCol = int.Parse(TableRead.Instance.GetData(_fileName, list[0], "ColCount")); 
             }
         }
 
-        public int Row
+        public int MaxRow
         {
-            get { return _row; }
+            get { return _maxRow; }
         }
 
-        public int Col
+        public int MaxCol
         {
-            get { return _col; }
+            get { return _maxCol; }
         }
 
         /// <summary>
@@ -52,6 +52,10 @@ namespace PathFinding
         /// <returns></returns>
         public int GetNodeData(int row, int col, ref float g)
         {
+            // 地图中 行是从下到上 依次递增
+            // Excel 中行是从 上到下 依次递增，所以转换一下
+            row = MaxRow - row - 1;
+            // 地图中 列是从左到右 依次递增
             string colName = string.Format("col{0}", col);
             string content = TableRead.Instance.GetData(_fileName, row, colName);
             string[] dataArr = content.Split('_');

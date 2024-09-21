@@ -55,7 +55,7 @@ public class AStarTest : MonoBehaviour
     private void CreateMapQuad()
     {
         // 地图，此例子使用的是矩形网格地图
-        _imap = new MapQuad("Terrain6", 0, 0, 20, 10);
+        _imap = QuadMapCreate.CreateQuad("Terrain6", 0, 0, 10, 20);
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public class AStarTest : MonoBehaviour
         float maxX = 30;
         float maxY = 30;
         float radius = 1;
-        _imap = new MapHex(minX, minY, maxX, maxY, radius);
+        _imap = new MapHex(minY, minX, maxY, maxX, radius);
     }
 
     private Stack<Position> _stackPos = new Stack<Position>();
@@ -80,8 +80,8 @@ public class AStarTest : MonoBehaviour
         DestroyGO();
 
         // 获取开始位置、终点位置
-        Position from = new Position(personGo.transform.position.x, personGo.transform.position.z);
-        Position to = new Position(destination.transform.position.x, destination.transform.position.z);
+        Position from = new Position(personGo.transform.position.z, personGo.transform.position.x);
+        Position to = new Position(destination.transform.position.z, destination.transform.position.x);
 
         // 搜索路径，如果返回结果为 null，则说明没有找到路径，否则说明已找到路径，且 pathNode 为终点节点
         // 顺着 pathNode 一直向上查找 parentNode，最终将到达开始点
@@ -132,7 +132,7 @@ public class AStarTest : MonoBehaviour
         }
 
         Position position = _stackPos.Peek();
-        Vector3 destinationPos = new Vector3(position.X, 0.13f, position.Y);
+        Vector3 destinationPos = new Vector3(position.ColPos, 0.13f, position.RowPos);
         Vector3 dir = destinationPos - personGo.transform.position;
         personGo.transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
         if (Vector3.Distance(personGo.transform.position, destinationPos) >= 0.05f)
@@ -165,7 +165,7 @@ public class AStarTest : MonoBehaviour
 
         Position pos = _imap.NodeToPosition(node);
         GameObject go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-        go.transform.position = (kv.Key == 1) ? new Vector3(pos.X + 0.1f, 0f, pos.Y + 0.1f) : new Vector3(pos.X - 0.1f, 0f, pos.Y - 0.1f);
+        go.transform.position = (kv.Key == 1) ? new Vector3(pos.ColPos + 0.1f, 0f, pos.RowPos + 0.1f) : new Vector3(pos.ColPos - 0.1f, 0f, pos.RowPos - 0.1f);
         go.transform.localScale = Vector3.one * 0.3f;
         go.name = (kv.Key == 1) ? string.Format("open:{0}_{1}", node.Row, node.Col) : string.Format("insertOpen:{0}_{1}", node.Row, node.Col);
         go.GetComponent<Renderer>().material.color = (kv.Key == 1) ? Color.green : Color.blue;
@@ -202,13 +202,13 @@ public class AStarTest : MonoBehaviour
         // 角色出发点
         personGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         personGo.name = "Person";
-        personGo.transform.position = new Vector3(10.5f, 0.1f, 4.2f);
+        personGo.transform.position = new Vector3(11.6f, 0.1f, 12.3f);
         personGo.GetComponent<Renderer>().material.color = Color.green;
 
         // 目标终点
         destination = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         destination.name = "Destination";
-        destination.transform.position = new Vector3(4.5f, 0.1f, 4.2f);
+        destination.transform.position = new Vector3(27.93f, 0.1f, 27.88f);
         destination.GetComponent<Renderer>().material.color = Color.black;
     }
     #endregion

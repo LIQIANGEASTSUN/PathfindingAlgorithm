@@ -1,14 +1,17 @@
 ﻿using System;
+using UnityEngine;
 
 namespace PathFinding
 {
+    /// <summary>
+    /// 矩形格子地图
+    /// </summary>
     public class MapQuad : IMap
     {
-        private MapTerrainData _mapTerrainData;
         private MapSize _mapSize;
         private Node[] _grid = null;
-        private float _width;
-        private float _length;
+        private float _rowHeight;
+        private float _colWidth;
 
         private int maxRow;
         private int maxCol;
@@ -26,11 +29,17 @@ namespace PathFinding
             {  0, -1}
         };
 
-        public MapQuad(string mapFile, float minX, float minY, float maxX, float maxY)
+        // float minRowPos, float minColPos, float maxRowPos, float maxColPos
+        public MapQuad(float minRowPos, float minColPos, float maxRowPos, float maxColPos, float rowHeight, float colWidth)
         {
             MapType = MapType.Quad;
-            _mapTerrainData = new MapTerrainData(mapFile);
-            _mapSize = new MapSize(minX, minY, maxX, maxY);
+            _mapSize = new MapSize(minRowPos, minColPos, maxRowPos, maxColPos);
+            _rowHeight = rowHeight;
+            _colWidth = colWidth;
+
+            maxRow = Mathf.CeilToInt((_mapSize._maxRowPos - _mapSize._minRowPos) / _rowHeight);
+            maxCol = Mathf.CeilToInt((_mapSize._maxColPos - _mapSize._minColPos) / _colWidth);
+
             CreateGrid();
         }
 
@@ -39,39 +48,34 @@ namespace PathFinding
         // 创建网格
         private void CreateGrid()
         {
-            maxRow = _mapTerrainData.Row;
-            maxCol = _mapTerrainData.Col;
-
-            _width = (_mapSize._maxX - _mapSize._minX) / maxCol;
-            _length = (_mapSize._maxY - _mapSize._minY) / maxRow;
-
             // 使用一维数组存放 node
             _grid = new Node[maxRow * maxCol];
-
-            for (int i = 0; i < maxRow; ++i)
+            for (int row = 0; row < maxRow; ++row)
             {
-                for (int j = 0; j < maxCol; ++j)
+                for (int col = 0; col < maxCol; ++col)
                 {
-                    CreateNode(i, j);
+                    CreateNode(row, col);
                 }
             }
         }
 
         private void CreateNode(int row, int col)
         {
-            float cost = 0;
-            int nodeType = _mapTerrainData.GetNodeData(row, col, ref cost);
-
             int index = RCToIndex(row, col);
             Node node = new Node(row, col, _neighborCount);
-            node.NodeType = (NodeType)nodeType;
-            node.Cost = cost;
+            node.NodeType = NodeType.Smooth;
+            node.Cost = 1;
 
-            float x = _mapSize._minX + (node.Col + 0.5f) * _width;
-            float y = _mapSize._maxY - (node.Row + 0.5f) * _length;
-            node.Position = new Position(x, y);
-
+            node.Position = NodeToPosition(node.Row, node.Col);
             _grid[index] = node;
+        }
+
+        public Position NodeToPosition(int row, int col)
+        {
+            float rowPos = _mapSize._minRowPos + (row + 0.5f) * _rowHeight; //_mapSize._maxRowPos - (row + 0.5f) * _rowHeight;
+            float colPos = _mapSize._minColPos + (col + 0.5f) * _colWidth;
+            Position position = new Position(rowPos, colPos);
+            return position;
         }
 
         // 地图所有节点
@@ -89,27 +93,27 @@ namespace PathFinding
         // 地块 Node 宽
         public float NodeWidth()
         {
-            return _width;
+            return _colWidth;
         }
 
         // 地块 Node 长
         public float NodeLength()
         {
-            return _length;
+            return _rowHeight;
         }
 
         /// <summary>
         /// 根据坐标获取 Node
         /// </summary>
-        public Node PositionToNode(float x, float y)
+        public Node PositionToNode(float rowPos, float colPos)
         {
-            if (!_mapSize.Contians(x, y))
+            if (!_mapSize.Contians(rowPos, colPos))
             {
                 return null;
             }
 
-            int row = (int)((_mapSize._maxY - y) / _length);
-            int col = (int)((x - _mapSize._minX) / _width);
+            int row = (int)((rowPos - _mapSize._minRowPos) / _rowHeight);
+            int col = (int)((colPos - _mapSize._minColPos) / _colWidth);
 
             int index = RCToIndex(row, col);
             return _grid[index];

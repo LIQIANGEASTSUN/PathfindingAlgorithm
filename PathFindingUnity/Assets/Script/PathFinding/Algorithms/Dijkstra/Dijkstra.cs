@@ -33,8 +33,8 @@ namespace PathFinding
             _openHeap.MakeEmpty();
             _closeList.Clear();
 
-            Node fromNode = _map.PositionToNode(from.X, from.Y);
-            Node desitinationNode = _map.PositionToNode(desitination.X, desitination.Y);
+            Node fromNode = _map.PositionToNode(from.RowPos, from.ColPos);
+            Node desitinationNode = _map.PositionToNode(desitination.RowPos, desitination.ColPos);
 
             fromNode.G = 0;
             _openHeap.Insert(fromNode);

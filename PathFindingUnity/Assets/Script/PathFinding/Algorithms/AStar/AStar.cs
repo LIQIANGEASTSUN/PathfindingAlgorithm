@@ -22,23 +22,10 @@ namespace PathFinding
 
         public Node SearchPath(Position from, Position desitination)
         {
-            // 重置上次访问过的节点
-            foreach (var node in closedList)
-            {
-                node.Clear();
-            }
-            foreach (var node in openHeap.DataList)
-            {
-                node.Clear();
-            }
-
-            openHeap.MakeEmpty();
-            closedList.Clear();
-
             // 起点
-            Node fromNode = _map.PositionToNode(from.X, from.Y);
+            Node fromNode = _map.PositionToNode(from.RowPos, from.ColPos);
             // 终点
-            Node desitinationNode = _map.PositionToNode(desitination.X, desitination.Y);
+            Node desitinationNode = _map.PositionToNode(desitination.RowPos, desitination.ColPos);
             if (fromNode.Row == desitinationNode.Row && fromNode.Col == desitinationNode.Col)
             {
                 return null;
@@ -69,6 +56,22 @@ namespace PathFinding
             }
 
             return result;
+        }
+
+        private void Clear()
+        {
+            // 重置上次访问过的节点
+            foreach (var node in closedList)
+            {
+                node.Clear();
+            }
+            foreach (var node in openHeap.DataList)
+            {
+                node.Clear();
+            }
+
+            openHeap.MakeEmpty();
+            closedList.Clear();
         }
 
         /// <summary>

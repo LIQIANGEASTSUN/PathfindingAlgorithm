@@ -41,7 +41,7 @@ namespace PathFinding
 
         public Node SearchPath(Position from, Position desitination)
         {
-            if (from.X == desitination.X && from.Y == desitination.Y)
+            if (from.ColPos == desitination.ColPos && from.RowPos == desitination.RowPos)
             {
                 return null;
             }
@@ -59,8 +59,8 @@ namespace PathFinding
             closedList.Clear();
 
             // 起点
-            Node originNode = map.PositionToNode(from.X, from.Y);
-            desitinationNode = map.PositionToNode(desitination.X, desitination.Y);
+            Node originNode = map.PositionToNode(from.RowPos, from.ColPos);
+            desitinationNode = map.PositionToNode(desitination.RowPos, desitination.ColPos);
             if ((null == originNode || null == desitinationNode))
             {
                 return null;
